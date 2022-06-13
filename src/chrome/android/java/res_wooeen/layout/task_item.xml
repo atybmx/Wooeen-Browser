@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingTop="40dp"
+    android:paddingBottom="40dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:background="@drawable/woe_post_item_bg"
+    android:clickable="true"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/woe_list_layout"
+        android:layout_marginBottom="20dp"
+        >
+
+        <ImageView
+            android:id="@+id/task_media"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_centerInParent="true"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:background="@drawable/woe_list_layout"
+            ></ImageView>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="start"
+            >
+
+            <TextView
+                android:id="@+id/task_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical|start"
+                android:text=""
+                android:textColor="@color/woe_task_item_title"
+                android:fontFamily="@font/montserrat_bold"
+                android:textSize="18dp"
+                android:textFontWeight="700"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:singleLine="false"/>
+
+            <TextView
+                android:id="@+id/task_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical|start"
+                android:text=""
+                android:textColor="@color/woe_task_item_description"
+                android:fontFamily="@font/montserrat_bold"
+                android:textSize="16dp"
+                android:textFontWeight="400"/>
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/task_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/woe_btn_icon"
+            android:src="@drawable/woe_share"
+            android:layout_marginStart="10dp"
+            android:padding="10dp"></ImageButton>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

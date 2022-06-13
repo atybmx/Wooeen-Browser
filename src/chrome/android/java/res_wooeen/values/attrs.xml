@@ -1,0 +1,14 @@
+<resources>
+    <declare-styleable name="FullscreenAttrs">
+        <attr name="fullscreenBackgroundColor" format="color" />
+        <attr name="fullscreenTextColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="WoeButtonMain">
+        <attr name="iconSrc" format="reference" />
+        <attr name="iconBackground" format="reference" />
+        <attr name="iconSize" format="dimension" />
+        <attr name="iconPaddingTop" format="dimension" />
+        <attr name="iconPaddingLeft" format="dimension" />
+    </declare-styleable>
+</resources>

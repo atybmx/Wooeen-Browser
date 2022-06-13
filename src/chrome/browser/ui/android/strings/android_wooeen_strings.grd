@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file contains all "about" strings.  It is set to NOT be translated, in translation_expectations.pyl.  en-US only.
+-->
+<grit current_release="1" latest_public_release="0" output_all_resource_defines="false">
+  <outputs>
+    <output filename="values-af/android_wooeen_strings.xml" lang="af" type="android" />
+    <output filename="values-am/android_wooeen_strings.xml" lang="am" type="android" />
+    <output filename="values-ar/android_wooeen_strings.xml" lang="ar" type="android" />
+    <output filename="values-as/android_wooeen_strings.xml" lang="as" type="android" />
+    <output filename="values-az/android_wooeen_strings.xml" lang="az" type="android" />
+    <output filename="values-be/android_wooeen_strings.xml" lang="be" type="android" />
+    <output filename="values-bg/android_wooeen_strings.xml" lang="bg" type="android" />
+    <output filename="values-bn/android_wooeen_strings.xml" lang="bn" type="android" />
+    <output filename="values-bs/android_wooeen_strings.xml" lang="bs" type="android" />
+    <output filename="values-ca/android_wooeen_strings.xml" lang="ca" type="android" />
+    <output filename="values-cs/android_wooeen_strings.xml" lang="cs" type="android" />
+    <output filename="values-da/android_wooeen_strings.xml" lang="da" type="android" />
+    <output filename="values-de/android_wooeen_strings.xml" lang="de" type="android" />
+    <output filename="values-el/android_wooeen_strings.xml" lang="el" type="android" />
+    <output filename="values/android_wooeen_strings.xml" lang="en" type="android" />
+    <output filename="values-en-rGB/android_wooeen_strings.xml" lang="en-GB" type="android" />
+    <output filename="values-es/android_wooeen_strings.xml" lang="es" type="android" />
+    <output filename="values-es-rUS/android_wooeen_strings.xml" lang="es-419" type="android" />
+    <output filename="values-et/android_wooeen_strings.xml" lang="et" type="android" />
+    <output filename="values-eu/android_wooeen_strings.xml" lang="eu" type="android" />
+    <output filename="values-fa/android_wooeen_strings.xml" lang="fa" type="android" />
+    <output filename="values-fi/android_wooeen_strings.xml" lang="fi" type="android" />
+    <output filename="values-tl/android_wooeen_strings.xml" lang="fil" type="android" />
+    <output filename="values-fr/android_wooeen_strings.xml" lang="fr" type="android" />
+    <output filename="values-fr-rCA/android_wooeen_strings.xml" lang="fr-CA" type="android" />
+    <output filename="values-gl/android_wooeen_strings.xml" lang="gl" type="android" />
+    <output filename="values-gu/android_wooeen_strings.xml" lang="gu" type="android" />
+    <output filename="values-hi/android_wooeen_strings.xml" lang="hi" type="android" />
+    <output filename="values-hr/android_wooeen_strings.xml" lang="hr" type="android" />
+    <output filename="values-hu/android_wooeen_strings.xml" lang="hu" type="android" />
+    <output filename="values-hy/android_wooeen_strings.xml" lang="hy" type="android" />
+    <output filename="values-in/android_wooeen_strings.xml" lang="id" type="android" />
+    <output filename="values-is/android_wooeen_strings.xml" lang="is" type="android" />
+    <output filename="values-it/android_wooeen_strings.xml" lang="it" type="android" />
+    <output filename="values-iw/android_wooeen_strings.xml" lang="iw" type="android" />
+    <output filename="values-ja/android_wooeen_strings.xml" lang="ja" type="android" />
+    <output filename="values-ka/android_wooeen_strings.xml" lang="ka" type="android" />
+    <output filename="values-kk/android_wooeen_strings.xml" lang="kk" type="android" />
+    <output filename="values-km/android_wooeen_strings.xml" lang="km" type="android" />
+    <output filename="values-kn/android_wooeen_strings.xml" lang="kn" type="android" />
+    <output filename="values-ko/android_wooeen_strings.xml" lang="ko" type="android" />
+    <output filename="values-ky/android_wooeen_strings.xml" lang="ky" type="android" />
+    <output filename="values-lo/android_wooeen_strings.xml" lang="lo" type="android" />
+    <output filename="values-lt/android_wooeen_strings.xml" lang="lt" type="android" />
+    <output filename="values-lv/android_wooeen_strings.xml" lang="lv" type="android" />
+    <output filename="values-mk/android_wooeen_strings.xml" lang="mk" type="android" />
+    <output filename="values-ml/android_wooeen_strings.xml" lang="ml" type="android" />
+    <output filename="values-mn/android_wooeen_strings.xml" lang="mn" type="android" />
+    <output filename="values-mr/android_wooeen_strings.xml" lang="mr" type="android" />
+    <output filename="values-ms/android_wooeen_strings.xml" lang="ms" type="android" />
+    <output filename="values-my/android_wooeen_strings.xml" lang="my" type="android" />
+    <output filename="values-ne/android_wooeen_strings.xml" lang="ne" type="android" />
+    <output filename="values-nl/android_wooeen_strings.xml" lang="nl" type="android" />
+    <output filename="values-nb/android_wooeen_strings.xml" lang="no" type="android" />
+    <output filename="values-or/android_wooeen_strings.xml" lang="or" type="android" />
+    <output filename="values-pa/android_wooeen_strings.xml" lang="pa" type="android" />
+    <output filename="values-pl/android_wooeen_strings.xml" lang="pl" type="android" />
+    <output filename="values-pt-rBR/android_wooeen_strings.xml" lang="pt-BR" type="android" />
+    <output filename="values-pt-rPT/android_wooeen_strings.xml" lang="pt-PT" type="android" />
+    <output filename="values-ro/android_wooeen_strings.xml" lang="ro" type="android" />
+    <output filename="values-ru/android_wooeen_strings.xml" lang="ru" type="android" />
+    <output filename="values-si/android_wooeen_strings.xml" lang="si" type="android" />
+    <output filename="values-sk/android_wooeen_strings.xml" lang="sk" type="android" />
+    <output filename="values-sl/android_wooeen_strings.xml" lang="sl" type="android" />
+    <output filename="values-sq/android_wooeen_strings.xml" lang="sq" type="android" />
+    <output filename="values-sr/android_wooeen_strings.xml" lang="sr" type="android" />
+    <output filename="values-b+sr+Latn/android_wooeen_strings.xml" lang="sr-Latn" type="android" />
+    <output filename="values-sv/android_wooeen_strings.xml" lang="sv" type="android" />
+    <output filename="values-sw/android_wooeen_strings.xml" lang="sw" type="android" />
+    <output filename="values-ta/android_wooeen_strings.xml" lang="ta" type="android" />
+    <output filename="values-te/android_wooeen_strings.xml" lang="te" type="android" />
+    <output filename="values-th/android_wooeen_strings.xml" lang="th" type="android" />
+    <output filename="values-tr/android_wooeen_strings.xml" lang="tr" type="android" />
+    <output filename="values-uk/android_wooeen_strings.xml" lang="uk" type="android" />
+    <output filename="values-ur/android_wooeen_strings.xml" lang="ur" type="android" />
+    <output filename="values-uz/android_wooeen_strings.xml" lang="uz" type="android" />
+    <output filename="values-vi/android_wooeen_strings.xml" lang="vi" type="android" />
+    <output filename="values-zh-rCN/android_wooeen_strings.xml" lang="zh-CN" type="android" />
+    <output filename="values-zh-rHK/android_wooeen_strings.xml" lang="zh-HK" type="android" />
+    <output filename="values-zh-rTW/android_wooeen_strings.xml" lang="zh-TW" type="android" />
+    <output filename="values-zu/android_wooeen_strings.xml" lang="zu" type="android" />
+  </outputs>
+  <translations>
+    <file lang="am" path="translations/android_wooeen_strings_am.xtb" />
+    <file lang="ar" path="translations/android_wooeen_strings_ar.xtb" />
+    <file lang="bg" path="translations/android_wooeen_strings_bg.xtb" />
+    <file lang="bn" path="translations/android_wooeen_strings_bn.xtb" />
+    <file lang="ca" path="translations/android_wooeen_strings_ca.xtb" />
+    <file lang="cs" path="translations/android_wooeen_strings_cs.xtb" />
+    <file lang="da" path="translations/android_wooeen_strings_da.xtb" />
+    <file lang="de" path="translations/android_wooeen_strings_de.xtb" />
+    <file lang="el" path="translations/android_wooeen_strings_el.xtb" />
+    <file lang="en-GB" path="translations/android_wooeen_strings_en-GB.xtb" />
+    <file lang="es" path="translations/android_wooeen_strings_es.xtb" />
+    <file lang="es-419" path="translations/android_wooeen_strings_es-419.xtb" />
+    <file lang="et" path="translations/android_wooeen_strings_et.xtb" />
+    <file lang="fa" path="translations/android_wooeen_strings_fa.xtb" />
+    <file lang="fi" path="translations/android_wooeen_strings_fi.xtb" />
+    <file lang="fil" path="translations/android_wooeen_strings_fil.xtb" />
+    <file lang="fr" path="translations/android_wooeen_strings_fr.xtb" />
+    <file lang="fr-CA" path="translations/android_wooeen_strings_fr-CA.xtb" />
+    <file lang="gu" path="translations/android_wooeen_strings_gu.xtb" />
+    <file lang="hi" path="translations/android_wooeen_strings_hi.xtb" />
+    <file lang="hr" path="translations/android_wooeen_strings_hr.xtb" />
+    <file lang="hu" path="translations/android_wooeen_strings_hu.xtb" />
+    <file lang="id" path="translations/android_wooeen_strings_id.xtb" />
+    <file lang="it" path="translations/android_wooeen_strings_it.xtb" />
+    <file lang="iw" path="translations/android_wooeen_strings_iw.xtb" />
+    <file lang="ja" path="translations/android_wooeen_strings_ja.xtb" />
+    <file lang="kn" path="translations/android_wooeen_strings_kn.xtb" />
+    <file lang="ko" path="translations/android_wooeen_strings_ko.xtb" />
+    <file lang="lt" path="translations/android_wooeen_strings_lt.xtb" />
+    <file lang="lv" path="translations/android_wooeen_strings_lv.xtb" />
+    <file lang="ml" path="translations/android_wooeen_strings_ml.xtb" />
+    <file lang="mr" path="translations/android_wooeen_strings_mr.xtb" />
+    <file lang="ms" path="translations/android_wooeen_strings_ms.xtb" />
+    <file lang="nl" path="translations/android_wooeen_strings_nl.xtb" />
+    <file lang="no" path="translations/android_wooeen_strings_no.xtb" />
+    <file lang="pl" path="translations/android_wooeen_strings_pl.xtb" />
+    <file lang="pt-BR" path="translations/android_wooeen_strings_pt-BR.xtb" />
+    <file lang="pt-PT" path="translations/android_wooeen_strings_pt-PT.xtb" />
+    <file lang="ro" path="translations/android_wooeen_strings_ro.xtb" />
+    <file lang="ru" path="translations/android_wooeen_strings_ru.xtb" />
+    <file lang="sk" path="translations/android_wooeen_strings_sk.xtb" />
+    <file lang="sl" path="translations/android_wooeen_strings_sl.xtb" />
+    <file lang="sr" path="translations/android_wooeen_strings_sr.xtb" />
+    <file lang="sr-Latn" path="translations/android_wooeen_strings_sr-Latn.xtb"  />
+    <file lang="sv" path="translations/android_wooeen_strings_sv.xtb" />
+    <file lang="sw" path="translations/android_wooeen_strings_sw.xtb" />
+    <file lang="ta" path="translations/android_wooeen_strings_ta.xtb" />
+    <file lang="te" path="translations/android_wooeen_strings_te.xtb" />
+    <file lang="th" path="translations/android_wooeen_strings_th.xtb" />
+    <file lang="tr" path="translations/android_wooeen_strings_tr.xtb" />
+    <file lang="uk" path="translations/android_wooeen_strings_uk.xtb" />
+    <file lang="vi" path="translations/android_wooeen_strings_vi.xtb" />
+    <file lang="zh-CN" path="translations/android_wooeen_strings_zh-CN.xtb" />
+    <file lang="zh-TW" path="translations/android_wooeen_strings_zh-TW.xtb" />
+  </translations>
+  <release seq="1" allow_pseudo="false">
+    <messages fallback_to_english="true">
+      <message name="IDS_WELCOME_TO_WOOEEN" desc="">
+        Welcome to Wooeen
+      </message>
+      <message name="IDS_WOE_SLOGAN" desc="">
+        The world's first cashback browser which shares with you.
+      </message>
+      <message name="IDS_WOE_FRE_SEND_REPORT_CHECK" desc="">
+        Help make Wooeen better by sending us usage statistics and bug reports.
+      </message>
+      <message name="IDS_WOE_FRE_TOS" desc="">
+        By using Wooeen, you agree to the <ph name="BEGIN_LINK1">&lt;LINK1&gt;</ph>Terms of Service<ph name="END_LINK1">&lt;/LINK1&gt;</ph>, and to our <ph name="BEGIN_LINK2">&lt;LINK2&gt;</ph>Privacy Policy<ph name="END_LINK2">&lt;/LINK2&gt;</ph>.
+      </message>
+      <message name="IDS_WOE_TERMS_OF_SERVICE_TITLE" desc="">
+        Wooeen's Terms of service
+      </message>
+      <message name="IDS_WOE_TERMS_OF_SERVICE_URL" desc="" translateable="false">
+        https://www.wooeen.com/terms
+      </message>
+      <message name="IDS_WOE_PRIVACY_POLICY_TITLE" desc="">
+        Wooeen's Privacy policy
+      </message>
+      <message name="IDS_WOE_PRIVACY_POLICY_URL" desc="" translateable="false">
+        https://www.wooeen.com/privacy-policy
+      </message>
+      <message name="IDS_WOE_LICENSE_TEXT" desc="" translateable="false">
+        Wooeen's License
+      </message>
+      <message name="IDS_WOE_DATA_REDUCTION_PROMO_SUMMARY_LITE_MODE" desc="">
+        When running in Lite mode, Wooeen loads pages faster and uses up to 60 percent less data.
+      </message>
+      <message name="IDS_PREFS_ABOUT_WOOEEN" desc="">
+        About Wooeen
+      </message>
+      <message name="IDS_WOE_LEGAL_INFORMATION_SUMMARY" desc="">
+        Wooeen's Copyright. <ph name="year">%1$d<ex>2021</ex></ph> All rights reserved.
+      </message>
+      <message name="IDS_WOE_ENABLE_CASHBACK" desc="">
+        Activate cashback
+      </message>
+      <message name="IDS_WOE_SEE_CASHBACK" desc="">
+        Cashback area
+      </message>
+      <message name="IDS_WOE_SET_DEFAULT_BROWSER_TITLE" desc="">
+        Make Wooeen your default browser
+      </message>
+      <message name="IDS_WOE_SET_DEFAULT_BROWSER_TEXT" desc="">
+        You can browse your favorite websites as usual.
+      </message>
+      <message name="IDS_SET_WOOEEN_DEFAULT_BROWSER" desc="">
+        Make Wooeen your default browser
+      </message>
+      <message name="IDS_WOOEEN_SET_DEFAULT_BROWSER_DIALOG_TEXT" desc="">
+        Select Wooeen and click on 'Always'.
+      </message>
+      <message name="IDS_WOOEEN_ALREADY_SET_AS_DEFAULT_BROWSER" desc="">
+        Wooeen is already set as your default browser.
+      </message>
+      <message name="IDS_WOOEEN_DEFAULT_BROWSER_GO_TO_SETTINGS" desc="">
+        You have already set a browser as the default. You can change the default browser in the app settings.
+      </message>
+      <message name="IDS_SET_WOOEEN_AS_YOUR" desc="">
+        Set Wooeen as your default browser to make sure you get cashback.
+      </message>
+      <message name="IDS_WOOEEN_DEFAULT_BROWSER_TITLE" desc="">
+       Make sure you get cashback
+      </message>
+      <message name="IDS_WOOEEN_DEFAULT_BROWSER_BODY" desc="">
+        Make Wooeen your default browser!
+      </message>
+      <message name="IDS_WOOEEN_MAKE_DEFAULT_TEXT" desc="">
+        Make it Default
+      </message>
+      <message name="IDS_WOOEEN_MAKE_DEFAULT_NO" desc="">
+        No
+      </message>
+      <message name="IDS_WOE_SLIDE_FIRST" desc="">
+        We present you Wooeen
+      </message>
+      <message name="IDS_WOE_SLIDE_FIRST_TEXT" desc="">
+        The world's first cashback browser which shares with you.
+      </message>
+      <message name="IDS_WOE_SLIDE_SECOND" desc="">
+        Nothing changes
+      </message>
+      <message name="IDS_WOE_SLIDE_SECOND_TEXT" desc="">
+        Keep browsing the Internet as usual, as you always have.
+      </message>
+      <message name="IDS_WOE_SLIDE_THIRD" desc="">
+        Shop online
+      </message>
+      <message name="IDS_WOE_SLIDE_THIRD_TEXT" desc="">
+        Make your purchases at your favorite partner stores
+      </message>
+      <message name="IDS_WOE_SLIDE_FOURTH" desc="">
+        Cash in your account
+      </message>
+      <message name="IDS_WOE_SLIDE_FOURTH_TEXT" desc="">
+        Keep track of purchases that have given you cashback, and as soon as it is available, you can withdraw the amount.
+      </message>
+      <message name="IDS_WOE_ACCESS_U_ACCOUNT" desc="">
+        Access your account.
+      </message>
+      <message name="IDS_WOE_TYPE_U_EMAIL" desc="">
+       Type your e-mail.
+      </message>
+      <message name="IDS_WOE_LOGIN" desc="">
+        Log in
+      </message>
+      <message name="IDS_WOE_NOT_REGISTERED_YET" desc="">
+        Not registered yet?
+      </message>
+      <message name="IDS_WOE_REGISTER" desc="">
+        Register
+      </message>
+      <message name="IDS_WOE_REGISTER_BTN" desc="">
+        Register
+      </message>
+      <message name="IDS_WOE_SECURITY_CODE" desc="">
+        Type the security code.
+      </message>
+      <message name="IDS_WOE_SEND_IN_U_EMAIL" desc="">
+        We' ve sent it to your e-mail address.
+      </message>
+      <message name="IDS_WOE_CODE_NOT_ARRIVED" desc="">
+        Haven't you received the code yet?
+      </message>
+      <message name="IDS_WOE_CODE_SEND_AGAIN" desc="">
+        Resend code
+      </message>
+      <message name="IDS_WOE_VALIDATE_CODE" desc="">
+        Validate code
+      </message>
+      <message name="IDS_WOE_TYPE_VALID_EMAIL" desc="">
+        Type a valid email address
+      </message>
+      <message name="IDS_WOE_EMAIL_DONT_REGISTERED" desc="">
+        Your e-mail address is not registered yet.
+      </message>
+      <message name="IDS_WOE_EMAIL_WOULD_REGISTER_NOW" desc="">
+        Would you like to register right now?
+      </message>
+      <message name="IDS_WOE_EMAIL_ALREADY_REGISTERED" desc="">
+        This e-mail is already registered.
+      </message>
+      <message name="IDS_WOE_EMAIL_WOULD_LIKE_LOGIN" desc="">
+        Would you like to log in with this e-mail?
+      </message>
+      <message name="IDS_WOE_YES" desc="">
+        Yes
+      </message>
+      <message name="IDS_WOE_NO" desc="">
+        No
+      </message>
+      <message name="IDS_WOE_INTERNAL_ERROR" desc="">
+        An internal error has occurred, please try again later.
+      </message>
+      <message name="IDS_WOE_WELCOME" desc="">
+        Welcome!
+      </message>
+      <message name="IDS_WOE_LETS_START_U_REGISTER" desc="">
+        Let's start your registration?
+      </message>
+      <message name="IDS_WOE_START_REGISTRATION" desc="">
+        Start registration
+      </message>
+      <message name="IDS_WOE_ATTENTION" desc="">
+        Attention!
+      </message>
+      <message name="IDS_WOE_ATTENTION_DESC" desc="">
+        Fill out all the required information with your real data, so you can avoid problems when you get your cashback.
+      </message>
+      <message name="IDS_WOE_UNDERSTAND_AND_AGREE" desc="">
+        I understand and agree
+      </message>
+      <message name="IDS_WOE_BACK" desc="">
+        Back
+      </message>
+      <message name="IDS_WOE_NEXT" desc="">
+        Next
+      </message>
+      <message name="IDS_WOE_WHATS_YOUR_NAME" desc="">
+        What's your name?
+      </message>
+      <message name="IDS_WOE_YOUR_FULL_NAME" desc="">
+        Full name, please
+      </message>
+      <message name="IDS_WOE_WHATS_YOUR_EMAIL" desc="">
+        What's your email address?
+      </message>
+      <message name="IDS_WOE_WE_SEND_CONFIRMATION" desc="">
+        We will send you a registration confirmation.
+      </message>
+      <message name="IDS_WOE_WHEN_YOU_WERE_BORN" desc="">
+        When were you born?
+      </message>
+      <message name="IDS_WOE_MUST_BE_LEGAL_AGE" desc="">
+        You must be of legal age.
+      </message>
+      <message name="IDS_WOE_MUST_BE_LEGAL_AGE_CONFIRM" desc="">
+        I confirm that I am over 18 years old
+      </message>
+      <message name="IDS_WOE_WHATS_THE_CONTACT_NUMBER" desc="">
+        What's your phone number?
+      </message>
+      <message name="IDS_WOE_IF_SOME_HAPPEN_CONTACT" desc="">
+        If something happens, how can we reach you?
+      </message>
+      <message name="IDS_WOE_FINALIZE_REGISTER" desc="">
+        Finish registration
+      </message>
+      <message name="IDS_WOE_ALL_READY" desc="">
+        It's all right!
+      </message>
+      <message name="IDS_WOE_THANKS_FOR_REGISTER" desc="">
+        Thank you for registering.
+      </message>
+      <message name="IDS_WOE_TYPE_VALID_NAME" desc="">
+        Type a valid name.
+      </message>
+      <message name="IDS_WOE_TYPE_VALID_BIRTH" desc="">
+        Please, select your birthdate.
+      </message>
+      <message name="IDS_WOE_BIRTH_DATE_LEGAL_AGE" desc="">
+        Unfortunately you cannot register.
+      </message>
+      <message name="IDS_WOE_TYPE_VALID_PHONE" desc="">
+        Type a valid phone number.
+      </message>
+      <message name="IDS_WOE_EMAIL_NOT_ALLOWED" desc="">
+        Unfortunately we will not be able to continue, we are still in the testing stage and your e-mail is not on the list.
+      </message>
+      <message name="IDS_WOE_CODE_INVALID" desc="">
+        Invalid code, check if you have typed it correctly. If you have not gotten the email, tap the "Resend code" button.
+      </message>
+      <message name="IDS_WOE_REC_SHARE" desc="">
+        Share and get it!
+      </message>
+      <message name="IDS_WOE_REC_SHARE_TITLE" desc="">
+        Real cashback without bureaucracy!
+      </message>
+      <message name="IDS_WOE_REC_SHARE_TEXT" desc="">
+        Do you want to get money from your online shopping? I already am! Sign up now and enjoy it.
+      </message>
+      <message name="IDS_WOE_ADVERTISERS_PAGE" desc="">
+        Partner stores
+      </message>
+      <message name="IDS_WOE_REGISTER_PASS" desc="">
+        Register your password
+      </message>
+      <message name="IDS_WOE_REGISTER_PASS_INFO" desc="">
+        It must be at least 6 characters long.
+      </message>
+      <message name="IDS_WOE_LOGIN_PASS" desc="">
+        Type your Password
+      </message>
+      <message name="IDS_WOE_RECOVER_PASS" desc="">
+        Did you forget your password?
+      </message>
+      <message name="IDS_WOE_LOGIN_DENIED" desc="">
+        Invalid password
+      </message>
+      <message name="IDS_WOE_RECOVER_PASS_INFO" desc="">
+        We have sent you an e-mail with information to get your password back.
+      </message>
+      <message name="IDS_WOE_LOGIN_PIN" desc="">
+        Enter without password
+      </message>
+      <message name="IDS_WOE_HELP_CALL" desc="">
+        Understand&#10; how&#10; Wooeen&#10; works
+      </message>
+      <message name="IDS_WOE_ENABLE_CASHBACK_MAIN" desc="">
+        Activate &#10;cashback
+      </message>
+      <message name="IDS_WOE_SEE_CASHBACK_MAIN" desc="">
+        Cashback &#10;area
+      </message>
+      <message name="IDS_WOE_ADVERTISERS_MAIN" desc="">
+        Partner &#10;stores
+      </message>
+      <message name="IDS_WOE_REC_SHARE_MAIN" desc="">
+        Share &#10;and get
+      </message>
+      <message name="IDS_WOE_SEARCH_OR_TYPE_WEB_ADDRESS" desc="">
+        Search by Brand or Category
+      </message>
+      <message name="IDS_WOE_REC_TERMS_TITLE" desc="">
+        Referral Policy
+      </message>
+      <message name="IDS_WOE_REC_TERMS_TEXT1" desc="">
+        Wooeen's referral program rewards new referred users who fulfill the following rules:
+      </message>
+      <message name="IDS_WOE_REC_TERMS_TEXT2" desc="">
+        The new user must download the Wooeen app with the personal referral link of the referral. The referral must appear in the list of referrals in the referral  area.
+      </message>
+      <message name="IDS_WOE_REC_TERMS_TEXT3" desc="">
+        The referral must make a purchase at an online partner store.
+      </message>
+      <message name="IDS_WOE_REC_TERMS_TEXT4" desc="">
+        The referral's purchase must have the status by Wooeen as approved. This happens when the partner store approves the sale as valid.
+      </message>
+      <message name="IDS_WOE_REC_TERMS_BTN_YES" desc="">
+        I agree
+      </message>
+      <message name="IDS_WOE_FEED_POSTS" desc="">
+        Posts
+      </message>
+      <message name="IDS_WOE_FEED_TASKS" desc="">
+        Tasks
+      </message>
+      <message name="IDS_WOE_FEED_COUPONS" desc="">
+        Coupons
+      </message>
+      <message name="IDS_WOE_FEED_OFFERS" desc="">
+        Offers
+      </message>
+      <message name="IDS_WOE_COUPON_COPIED" desc="">
+        Coupon code copied to clipboard
+      </message>
+      <message name="IDS_WOE_COUPON_ACTIVE" desc="">
+        Activate coupon
+      </message>
+      <message name="IDS_WOE_COUPON_EXPIRATION_IN" desc="">
+        It expires in
+      </message>
+      <message name="IDS_WOE_COUPON_EXPIRED" desc="">
+        Expired
+      </message>
+      <message name="IDS_WOE_DAY_SINGLE" desc="">
+        D
+      </message>
+      <message name="IDS_WOE_HOUR_SINGLE" desc="">
+        H
+      </message>
+      <message name="IDS_WOE_MINUTE_SINGLE" desc="">
+        M
+      </message>
+      <message name="IDS_WOE_SECOND_SINGLE" desc="">
+        S
+      </message>
+      <message name="IDS_WOE_COUPON_SEE_RULES" desc="">
+        See rules
+      </message>
+      <message name="IDS_WOE_CLOSE" desc="">
+        Close
+      </message>
+    </messages>
+  </release>
+</grit>

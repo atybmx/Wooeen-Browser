@@ -1,0 +1,41 @@
+# Copyright 2020 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# To regenerate this list, run:
+# sed -i '/^[^#][^[]*$/d' wooeen_java_sources.gni
+# (for f in $(find java/src_wooeen/*/ -type f); do echo '  "'$f'",'; done; echo ']') >> wooeen_java_sources.gni
+# git cl format
+
+wooeen_java_sources = [
+  "java/src_wooeen/com/wooeen/view/utils/DepsUtils.java",
+  "java/src_wooeen/com/wooeen/view/utils/RecyclerItemListener.java",
+  "java/src_wooeen/com/wooeen/view/ui/MaskEditUtil.java",
+  "java/src_wooeen/com/wooeen/view/ui/WoeButtonMain.java",
+  "java/src_wooeen/com/wooeen/view/ui/WoeButton.java",
+  "java/src_wooeen/com/wooeen/view/ui/WoeButtonPrimary.java",
+  "java/src_wooeen/com/wooeen/view/ui/WoeButtonSecondary.java",
+  "java/src_wooeen/com/wooeen/view/ui/WoeButtonTransparent.java",
+  "java/src_wooeen/com/wooeen/view/auth/RegisterStep2View.java",
+  "java/src_wooeen/com/wooeen/view/auth/RegisterStep3View.java",
+  "java/src_wooeen/com/wooeen/view/auth/RegisterStep7View.java",
+  "java/src_wooeen/com/wooeen/view/auth/RegisterStepPassView.java",
+  "java/src_wooeen/com/wooeen/view/auth/RegisterView.java",
+  "java/src_wooeen/com/wooeen/view/auth/LoginStepVerifyView.java",
+  "java/src_wooeen/com/wooeen/view/auth/LoginStepPassView.java",
+  "java/src_wooeen/com/wooeen/view/auth/RegisterStep6View.java",
+  "java/src_wooeen/com/wooeen/view/auth/RegisterStep8View.java",
+  "java/src_wooeen/com/wooeen/view/auth/LoginView.java",
+  "java/src_wooeen/com/wooeen/view/auth/RegisterStep4View.java",
+  "java/src_wooeen/com/wooeen/view/auth/RegisterStep5View.java",
+  "java/src_wooeen/com/wooeen/view/auth/loader/UserAuthLoader.java",
+  "java/src_wooeen/com/wooeen/view/auth/loader/UserAuthValidLoader.java",
+  "java/src_wooeen/com/wooeen/view/auth/loader/UserQuickAccessNewLoader.java",
+  "java/src_wooeen/com/wooeen/view/auth/loader/UserLoginLoader.java",
+  "java/src_wooeen/com/wooeen/view/auth/LoginStepEmailView.java",
+  "java/src_wooeen/com/wooeen/view/auth/RegisterStep1View.java",
+  "java/src_wooeen/com/wooeen/view/tracking/TrackingHandler.java",
+  "java/src_wooeen/com/wooeen/view/advertiser/AdvertiserAdapter.java",
+  "java/src_wooeen/com/wooeen/view/user/RecTermsView.java",
+  "java/src_wooeen/com/wooeen/browser/document/WooeenLauncherActivity.java",
+]

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <message name="IDS_WOE_WELCOME_PAGE_MAIN_TITLE" desc="">Welcome to Wooeen</message>
+  <message name="IDS_WOE_WELCOME_PAGE_MAIN_DESC" desc="">The world&apos;s first cashback browser which shares with you</message>
+  <message name="IDS_WOE_WELCOME_PAGE_CASHBACK_TITLE" desc="">Cashback Wooeeen!</message>
+  <message name="IDS_WOE_WELCOME_PAGE_CASHBACK_DESC" desc=""><ph name="BEGIN_BOLD">$1</ph>Get some money<ph name="END_BOLD">$2</ph> whenever you shop from our partner stores. You get your share from the money spent.</message>
+  <message name="IDS_WOE_WELCOME_PAGE_CASHBACK_TERMS" desc="">By using Wooeen, you agree with the <ph name="BEGIN_LINK">$3</ph>Terms of Service<ph name="END_LINK">$4</ph> and our <ph name="BEGIN_LINK">$3</ph>Privacy Policy<ph name="END_LINK">$4</ph>.</message>
+  <message name="IDS_WOE_WELCOME_PAGE_CASHBACK_NOTE" desc="">You can deactivate cashback at any time.</message>
+  <message name="IDS_WOE_WELCOME_PAGE_CASHBACK_BUTTON" desc="">Activate cashback</message>
+  <message name="IDS_WOE_EXTENSIONS_SIDEBAR_OPEN_CHROME_WEB_STORE" desc="">Open the Chrome Web Store</message>
+  <message name="IDS_WOE_NEWS_SCROLL_HINT" desc="">Scroll down to see news, offers, coupons, and tasks.</message>
+  <message name="IDS_WOE_CASHBACK_CTA_AREA_ENABLE" desc="">Activate cashback</message>
+  <message name="IDS_WOE_CASHBACK_CTA_AREA" desc="">Cashback area</message>
+  <message name="IDS_WOE_CASHBACK_CTA_ADVERTISERS" desc="">Partner stores</message>
+  <message name="IDS_WOE_CASHBACK_CTA_SHARE" desc="">Share and get</message>
+  <message name="IDS_WOE_CASHBACK_CTA_SHARE_COPY" desc="">Click to copy your recommendation link</message>
+  <message name="IDS_WOE_CASHBACK_CTA_SHARE_COPIED" desc="">Link copied to the clipboard</message>
+  <message name="IDS_WOE_WIDGET_BALANCE_TITLE" desc="">Balance released</message>
+  <message name="IDS_WOE_WIDGET_BALANCE_DESC" desc="">Available balance</message>
+  <message name="IDS_WOE_WIDGET_BALANCE_SUBTITLE" desc="">for withdrawal</message>
+  <message name="IDS_WOE_WIDGET_BALANCE_BTN" desc="">Make a withdrawal</message>
+  <message name="IDS_WOE_WIDGET_BALANCE_BTN_DISABLED" desc="">Minimum withdrawal of [[AMOUNT]]</message>
+  <message name="IDS_WOE_WIDGET_BALANCE_PREF" desc="">See your available balance for withdrawal</message>
+  <message name="IDS_WOE_WIDGET_BALANCE_PS" desc="">*Total balance of recommendations + cashback released</message>
+  <message name="IDS_WOE_WIDGET_CASHBACK_TITLE" desc="">My cashback</message>
+  <message name="IDS_WOE_WIDGET_CASHBACK_DESC1" desc="">Cashback <ph name="BEGIN_BOLD">$1</ph>checked<ph name="END_BOLD">$2</ph></message>
+  <message name="IDS_WOE_WIDGET_CASHBACK_DESC2" desc="">Cashback on <ph name="BEGIN_BOLD">$1</ph>approval<ph name="END_BOLD">$2</ph></message>
+  <message name="IDS_WOE_WIDGET_CASHBACK_BTN" desc="">See full report</message>
+  <message name="IDS_WOE_WIDGET_CASHBACK_PREF" desc="">Check your cashback balance by status</message>
+  <message name="IDS_WOE_WIDGET_RECOMMENDATION_TITLE" desc="">My recommendations</message>
+  <message name="IDS_WOE_WIDGET_RECOMMENDATION_DESC1" desc=""><ph name="BEGIN_BOLD">$1</ph>Active Downloads<ph name="END_BOLD">$2</ph> by your Code</message>
+  <message name="IDS_WOE_WIDGET_RECOMMENDATION_DESC2" desc=""><ph name="BEGIN_BOLD">$1</ph>Potential<ph name="END_BOLD">$2</ph> gains</message>
+  <message name="IDS_WOE_WIDGET_RECOMMENDATION_DESC3" desc=""><ph name="BEGIN_BOLD">$1</ph>Approved<ph name="END_BOLD">$2</ph> gains</message>
+  <message name="IDS_WOE_WIDGET_RECOMMENDATION_BTN" desc="">See the recommendations report</message>
+  <message name="IDS_WOE_WIDGET_RECOMMENDATION_PREF" desc="">Look at the number of people you&apos;ve recommended, and the earning potential.</message>
+  <message name="IDS_WOE_CTAS_TITLE" desc="">Fast Links</message>
+  <message name="IDS_WOE_CTAS_SHOW" desc="">Show panel with useful and fast links</message>
+  <message name="IDS_WOE_NEWS_TITLE" desc="">Wooeen news</message>
+  <message name="IDS_WOE_NEWS_SHOW" desc="">Show offers and news</message>
+  <message name="IDS_WOE_AGO" desc="">ago</message>
+  <message name="IDS_WOE_CTAS_WIDGET_TITLE" desc="">Hide fast Links</message>
+  <message name="IDS_WOE_REALBOX_TITLE" desc="">Search box</message>
+  <message name="IDS_WOE_REALBOX_SHOW" desc="">Show search box on the web</message>
+  <message name="IDS_WOE_REALBOX_WIDGET_TITLE" desc="">Hide Search Box</message>
+  <message name="IDS_WOE_REALBOX_INPUT_PLACEHOLDER" desc="">Search the Internet</message>
+  <message name="IDS_WOE_NEWS_POSTS" desc="">Posts</message>
+  <message name="IDS_WOE_NEWS_TASKS" desc="">Tasks</message>
+  <message name="IDS_WOE_NEWS_OFFERS" desc="">Offers</message>
+  <message name="IDS_WOE_NEWS_COUPONS" desc="">Coupons</message>
+  <message name="IDS_WOE_CONTENT_SHARE_COPIED" desc="">Copied to the clipboard</message>
+  <message name="IDS_WOE_ACTIVE_COUPON" desc="">Activate coupon</message>
+  <message name="IDS_WOE_EXPIRE_IN" desc="">It expires in</message>
+  <message name="IDS_WOE_DAYS_SYMBOL" desc="">D</message>
+  <message name="IDS_WOE_HOURS_SYMBOL" desc="">H</message>
+  <message name="IDS_WOE_MINUTES_SYMBOL" desc="">M</message>
+  <message name="IDS_WOE_SECONDS_SYMBOL" desc="">S</message>
+  <message name="IDS_WOE_SEE_RULES" desc="">See rules</message>
+  <message name="IDS_WOE_SHOW_MORE" desc="">Show more</message>
+</grit-part>

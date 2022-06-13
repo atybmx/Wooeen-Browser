@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="advertiser_width">160dp</dimen>
+    <dimen name="advertiser_pd">10dp</dimen>
+    <dimen name="advertiser_mg">10dp</dimen>
+    <dimen name="activities_mg">40dp</dimen>
+</resources>

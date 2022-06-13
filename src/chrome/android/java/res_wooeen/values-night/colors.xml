@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="woe_bg_1">#333c41</color>
+    <color name="woe_style_h1">#eef1f3</color>
+    <color name="woe_style_h2">#eef1f3</color>
+    <color name="woe_style_h3">#eef1f3</color>
+    <color name="woe_color_font">#ffffff</color>
+    <color name="woe_edit_normal_border">#80d0d0d0</color>
+    <color name="woe_edit_clicked_border">@color/woe_color_purple</color>
+
+    <color name="woe_bg">#333c41</color>
+    <color name="woe_main_secondary_border">#ffffff</color>
+    <color name="woe_main_secondary_text">#ffffff</color>
+
+    <color name="woe_tab_item_bg">#333c41</color>
+    <color name="woe_tab_item_border">#22282b</color>
+    <color name="woe_tab_item_selected_bg">#333c41</color>
+    <color name="woe_tab_item_selected_border">#22282b</color>
+    <color name="woe_tab_item_click_bg">#22282b</color>
+    <color name="woe_tab_item_click_border">#22282b</color>
+    <color name="woe_tab_item_font">#ffffff</color>
+
+    <color name="woe_post_item_bg">#333c41</color>
+    <color name="woe_post_item_border">#495154</color>
+    <color name="woe_post_item_title">#ffffff</color>
+
+    <color name="woe_task_item_bg">#333c41</color>
+    <color name="woe_task_item_border">#333c41</color>
+    <color name="woe_task_item_title">#ffffff</color>
+    <color name="woe_task_item_description">#a4a7ac</color>
+
+    <color name="woe_offer_item_bg">#333c41</color>
+    <color name="woe_offer_item_border">#333c41</color>
+    <color name="woe_offer_item_img_bg">#333c41</color>
+    <color name="woe_offer_item_img_border">@color/default_bg_color_dark</color>
+    <color name="woe_offer_item_title">#a4a7ac</color>
+    <color name="woe_offer_item_price">#ffffff</color>
+
+    <color name="woe_coupon_item_bg">#333c41</color>
+    <color name="woe_coupon_item_border">#333c41</color>
+    <color name="woe_coupon_item_info_bg">#ffffff</color>
+    <color name="woe_coupon_item_info_border">@color/default_bg_color_dark</color>
+    <color name="woe_coupon_item_img_bg">#333c41</color>
+    <color name="woe_coupon_item_title">#5f5f5f</color>
+    <color name="woe_coupon_item_voucher">@color/woe_color_purple</color>
+    <color name="woe_coupon_item_expire">@color/woe_color_purple</color>
+    <color name="woe_coupon_item_expire_stopwatch">#ffffff</color>
+    <color name="woe_coupon_item_expire_stopwatch_bg">@color/woe_color_purple</color>
+</resources>

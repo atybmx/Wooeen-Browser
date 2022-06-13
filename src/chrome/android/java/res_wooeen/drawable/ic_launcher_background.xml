@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <solid android:color="@color/woe_color_icon_bg"></solid>
+<!--    <gradient-->
+<!--        android:startColor="#51356d"-->
+<!--        android:centerColor="#2c1e6c"-->
+<!--        android:endColor="#093752"-->
+<!--        android:angle="135"-->
+<!--        android:type="linear" />-->
+</shape>
+</item>
+</selector>

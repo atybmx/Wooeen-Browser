@@ -1,0 +1,5 @@
+-keep class com.appsflyer.** { *; }
+
+-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+   public *;
+}

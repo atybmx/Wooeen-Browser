@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   fill="none"
+   viewBox="0 0 448 238"
+   version="1.1"
+   id="svg57"
+   sodipodi:docname="welcome_rewards.svg"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)">
+  <metadata
+     id="metadata61">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="2560"
+     inkscape:window-height="1043"
+     id="namedview59"
+     showgrid="false"
+     inkscape:zoom="1.9831933"
+     inkscape:cx="131.18313"
+     inkscape:cy="117.51849"
+     inkscape:window-x="1920"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg57" />
+  <path
+     d="M68.365 62.548h140c3.3 0 6 2.7 6 6s-2.7 6-6 6h-140c-3.3 0-6-2.7-6-6s2.7-6 6-6zM68.365 91.548h161c3.3 0 6 2.7 6 6s-2.7 6-6 6h-161c-3.3 0-6-2.7-6-6s2.7-6 6-6zM290.365 62.548h53c3.3 0 6 2.7 6 6s-2.7 6-6 6h-53c-3.3 0-6-2.7-6-6s2.7-6 6-6zM290.365 120.548h53c3.3 0 6 2.7 6 6v87c0 3.3-2.7 6-6 6h-53c-3.3 0-6-2.7-6-6v-87c0-3.3 2.7-6 6-6zM290.365 91.548h53c3.3 0 6 2.7 6 6s-2.7 6-6 6h-53c-3.3 0-6-2.7-6-6s2.7-6 6-6zM68.365 178.548h155c3.3 0 6 2.7 6 6s-2.7 6-6 6h-155c-3.3 0-6-2.7-6-6s2.7-6 6-6zM68.365 120.548h181c3.3 0 6 2.7 6 6s-2.7 6-6 6h-181c-3.3 0-6-2.7-6-6s2.7-6 6-6zM68.365 207.548h181c3.3 0 6 2.7 6 6s-2.7 6-6 6h-181c-3.3 0-6-2.7-6-6s2.7-6 6-6zM68.365 149.548h125c3.3 0 6 2.7 6 6s-2.7 6-6 6h-125c-3.3 0-6-2.7-6-6s2.7-6 6-6z"
+     fill="#E6E8F5"
+     id="path2" />
+  <path
+     fill-rule="evenodd"
+     clip-rule="evenodd"
+     d="M396.765 2.548h-376.8c-4.7 0-8.6 3.9-8.6 8.6v215.7c0 4.8 3.9 8.6 8.6 8.6h376.8c4.8 0 8.6-3.9 8.6-8.6v-215.7c0-4.7-3.9-8.6-8.6-8.6zm6.6 224.4c0 3.7-3 6.6-6.6 6.6h-376.8c-3.6 0-6.6-3-6.6-6.6v-174.9h390v174.9zm0-176.9h-390v-7.5h23v-19.3c0-3.7 3-6.7 6.7-6.7h100.6c3.7 0 6.7 3 6.7 6.7v19.3h253v7.5zm0-9.5h-251v-17.3c0-4.8-3.9-8.7-8.7-8.7h-100.6c-4.8 0-8.7 3.9-8.7 8.7v17.3h-21v-29.3c0-3.7 3-6.7 6.7-6.7h376.6c3.7 0 6.7 3 6.7 6.7v29.3z"
+     fill="url(#paint0_linear)"
+     id="path4" />
+  <path
+     fill-rule="evenodd"
+     clip-rule="evenodd"
+     d="M355.665 40.748l5.7-6.2 5.7 6.2h60.5c4.9 0 8.8 3.6 8.8 8v150.9c0 4.4-3.9 8-8.8 8h-133.4c-4.9 0-8.8-3.6-8.8-8v-150.9c0-4.4 3.9-8 8.8-8h61.5z"
+     fill="url(#paint1_linear)"
+     id="path6" />
+  <mask
+     id="a"
+     mask-type="alpha"
+     maskUnits="userSpaceOnUse"
+     x="333"
+     y="57"
+     width="56"
+     height="56">
+    <path
+       fill-rule="evenodd"
+       clip-rule="evenodd"
+       d="M361.065 112.448c15.3 0 27.7-12.2 27.7-27.3 0-15.1-12.4-27.3-27.7-27.3-15.3 0-27.7 12.2-27.7 27.3 0 15.1 12.4 27.3 27.7 27.3z"
+       fill="#fff"
+       id="path16" />
+  </mask>
+  <defs
+     id="defs55">
+    <linearGradient
+       id="paint0_linear"
+       x1="167.479"
+       y1="284.903"
+       x2="255.221"
+       y2="-71.039"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         stop-color="#392DD1"
+         id="stop45"
+         style="stop-color:#01b19e;stop-opacity:1" />
+      <stop
+         offset="1"
+         stop-color="#FF4343"
+         id="stop47"
+         style="stop-color:#3e40e6;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       id="paint1_linear"
+       x1="316.781"
+       y1="46.981"
+       x2="524.156"
+       y2="410.119"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         stop-color="#4134DF"
+         id="stop50"
+         style="stop-color:#3e40e6;stop-opacity:1" />
+      <stop
+         offset="1"
+         stop-color="#FF4343"
+         id="stop52"
+         style="stop-color:#01b19e;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient
+       id="SVGID_1_"
+       cx="524.30939"
+       cy="257.1846"
+       r="270.5036"
+       gradientTransform="matrix(1,0,0,-1,0.7,535.64254)"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0"
+         style="stop-color:#F5D944"
+         id="stop4" />
+      <stop
+         offset="0.1975"
+         style="stop-color:#F5D944"
+         id="stop6" />
+      <stop
+         offset="0.8668"
+         style="stop-color:#00AD99"
+         id="stop8" />
+      <stop
+         offset="1"
+         style="stop-color:#00AD99"
+         id="stop10" />
+    </radialGradient>
+    <linearGradient
+       gradientTransform="matrix(1,0,0,-1,0,493.89)"
+       y2="490.98709"
+       x2="396.93439"
+       y1="264.4689"
+       x1="164.5706"
+       gradientUnits="userSpaceOnUse"
+       id="SVGID_2_">
+      <stop
+         id="stop15"
+         style="stop-color:#F5D944"
+         offset="0.1568" />
+      <stop
+         id="stop17"
+         style="stop-color:#00AD99"
+         offset="0.8668" />
+    </linearGradient>
+    <radialGradient
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,-1,0,493.89)"
+       r="130.77139"
+       cy="357.74109"
+       cx="132.3875"
+       id="SVGID_3_">
+      <stop
+         id="stop22"
+         style="stop-color:#F5D944"
+         offset="5.922876e-02" />
+      <stop
+         id="stop24"
+         style="stop-color:#F5D944"
+         offset="0.3439" />
+    </radialGradient>
+    <radialGradient
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,-1,0,493.89)"
+       r="105.8329"
+       cy="357.716"
+       cx="71.556602"
+       id="SVGID_4_">
+      <stop
+         id="stop45-3"
+         style="stop-color:#F5D944"
+         offset="7.204434e-02" />
+      <stop
+         id="stop47-6"
+         style="stop-color:#F5D944"
+         offset="0.3439" />
+    </radialGradient>
+    <radialGradient
+       id="SVGID_5_"
+       cx="52.9272"
+       cy="472.6059"
+       r="210.0401"
+       gradientTransform="matrix(1,0,0,-1,0.7,535.64254)"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0"
+         style="stop-color:#D0302A;stop-opacity:0"
+         id="stop54" />
+      <stop
+         offset="1"
+         style="stop-color:#D0302A"
+         id="stop56" />
+    </radialGradient>
+    <linearGradient
+       id="SVGID_6_"
+       gradientUnits="userSpaceOnUse"
+       x1="294.68201"
+       y1="320.6687"
+       x2="349.39059"
+       y2="279.26761"
+       gradientTransform="matrix(1,0,0,-1,0.7,535.64254)">
+      <stop
+         offset="0"
+         style="stop-color:#583F99;stop-opacity:0.5"
+         id="stop61" />
+      <stop
+         offset="1"
+         style="stop-color:#583F99;stop-opacity:0"
+         id="stop63" />
+    </linearGradient>
+    <linearGradient
+       id="SVGID_7_"
+       gradientUnits="userSpaceOnUse"
+       x1="251.08189"
+       y1="376.92599"
+       x2="164.3976"
+       y2="440.6644"
+       gradientTransform="matrix(1,0,0,-1,0.7,535.64254)">
+      <stop
+         offset="0"
+         style="stop-color:#583F99;stop-opacity:0.5"
+         id="stop68" />
+      <stop
+         offset="1"
+         style="stop-color:#583F99;stop-opacity:0"
+         id="stop70" />
+    </linearGradient>
+    <linearGradient
+       id="SVGID_8_"
+       gradientUnits="userSpaceOnUse"
+       x1="150.3795"
+       y1="267.0733"
+       x2="78.523903"
+       y2="330.79431"
+       gradientTransform="matrix(1,0,0,-1,0.7,535.64254)">
+      <stop
+         offset="0"
+         style="stop-color:#583F99;stop-opacity:0.5"
+         id="stop75" />
+      <stop
+         offset="1"
+         style="stop-color:#583F99;stop-opacity:0"
+         id="stop77" />
+    </linearGradient>
+    <linearGradient
+       id="SVGID_9_"
+       gradientUnits="userSpaceOnUse"
+       x1="26.1457"
+       y1="329.3685"
+       x2="395.42581"
+       y2="329.3685"
+       gradientTransform="matrix(1,0,0,-1,0.7,535.64254)">
+      <stop
+         offset="0.1568"
+         style="stop-color:#F5D944"
+         id="stop82" />
+      <stop
+         offset="0.8668"
+         style="stop-color:#00AD99"
+         id="stop84" />
+    </linearGradient>
+    <linearGradient
+       id="SVGID_10_"
+       gradientUnits="userSpaceOnUse"
+       x1="369.87149"
+       y1="432.3967"
+       x2="277.80341"
+       y2="355.9473"
+       gradientTransform="matrix(1,0,0,-1,0.7,535.64254)">
+      <stop
+         offset="0"
+         style="stop-color:#583F99;stop-opacity:0.5"
+         id="stop89" />
+      <stop
+         offset="1"
+         style="stop-color:#583F99;stop-opacity:0"
+         id="stop91" />
+    </linearGradient>
+  </defs>
+  <g
+     transform="matrix(0.07100146,0,0,0.07100146,344.30233,6.6869672)"
+     id="g1495">
+    <path
+       inkscape:export-ydpi="55.599998"
+       inkscape:export-xdpi="55.599998"
+       inkscape:export-filename="/home/atybmx/Developer/Workspace/android/wooeen/app/src/main/res/drawable-xhdpi/wooeen_logo_wb.png"
+       id="path13"
+       d="m 476.5,83.152537 v 0 c -25.8,-25.8 -59.6,-38.9 -93.5,-39.2 v 0 c -34.7,-0.3 -69.5,12.7 -96,39.2 l -26.4,26.400003 -68,68 0.3,0.3 -0.3,0.3 -25.5,25.7 c -7.5,7.5 -18.3,11.8 -28.1,11.7 v 96.2 c 34.5,0.1 68.9,-12.9 95.2,-39.2 l 26.4,-26.4 26.4,26.4 c 26.5,26.5 61.3,39.5 96,39.2 33.9,-0.3 67.7,-13.4 93.5,-39.2 v 0 c 52.3,-52.2 52.3,-137 0,-189.400003 z m -68,121.500003 c -7.1,7.1 -16.2,10.7 -25.5,11 -10.1,0.3 -20.3,-3.3 -28,-11 l -26.4,-26.4 v 0 l -0.3,-0.3 0.3,-0.3 26.4,-26.4 c 7.4,-7.4 18.1,-11.1 28,-11 v 0 c 9.3,0.3 18.4,3.9 25.5,11 14.7,14.7 14.7,38.6 0,53.4 z"
+       class="st0"
+       style="fill:url(#SVGID_1_)"
+       inkscape:connector-curvature="0" />
+    <g
+       inkscape:export-ydpi="55.599998"
+       inkscape:export-xdpi="55.599998"
+       inkscape:export-filename="/home/atybmx/Developer/Workspace/android/wooeen/app/src/main/res/drawable-xhdpi/wooeen_logo_wb.png"
+       transform="translate(0.7,41.752537)"
+       id="g31">
+      <g
+         id="g29">
+        <linearGradient
+           gradientTransform="matrix(1,0,0,-1,0,493.89)"
+           y2="490.98709"
+           x2="396.93439"
+           y1="264.4689"
+           x1="164.5706"
+           gradientUnits="userSpaceOnUse"
+           id="linearGradient1542">
+          <stop
+             id="stop1538"
+             style="stop-color:#F5D944"
+             offset="0.1568" />
+          <stop
+             id="stop1540"
+             style="stop-color:#00AD99"
+             offset="0.8668" />
+        </linearGradient>
+        <path
+           id="path20"
+           d="m 286.3,41.4 -26.4,26.4 -68,68 0.3,0.3 -0.3,0.3 -25.5,25.7 c -7.5,7.5 -18.3,11.8 -28.1,11.7 V 270 c 34.5,0.1 68.9,-12.9 95.2,-39.2 l 26.4,-26.4 68,-68 -0.3,-0.3 0.3,-0.3 26.4,-26.4 c 7.7,-7.7 17.9,-11.3 28,-11 V 2.2 C 347.6,1.9 312.8,15 286.3,41.4 Z"
+           class="st1"
+           style="fill:url(#SVGID_2_)"
+           inkscape:connector-curvature="0" />
+        <radialGradient
+           gradientUnits="userSpaceOnUse"
+           gradientTransform="matrix(1,0,0,-1,0,493.89)"
+           r="130.77139"
+           cy="357.74109"
+           cx="132.3875"
+           id="radialGradient1549">
+          <stop
+             id="stop1545"
+             style="stop-color:#F5D944"
+             offset="5.922876e-02" />
+          <stop
+             id="stop1547"
+             style="stop-color:#F5D944"
+             offset="0.3439" />
+        </radialGradient>
+        <path
+           id="path27"
+           d="M 233.5,41.4 C 207.2,15.1 172.7,2 138.3,2.2 104.2,2.3 70.1,15.4 44.1,41.4 v 0 c -52.3,52.3 -52.3,137.2 0,189.5 v 0 c 26,26 60.1,39.1 94.2,39.2 v -96.2 c -9.5,-0.1 -19,-3.8 -26.2,-11 v 0 c -14.8,-14.8 -14.8,-38.7 0,-53.4 v 0 c 7.3,-7.3 16.7,-10.9 26.2,-11 9.8,-0.1 19.7,3.5 27.2,11 l 26.4,26.4 68,-68 z"
+           class="st2"
+           style="fill:url(#SVGID_3_)"
+           inkscape:connector-curvature="0" />
+      </g>
+    </g>
+    <g
+       inkscape:export-ydpi="55.599998"
+       inkscape:export-xdpi="55.599998"
+       inkscape:export-filename="/home/atybmx/Developer/Workspace/android/wooeen/app/src/main/res/drawable-xhdpi/wooeen_logo_wb.png"
+       transform="translate(0.7,41.752537)"
+       id="g52">
+      <radialGradient
+         gradientUnits="userSpaceOnUse"
+         gradientTransform="matrix(1,0,0,-1,0,493.89)"
+         r="105.8329"
+         cy="357.716"
+         cx="71.556602"
+         id="radialGradient1558">
+        <stop
+           id="stop1554"
+           style="stop-color:#F5D944"
+           offset="7.204434e-02" />
+        <stop
+           id="stop1556"
+           style="stop-color:#F5D944"
+           offset="0.3439" />
+      </radialGradient>
+      <path
+         id="path50"
+         d="m 138.3,173.9 c -3.3,0 -6.6,-0.5 -9.9,-1.5 3,1 6.3,1.7 9.9,1.8 z"
+         class="st4"
+         style="fill:url(#SVGID_4_)"
+         inkscape:connector-curvature="0" />
+    </g>
+    <path
+       inkscape:export-ydpi="55.599998"
+       inkscape:export-xdpi="55.599998"
+       inkscape:export-filename="/home/atybmx/Developer/Workspace/android/wooeen/app/src/main/res/drawable-xhdpi/wooeen_logo_wb.png"
+       id="path59"
+       d="m 112.8,151.25254 c 7.3,-7.3 16.7,-10.9 26.2,-11 9.8,-0.1 19.7,3.5 27.2,11 l 26.4,26.4 68,-68 -26.4,-26.400003 c -26.3,-26.3 -60.8,-39.4 -95.2,-39.2 -34.1,0.1 -68.2,13.2 -94.2,39.2 -9.3,9.2 -16.9,19.500003 -22.8,30.400003 -23,42.1 -21.8,93.9 3.7,134.9 52.6,15.6 89.9,1.4 113.4,-15.4 20.7,-14.8 30.6,-31.6 30.6,-31.6 -10.9,11.4 -21.8,14.4 -30.8,14.1 -3.6,-0.1 -6.7,-0.5 -9.6,-1.4 -6,-1.7 -11.6,-4.9 -16.3,-9.6 v 0 c -0.7,-0.7 -1.3,-1.4 -2,-2.2 -12.9,-14.8 -12.3,-37.2 1.8,-51.2 z"
+       class="st5"
+       style="fill:url(#SVGID_5_)"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="55.599998"
+       inkscape:export-xdpi="55.599998"
+       inkscape:export-filename="/home/atybmx/Developer/Workspace/android/wooeen/app/src/main/res/drawable-xhdpi/wooeen_logo_wb.png"
+       id="path66"
+       d="m 355,204.65254 -26.4,-26.4 -68,68 26.4,26.4 c 26.5,26.5 61.3,39.5 96,39.2 v -96.2 c -10.1,0.3 -20.3,-3.3 -28,-11 z"
+       class="st6"
+       style="fill:url(#SVGID_6_)"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="55.599998"
+       inkscape:export-xdpi="55.599998"
+       inkscape:export-filename="/home/atybmx/Developer/Workspace/android/wooeen/app/src/main/res/drawable-xhdpi/wooeen_logo_wb.png"
+       id="path73"
+       d="m 166.2,151.25254 26.4,26.4 68,-68 -26.4,-26.400003 c -26.3,-26.3 -60.8,-39.4 -95.2,-39.2 v 96.200003 c 9.8,-0.2 19.7,3.5 27.2,11 z"
+       class="st7"
+       style="fill:url(#SVGID_7_)"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="55.599998"
+       inkscape:export-xdpi="55.599998"
+       inkscape:export-filename="/home/atybmx/Developer/Workspace/android/wooeen/app/src/main/res/drawable-xhdpi/wooeen_logo_wb.png"
+       id="path80"
+       d="m 44.8,83.152537 c -9.3,9.3 -16.9,19.600003 -22.8,30.500003 -23,42.1 -21.8,93.9 3.7,134.9 52.6,15.6 89.9,1.4 113.4,-15.4 20.7,-14.8 30.6,-31.6 30.6,-31.6 -10.9,11.4 -21.8,14.4 -30.8,14.1 -3.6,-0.1 -6.7,-0.5 -9.6,-1.4 -6,-1.7 -11.6,-4.9 -16.3,-9.6 v 0 c -0.7,-0.7 -1.3,-1.4 -2,-2.2 -12.7,-14.8 -12.1,-37.2 2,-51.3 v 0"
+       class="st8"
+       style="fill:url(#SVGID_8_)"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="55.599998"
+       inkscape:export-xdpi="55.599998"
+       inkscape:export-filename="/home/atybmx/Developer/Workspace/android/wooeen/app/src/main/res/drawable-xhdpi/wooeen_logo_wb.png"
+       id="path87"
+       d="m 140.9,231.15254 c -20.5,17 -62.7,33 -115.3,17.4 5.3,8.6 11.7,16.7 19.1,24.1 v 0 c 26,26 60.1,39.1 94.2,39.2 34.5,0.1 68.9,-12.9 95.2,-39.2 l 25.9,-25.9 70.5,-70.6 24.7,-25.3 c 0,0 0.8,-0.7 2.2,-1.8 4.4,-3.7 9.4,-6.2 14.6,-7.6 3.3,-1 7,-1.6 11,-1.4 3.2,0.1 6.6,0.7 10.1,1.9 2.3,0.7 4.5,1.6 6.6,2.8 2.1,1.1 4.1,2.5 6,4 0.9,0.8 1.9,1.6 2.7,2.5 0.9,0.9 1.8,1.9 2.6,2.8 0.1,0.1 0.2,0.2 0.4,0.4 0,0 -9.2,-15.6 -28.4,-30 -24.3,-18.2 -64.5,-34.400003 -122.4,-14.9 l -68,68 v 0.1 0.1 l -23,23.9 c 0,-0.1 -16.8,19 -28.7,29.5 z"
+       class="st9"
+       style="fill:url(#SVGID_9_)"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="55.599998"
+       inkscape:export-xdpi="55.599998"
+       inkscape:export-filename="/home/atybmx/Developer/Workspace/android/wooeen/app/src/main/res/drawable-xhdpi/wooeen_logo_wb.png"
+       id="path94"
+       d="m 411.4,154.35254 c 0,0 -46.9,-79.900003 -150.8,-44.8 l -67.9,68.6 67.9,68.1 94.6,-95.4 c 0,0 27.4,-26.3 56.2,3.5 z"
+       class="st10"
+       style="fill:url(#SVGID_10_)"
+       inkscape:connector-curvature="0" />
+  </g>
+  <path
+     inkscape:connector-curvature="0"
+     id="path1765"
+     d="m 385.08499,132.86179 c 0,-10.41924 -9.87085,-13.70952 -18.64494,-16.9998 -6.58057,-2.19353 -12.61276,-4.38705 -12.61276,-8.77409 0,-3.83867 4.38705,-6.58057 9.87086,-6.58057 7.12894,0 12.61275,4.38705 12.61275,4.38705 0.54838,0 0.54838,0.54837 1.09676,0.54837 0.54839,0 1.09676,-0.54837 1.09676,-0.54837 l 3.83867,-6.032191 c 0.54837,-0.54838 0,-1.09676 0,-1.64514 0,0 -5.48381,-4.93543 -14.80628,-6.03219 V 83.50753 c 0,-0.548382 -0.54838,-1.096761 -1.64514,-1.096761 h -6.58057 c -0.54838,0 -1.64514,0.548379 -1.64514,1.096761 v 7.677329 c -9.87085,1.64514 -16.45142,8.22571 -16.45142,15.903041 0,10.96761 10.41923,14.80627 19.19333,17.54818 6.58056,2.19352 12.06437,4.38704 12.06437,8.22571 0,4.93542 -4.93543,7.12894 -9.87085,7.12894 -8.22571,0 -14.80628,-5.4838 -14.80628,-6.03219 -0.54839,-0.54838 -0.54839,-0.54838 -1.09676,-0.54838 -0.54838,0 -1.09677,0 -1.09677,0.54838 l -4.93542,6.03219 c -0.54838,0.54838 -0.54838,1.09676 0,1.64514 0,0 6.03219,6.03219 16.9998,7.67733 v 7.67733 c 0,0.54838 0.54838,1.09676 1.64514,1.09676 h 6.58057 c 1.09676,0 1.64514,-0.54838 1.64514,-1.09676 v -7.67733 c 10.41924,-1.09676 17.54818,-7.67733 17.54818,-16.45141 z"
+     style="fill:#ffffff;stroke-width:0.1119144" />
+</svg>

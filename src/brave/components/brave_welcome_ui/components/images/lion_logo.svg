@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 22.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   id="Layer_1"
+   x="0px"
+   y="0px"
+   viewBox="0 0 99.999996 129"
+   xml:space="preserve"
+   sodipodi:docname="welcome.svg"
+   width="100"
+   height="129"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
+   inkscape:export-filename="/home/atybmx/Developer/Workspace/android/wooeen/app/src/main/res/drawable-sw600dp-hdpi/wooeen_logo_wb.png"
+   inkscape:export-xdpi="55.599998"
+   inkscape:export-ydpi="55.599998"><metadata
+   id="metadata101"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /></cc:Work></rdf:RDF></metadata><defs
+   id="defs99" /><sodipodi:namedview
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1"
+   objecttolerance="10"
+   gridtolerance="10"
+   guidetolerance="10"
+   inkscape:pageopacity="0"
+   inkscape:pageshadow="2"
+   inkscape:window-width="2560"
+   inkscape:window-height="1043"
+   id="namedview97"
+   showgrid="false"
+   inkscape:zoom="5.4049295"
+   inkscape:cx="-5.0950398"
+   inkscape:cy="72.871254"
+   inkscape:window-x="1920"
+   inkscape:window-y="0"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="Layer_1" />
+<style
+   type="text/css"
+   id="style2">
+	.st0{fill:url(#SVGID_1_);}
+	.st1{fill:url(#SVGID_2_);}
+	.st2{fill:url(#SVGID_3_);}
+	.st3{fill:#FFFFFF;}
+	.st4{fill:url(#SVGID_4_);}
+	.st5{fill:url(#SVGID_5_);}
+	.st6{fill:url(#SVGID_6_);}
+	.st7{fill:url(#SVGID_7_);}
+	.st8{fill:url(#SVGID_8_);}
+	.st9{fill:url(#SVGID_9_);}
+	.st10{fill:url(#SVGID_10_);}
+</style>
+<radialGradient
+   id="SVGID_1_"
+   cx="524.30939"
+   cy="257.1846"
+   r="270.5036"
+   gradientTransform="matrix(0.1924289,0,0,-0.1924289,-0.08924267,94.616342)"
+   gradientUnits="userSpaceOnUse">
+	<stop
+   offset="0"
+   style="stop-color:#F5D944"
+   id="stop4" />
+	<stop
+   offset="0.1975"
+   style="stop-color:#F5D944"
+   id="stop6" />
+	<stop
+   offset="0.8668"
+   style="stop-color:#00AD99"
+   id="stop8" />
+	<stop
+   offset="1"
+   style="stop-color:#00AD99"
+   id="stop10" />
+</radialGradient>
+
+
+
+
+<radialGradient
+   id="SVGID_5_"
+   cx="52.9272"
+   cy="472.6059"
+   r="210.0401"
+   gradientTransform="matrix(0.1924289,0,0,-0.1924289,-0.08924267,94.616342)"
+   gradientUnits="userSpaceOnUse">
+	<stop
+   offset="0"
+   style="stop-color:#D0302A;stop-opacity:0"
+   id="stop54" />
+	<stop
+   offset="1"
+   style="stop-color:#D0302A"
+   id="stop56" />
+</radialGradient>
+
+<linearGradient
+   id="SVGID_6_"
+   gradientUnits="userSpaceOnUse"
+   x1="294.68201"
+   y1="320.6687"
+   x2="349.39059"
+   y2="279.26761"
+   gradientTransform="matrix(0.1924289,0,0,-0.1924289,-0.08924267,94.616342)">
+	<stop
+   offset="0"
+   style="stop-color:#583F99;stop-opacity:0.5"
+   id="stop61" />
+	<stop
+   offset="1"
+   style="stop-color:#583F99;stop-opacity:0"
+   id="stop63" />
+</linearGradient>
+
+<linearGradient
+   id="SVGID_7_"
+   gradientUnits="userSpaceOnUse"
+   x1="251.08189"
+   y1="376.92599"
+   x2="164.3976"
+   y2="440.6644"
+   gradientTransform="matrix(0.1924289,0,0,-0.1924289,-0.08924267,94.616342)">
+	<stop
+   offset="0"
+   style="stop-color:#583F99;stop-opacity:0.5"
+   id="stop68" />
+	<stop
+   offset="1"
+   style="stop-color:#583F99;stop-opacity:0"
+   id="stop70" />
+</linearGradient>
+
+<linearGradient
+   id="SVGID_8_"
+   gradientUnits="userSpaceOnUse"
+   x1="150.3795"
+   y1="267.0733"
+   x2="78.523903"
+   y2="330.79431"
+   gradientTransform="matrix(0.1924289,0,0,-0.1924289,-0.08924267,94.616342)">
+	<stop
+   offset="0"
+   style="stop-color:#583F99;stop-opacity:0.5"
+   id="stop75" />
+	<stop
+   offset="1"
+   style="stop-color:#583F99;stop-opacity:0"
+   id="stop77" />
+</linearGradient>
+
+<linearGradient
+   id="SVGID_9_"
+   gradientUnits="userSpaceOnUse"
+   x1="26.1457"
+   y1="329.3685"
+   x2="395.42581"
+   y2="329.3685"
+   gradientTransform="matrix(0.1924289,0,0,-0.1924289,-0.08924267,94.616342)">
+	<stop
+   offset="0.1568"
+   style="stop-color:#F5D944"
+   id="stop82" />
+	<stop
+   offset="0.8668"
+   style="stop-color:#00AD99"
+   id="stop84" />
+</linearGradient>
+
+<linearGradient
+   id="SVGID_10_"
+   gradientUnits="userSpaceOnUse"
+   x1="369.87149"
+   y1="432.3967"
+   x2="277.80341"
+   y2="355.9473"
+   gradientTransform="matrix(0.1924289,0,0,-0.1924289,-0.08924267,94.616342)">
+	<stop
+   offset="0"
+   style="stop-color:#583F99;stop-opacity:0.5"
+   id="stop89" />
+	<stop
+   offset="1"
+   style="stop-color:#583F99;stop-opacity:0"
+   id="stop91" />
+</linearGradient>
+<path
+   inkscape:connector-curvature="0"
+   style="fill:url(#SVGID_1_);stroke-width:0.1924289"
+   class="st0"
+   d="m 91.468428,7.5441891 v 0 C 86.503762,2.5795235 79.999666,0.05870489 73.476326,9.7622441e-4 v 0 C 66.799043,-0.05675245 60.102517,2.4448233 55.003151,7.5441891 l -5.080123,5.0801229 -13.085165,13.085165 0.05773,0.05773 -0.05773,0.05773 -4.906937,4.945422 c -1.443216,1.443217 -3.521449,2.270661 -5.407252,2.251418 v 18.511661 c 6.638797,0.01924 13.258351,-2.482333 18.319231,-7.543213 l 5.080123,-5.080123 5.080123,5.080123 c 5.099366,5.099366 11.795892,7.600941 18.473175,7.543213 6.52334,-0.05773 13.027436,-2.578548 17.992102,-7.543213 v 0 c 10.064032,-10.044789 10.064032,-26.36276 0,-36.4460339 z M 78.383263,30.9243 c -1.366245,1.366246 -3.117348,2.05899 -4.906937,2.116718 -1.943532,0.05773 -3.906307,-0.635015 -5.388009,-2.116718 l -5.080123,-5.080123 v 0 l -0.05773,-0.05773 0.05773,-0.05773 5.080123,-5.080123 c 1.423973,-1.423974 3.482963,-2.135961 5.388009,-2.116718 v 0 c 1.789589,0.05773 3.540692,0.750473 4.906937,2.116718 2.828705,2.828705 2.828705,7.427756 0,10.275703 z"
+   id="path13"
+   inkscape:export-filename="/home/atybmx/Developer/Workspace/android/wooeen/app/src/main/res/drawable-xhdpi/wooeen_logo_wb.png"
+   inkscape:export-xdpi="55.599998"
+   inkscape:export-ydpi="55.599998" /><g
+   id="g31"
+   transform="matrix(0.1924289,0,0,0.1924289,-0.08924267,-0.42236736)"
+   inkscape:export-filename="/home/atybmx/Developer/Workspace/android/wooeen/app/src/main/res/drawable-xhdpi/wooeen_logo_wb.png"
+   inkscape:export-xdpi="55.599998"
+   inkscape:export-ydpi="55.599998">
+	<g
+   id="g29">
+		
+			<linearGradient
+   id="SVGID_2_"
+   gradientUnits="userSpaceOnUse"
+   x1="164.5706"
+   y1="264.4689"
+   x2="396.93439"
+   y2="490.98709"
+   gradientTransform="matrix(1,0,0,-1,0,493.89)">
+			<stop
+   offset="0.1568"
+   style="stop-color:#F5D944"
+   id="stop15" />
+			<stop
+   offset="0.8668"
+   style="stop-color:#00AD99"
+   id="stop17" />
+		</linearGradient>
+		<path
+   inkscape:connector-curvature="0"
+   style="fill:url(#SVGID_2_)"
+   class="st1"
+   d="m 286.3,41.4 -26.4,26.4 -68,68 0.3,0.3 -0.3,0.3 -25.5,25.7 c -7.5,7.5 -18.3,11.8 -28.1,11.7 V 270 c 34.5,0.1 68.9,-12.9 95.2,-39.2 l 26.4,-26.4 68,-68 -0.3,-0.3 0.3,-0.3 26.4,-26.4 c 7.7,-7.7 17.9,-11.3 28,-11 V 2.2 C 347.6,1.9 312.8,15 286.3,41.4 Z"
+   id="path20" />
+		
+			<radialGradient
+   id="SVGID_3_"
+   cx="132.3875"
+   cy="357.74109"
+   r="130.77139"
+   gradientTransform="matrix(1,0,0,-1,0,493.89)"
+   gradientUnits="userSpaceOnUse">
+			<stop
+   offset="5.922876e-02"
+   style="stop-color:#F5D944"
+   id="stop22" />
+			<stop
+   offset="0.3439"
+   style="stop-color:#F5D944"
+   id="stop24" />
+		</radialGradient>
+		<path
+   inkscape:connector-curvature="0"
+   style="fill:url(#SVGID_3_)"
+   class="st2"
+   d="M 233.5,41.4 C 207.2,15.1 172.7,2 138.3,2.2 104.2,2.3 70.1,15.4 44.1,41.4 v 0 c -52.3,52.3 -52.3,137.2 0,189.5 v 0 c 26,26 60.1,39.1 94.2,39.2 v -96.2 c -9.5,-0.1 -19,-3.8 -26.2,-11 v 0 c -14.8,-14.8 -14.8,-38.7 0,-53.4 v 0 c 7.3,-7.3 16.7,-10.9 26.2,-11 9.8,-0.1 19.7,3.5 27.2,11 l 26.4,26.4 68,-68 z"
+   id="path27" />
+	</g>
+</g><g
+   id="g43"
+   style="fill:#ffffff"
+   transform="matrix(0.1924289,0,0,0.1924289,-0.08924267,-11.198386)"
+   inkscape:export-filename="/home/atybmx/Developer/Workspace/android/wooeen/app/src/main/res/drawable-xhdpi/wooeen_logo_wb.png"
+   inkscape:export-xdpi="55.599998"
+   inkscape:export-ydpi="55.599998">
+	<path
+   class="st3"
+   d="m 318,492.2 c -6.2,0 -11.8,-1 -16.7,-3 -5,-2 -9.2,-4.8 -12.6,-8.4 -3.4,-3.6 -6.1,-7.7 -7.9,-12.5 -1.9,-4.8 -2.8,-9.9 -2.8,-15.5 0,-5.4 1,-10.5 3,-15.3 2,-4.8 4.8,-9 8.4,-12.6 3.6,-3.6 7.8,-6.4 12.6,-8.5 4.9,-2.1 10.2,-3.1 15.9,-3.1 5.8,0 11.1,1 15.9,2.9 4.8,2 9,4.7 12.5,8.2 3.5,3.5 6.2,7.6 8.1,12.4 1.9,4.7 2.9,9.9 2.9,15.5 v 8.3 h -56.5 c 1.3,3.8 3.5,6.8 6.5,8.8 3,2 6.7,3 11.1,3 3.7,0 6.8,-0.7 9.3,-2.1 2.6,-1.4 4.7,-3.4 6.2,-5.9 l 19.1,11.1 c -3.9,5.2 -8.6,9.3 -14.1,12.2 -5.4,3.1 -12.4,4.5 -20.9,4.5 z m 0,-59.1 c -3.8,0 -7.2,0.9 -10,2.7 -2.8,1.8 -5,4.3 -6.5,7.5 H 334 c -1.3,-3.4 -3.3,-5.9 -6,-7.7 -2.7,-1.6 -6.1,-2.5 -10,-2.5 z"
+   id="path33"
+   style="fill:#ffffff"
+   inkscape:connector-curvature="0" />
+	<path
+   class="st3"
+   d="m 402,492.2 c -6.2,0 -11.8,-1 -16.7,-3 -5,-2 -9.2,-4.8 -12.6,-8.4 -3.4,-3.6 -6.1,-7.7 -7.9,-12.5 -1.9,-4.8 -2.8,-9.9 -2.8,-15.5 0,-5.4 1,-10.5 3,-15.3 2,-4.8 4.8,-9 8.4,-12.6 3.6,-3.6 7.8,-6.4 12.6,-8.5 4.9,-2.1 10.2,-3.1 15.9,-3.1 5.8,0 11.1,1 15.9,2.9 4.8,2 9,4.7 12.5,8.2 3.5,3.5 6.2,7.6 8.1,12.4 1.9,4.7 2.9,9.9 2.9,15.5 v 8.3 h -56.5 c 1.3,3.8 3.5,6.8 6.5,8.8 3,2 6.7,3 11.1,3 3.7,0 6.8,-0.7 9.3,-2.1 2.6,-1.4 4.7,-3.4 6.2,-5.9 l 19.1,11.1 c -3.9,5.2 -8.6,9.3 -14.1,12.2 -5.4,3.1 -12.4,4.5 -20.9,4.5 z m 0,-59.1 c -3.8,0 -7.2,0.9 -10,2.7 -2.8,1.8 -5,4.3 -6.5,7.5 H 418 c -1.3,-3.4 -3.3,-5.9 -6,-7.7 -2.7,-1.6 -6,-2.5 -10,-2.5 z"
+   id="path35"
+   style="fill:#ffffff"
+   inkscape:connector-curvature="0" />
+	<path
+   class="st3"
+   d="m 447.7,415 h 14.9 c 4.9,0 8.8,4 8.8,8.8 v 0 c 2.4,-3.3 5.4,-5.8 8.8,-7.7 3.4,-1.8 7.3,-2.7 11.6,-2.7 8.4,0 15.1,2.6 20.1,7.9 5,5.2 7.4,12.6 7.4,21.9 v 47.6 H 495 V 448 c 0,-4.4 -0.9,-7.8 -2.8,-10.2 -1.9,-2.4 -4.8,-3.6 -8.7,-3.6 -3.5,0 -6.3,1.2 -8.6,3.7 -2.2,2.4 -3.4,6.2 -3.4,11.2 v 41.7 H 447.6 V 415 Z"
+   id="path37"
+   style="fill:#ffffff"
+   inkscape:connector-curvature="0" />
+	<path
+   class="st3"
+   d="M 89.1,440.2 73.2,383.6 c -8.9,3.9 -13.8,6.2 -24,11.2 L 33.4,451.5 21.6,411.9 c -8,5.4 -15.3,11.4 -20.3,15 l 19.3,63.9 H 45 l 17.7,-64.6 18,64.6 h 20.9 l 3,0.1 c 0,0 2.6,-102.7 78.5,-127.7 0.1,0 -69.8,-4.1 -94,77 z"
+   id="path39"
+   style="fill:#ffffff"
+   inkscape:connector-curvature="0" />
+	<path
+   class="st3"
+   d="m 260.7,424.9 v 0 c -7.6,-7.6 -17.6,-11.5 -27.5,-11.6 -10.2,-0.1 -20.5,3.8 -28.3,11.6 l -7.8,7.8 -7.8,-7.8 c -7.7,-7.7 -17.9,-11.6 -28.1,-11.6 -10.1,0 -20.1,3.9 -27.8,11.6 v 0 c -15.4,15.4 -15.4,40.4 0,55.8 v 0 c 7.7,7.7 17.7,11.5 27.8,11.6 10.1,0 20.3,-3.8 28.1,-11.6 l 7.8,-7.8 7.8,7.8 c 7.8,7.8 18,11.6 28.3,11.6 10,-0.1 19.9,-3.9 27.5,-11.6 v 0 c 15.4,-15.4 15.4,-40.3 0,-55.8 z m -79.3,28.1 -10.3,10.3 c -2.9,2.9 -6.8,4.3 -10.6,4.3 -3.7,0 -7.4,-1.5 -10.2,-4.3 v 0 c -5.7,-5.7 -5.7,-15 0,-20.8 v 0 c 2.8,-2.8 6.5,-4.2 10.2,-4.3 3.8,0 7.7,1.4 10.6,4.3 l 10.3,10.3 0.1,0.1 z m 62.6,10.3 c -2.8,2.8 -6.3,4.2 -9.9,4.3 -3.9,0.1 -7.9,-1.3 -10.9,-4.3 l -10.4,-10.3 -0.1,-0.1 0.1,-0.1 10.3,-10.3 c 3,-3 7,-4.4 10.9,-4.3 3.6,0.1 7.2,1.5 9.9,4.3 5.8,5.7 5.8,15 0.1,20.8 z"
+   id="path41"
+   style="fill:#ffffff"
+   inkscape:connector-curvature="0" />
+</g><g
+   id="g52"
+   transform="matrix(0.1924289,0,0,0.1924289,-0.08924267,-0.42236736)"
+   inkscape:export-filename="/home/atybmx/Developer/Workspace/android/wooeen/app/src/main/res/drawable-xhdpi/wooeen_logo_wb.png"
+   inkscape:export-xdpi="55.599998"
+   inkscape:export-ydpi="55.599998">
+	
+		<radialGradient
+   id="SVGID_4_"
+   cx="71.556602"
+   cy="357.716"
+   r="105.8329"
+   gradientTransform="matrix(1,0,0,-1,0,493.89)"
+   gradientUnits="userSpaceOnUse">
+		<stop
+   offset="7.204434e-02"
+   style="stop-color:#F5D944"
+   id="stop45" />
+		<stop
+   offset="0.3439"
+   style="stop-color:#F5D944"
+   id="stop47" />
+	</radialGradient>
+	<path
+   inkscape:connector-curvature="0"
+   style="fill:url(#SVGID_4_)"
+   class="st4"
+   d="m 138.3,173.9 c -3.3,0 -6.6,-0.5 -9.9,-1.5 3,1 6.3,1.7 9.9,1.8 z"
+   id="path50" />
+</g><path
+   inkscape:connector-curvature="0"
+   style="fill:url(#SVGID_5_);stroke-width:0.1924289"
+   class="st5"
+   d="m 21.482037,20.648597 c 1.404731,-1.404731 3.213563,-2.097475 5.041637,-2.116718 1.885803,-0.01924 3.79085,0.673501 5.234066,2.116718 L 36.837863,25.72872 49.923028,12.643555 44.842905,7.563432 C 39.782025,2.5025519 33.143228,-0.01826667 26.523674,0.02021911 19.961849,0.039462 13.400023,2.5602806 8.3968718,7.563432 6.6072831,9.3337779 5.1448234,11.315796 4.0094929,13.413271 -0.4163718,21.514527 -0.18545712,31.482344 4.7214798,39.371929 14.84324,42.37382 22.020838,39.64133 26.542917,36.408524 c 3.983278,-2.847948 5.888324,-6.080753 5.888324,-6.080753 -2.097475,2.193689 -4.19495,2.770976 -5.92681,2.713247 -0.692744,-0.01924 -1.289273,-0.09621 -1.847317,-0.2694 C 23.50254,32.444489 22.424939,31.828716 21.520523,30.9243 v 0 c -0.1347,-0.1347 -0.250158,-0.2694 -0.384858,-0.423343 -2.482333,-2.847948 -2.366875,-7.158355 0.346372,-9.85236 z"
+   id="path59"
+   inkscape:export-filename="/home/atybmx/Developer/Workspace/android/wooeen/app/src/main/res/drawable-xhdpi/wooeen_logo_wb.png"
+   inkscape:export-xdpi="55.599998"
+   inkscape:export-ydpi="55.599998" /><path
+   inkscape:connector-curvature="0"
+   style="fill:url(#SVGID_6_);stroke-width:0.1924289"
+   class="st6"
+   d="m 68.088317,30.9243 -5.080123,-5.080123 -13.085166,13.085166 5.080123,5.080123 c 5.099366,5.099366 11.795892,7.600941 18.473175,7.543213 V 33.041018 c -1.943532,0.05773 -3.906307,-0.635015 -5.388009,-2.116718 z"
+   id="path66"
+   inkscape:export-filename="/home/atybmx/Developer/Workspace/android/wooeen/app/src/main/res/drawable-xhdpi/wooeen_logo_wb.png"
+   inkscape:export-xdpi="55.599998"
+   inkscape:export-ydpi="55.599998" /><path
+   inkscape:connector-curvature="0"
+   style="fill:url(#SVGID_7_);stroke-width:0.1924289"
+   class="st7"
+   d="M 31.75774,20.648597 36.837863,25.72872 49.923028,12.643555 44.842905,7.563432 C 39.782025,2.5025519 33.143228,-0.01826667 26.523674,0.02021911 V 18.531879 c 1.885803,-0.03849 3.79085,0.673501 5.234066,2.116718 z"
+   id="path73"
+   inkscape:export-filename="/home/atybmx/Developer/Workspace/android/wooeen/app/src/main/res/drawable-xhdpi/wooeen_logo_wb.png"
+   inkscape:export-xdpi="55.599998"
+   inkscape:export-ydpi="55.599998" /><path
+   inkscape:connector-curvature="0"
+   style="fill:url(#SVGID_8_);stroke-width:0.1924289"
+   class="st8"
+   d="M 8.3968718,7.5441891 C 6.6072831,9.3337779 5.1448234,11.315796 4.0094929,13.413271 -0.4163718,21.514527 -0.18545712,31.482344 4.7214798,39.371929 14.84324,42.37382 22.020838,39.64133 26.542917,36.408524 c 3.983278,-2.847948 5.888324,-6.080753 5.888324,-6.080753 -2.097475,2.193689 -4.19495,2.770976 -5.92681,2.713247 -0.692744,-0.01924 -1.289273,-0.09621 -1.847317,-0.2694 C 23.50254,32.444489 22.424939,31.828716 21.520523,30.9243 v 0 c -0.1347,-0.1347 -0.250158,-0.2694 -0.384858,-0.423343 -2.443847,-2.847948 -2.32839,-7.158355 0.384858,-9.871603 v 0"
+   id="path80"
+   inkscape:export-filename="/home/atybmx/Developer/Workspace/android/wooeen/app/src/main/res/drawable-xhdpi/wooeen_logo_wb.png"
+   inkscape:export-xdpi="55.599998"
+   inkscape:export-ydpi="55.599998" /><path
+   inkscape:connector-curvature="0"
+   style="fill:url(#SVGID_9_);stroke-width:0.1924289"
+   class="st9"
+   d="m 26.889289,36.023666 c -3.944792,3.271292 -12.065292,6.350154 -22.1870521,3.348263 1.0198732,1.654889 2.2514182,3.213563 3.675392,4.637537 v 0 c 5.0031511,5.003151 11.5649771,7.52397 18.1268021,7.543213 6.638797,0.01924 13.258352,-2.482333 18.319232,-7.543213 l 4.983908,-4.983909 13.566238,-13.58548 4.752993,-4.868451 c 0,0 0.153944,-0.134701 0.423344,-0.346372 0.846687,-0.711987 1.808832,-1.19306 2.809462,-1.46246 0.635015,-0.192429 1.347002,-0.307886 2.116718,-0.2694 0.615772,0.01924 1.270031,0.1347 1.943532,0.365614 0.442586,0.134701 0.86593,0.307887 1.27003,0.538801 0.404101,0.211672 0.788959,0.481073 1.154574,0.769716 0.173186,0.153943 0.365615,0.307886 0.519558,0.481072 0.173186,0.173186 0.346372,0.365615 0.500315,0.538801 0.01924,0.01924 0.03849,0.03849 0.07697,0.07697 0,0 -1.770346,-3.001891 -5.464981,-5.772867 C 68.800304,11.989297 61.064662,8.8719485 49.923028,12.624312 L 36.837863,25.709477 v 0.01924 0.01924 l -4.425864,4.599051 c 0,-0.01924 -3.232806,3.656149 -5.52271,5.676652 z"
+   id="path87"
+   inkscape:export-filename="/home/atybmx/Developer/Workspace/android/wooeen/app/src/main/res/drawable-xhdpi/wooeen_logo_wb.png"
+   inkscape:export-xdpi="55.599998"
+   inkscape:export-ydpi="55.599998" /><path
+   inkscape:connector-curvature="0"
+   style="fill:url(#SVGID_10_);stroke-width:0.1924289"
+   class="st10"
+   d="m 78.941307,21.245127 c 0,0 -9.024916,-15.3750693 -29.018279,-8.620815 L 36.857106,25.824935 49.923028,38.929343 68.126802,20.571626 c 0,0 5.272552,-5.06088 10.814505,0.673501 z"
+   id="path94"
+   inkscape:export-filename="/home/atybmx/Developer/Workspace/android/wooeen/app/src/main/res/drawable-xhdpi/wooeen_logo_wb.png"
+   inkscape:export-xdpi="55.599998"
+   inkscape:export-ydpi="55.599998" />
+</svg>

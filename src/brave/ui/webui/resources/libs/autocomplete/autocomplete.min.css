@@ -1,0 +1,15 @@
+.autocomplete{background:#fff;z-index:1000;font:14px/22px "-apple-system",BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;overflow:auto;box-sizing:border-box;border:1px solid rgba(50,50,50,.6)}.autocomplete *{}.autocomplete>div{padding:0 4px}.autocomplete .group{background:#eee}.autocomplete>div.selected,.autocomplete>div:hover:not(.group){background:#81ca91;cursor:pointer}
+
+.autocomplete{z-index: 999999;color:#000;border: 1px solid #d0d0d0;box-shadow: 0 2px 4px rgb(0 0 0 / 10%);border-color: #fff;border-radius: 30px;background: #fff;overflow:hidden;}
+.autocomplete>div{padding: 10px 20px;background:#ffffff;}
+.autocomplete>div i{color:#3e40e6;margin-right: 10px;font-size: 18px;}
+.autocomplete>div.selected{background:#f2f3f5;}
+.autocomplete>div:hover:not(.group){background:#f2f3f5;}
+
+
+@media (prefers-color-scheme: dark) {
+  .autocomplete{background: #333c41;border:2px solid #737c81;color:#ffffff;}
+  .autocomplete>div{background:#333c41;}
+  .autocomplete>div.selected{background:#495154;}
+  .autocomplete>div:hover:not(.group){background:#495154;}
+}

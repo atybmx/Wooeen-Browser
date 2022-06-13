@@ -1,0 +1,107 @@
+# Copyright 2016 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# Every fragment must have an empty constructor, so it can be instantiated when
+# restoring its activity's state.
+-keep public class org.chromium.** extends androidx.fragment.app.Fragment {
+  public <init>();
+}
+
+# These classes aren't themselves referenced, but __ProcessService[0,1,2...] are
+# referenced, and we look up these services by appending a number onto the name
+# of the base class. Thus, we need to keep the base class name around so that
+# the child classes can be looked up.
+-keep class org.chromium.content.app.SandboxedProcessService {
+  public <init>();
+}
+-keep class org.chromium.content.app.PrivilegedProcessService {
+  public <init>();
+}
+
+# SearchView is used in website_preferences_menu.xml and is constructed by
+# Android using reflection.
+# TODO(bjoyce): Remove after verifying AndroidX migration is sound.
+-keep class android.support.v7.widget.SearchView {
+  public <init>(...);
+}
+
+# This class member is referenced in BottomSheetBottomNav as a temporary
+# measure until the support library contains a solution for disabling shifting
+# mode. TODO(twellington): remove once support library has a fix and is rolled.
+# TODO(bjoyce): Remove after verifying AndroidX migration is sound.
+-keepclassmembers class android.support.design.internal.BottomNavigationMenuView {
+    boolean mShiftingMode;
+}
+
+# This class member is referenced in BottomSheetBottomNav as a temporary
+# measure until the support library contains a solution for disabling shifting
+# mode. TODO(twellington): remove once support library has a fix and is rolled.
+-keepclassmembers class com.google.android.material.bottomnavigation.BottomNavigationMenuView {
+    boolean mShiftingMode;
+}
+
+# Let proguard know CastMediaOptions in CastOptions is always null, so it can
+# trim unused MediaNotificationService methods. This saves about 170 methods in
+# the dex file. https://crbug.com/855081
+-assumenosideeffects class com.google.android.gms.cast.framework.CastOptions {
+  *** getCastMediaOptions() return null;
+}
+
+# Also, because CastOptions creates a default CastMediaOptions object upon
+# construction, we need to trim out the its builder as well, so we are truly
+# assuming there's no CastMediaOptions instances anywhere. This is to avoid
+# CastMediaOptions to reference resources upon construction.
+-assumenosideeffects class com.google.android.gms.cast.framework.media.CastMediaOptions$Builder {
+  public <init>();
+  public <clinit>();
+  *** build() return null;
+}
+
+# Keep implementation classes needed for split compat. These will be accessed by
+# reflection.
+-keep,allowobfuscation public class ** extends org.chromium.chrome.browser.base.SplitCompat*$Impl {
+  public <init>();
+}
+
+##---------------Begin: proguard configuration for Gson  ----------
+# Gson uses generic type information stored in a class file when working with fields. Proguard
+# removes such information by default, so configure it to keep all of it.
+-keepattributes Signature
+
+# For using GSON @Expose annotation
+-keepattributes *Annotation*
+
+# Gson specific classes
+-dontwarn sun.misc.**
+#-keep class com.google.gson.stream.** { *; }
+
+# Application classes that will be serialized/deserialized over Gson
+-keep class com.google.gson.examples.android.model.** { <fields>; }
+
+# Prevent proguard from stripping interface information from TypeAdapter, TypeAdapterFactory,
+# JsonSerializer, JsonDeserializer instances (so they can be used in @JsonAdapter)
+-keep class * extends com.google.gson.TypeAdapter
+-keep class * implements com.google.gson.TypeAdapterFactory
+-keep class * implements com.google.gson.JsonSerializer
+-keep class * implements com.google.gson.JsonDeserializer
+
+# Prevent R8 from leaving Data object members always null
+-keepclassmembers,allowobfuscation class * {
+  @com.google.gson.annotations.SerializedName <fields>;
+}
+
+# Retain generic signatures of TypeToken and its subclasses with R8 version 3.0 and higher.
+-keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
+-keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken
+
+# Gson specific classes
+-keep class sun.misc.Unsafe { *; }
+#-keep class com.google.gson.stream.** { *; }
+
+# Application classes that will be serialized/deserialized over Gson
+-keep class com.google.gson.examples.android.model.** { *; }
+
+##---------------End: proguard configuration for Gson  ----------
+
+-keep class com.wooeen.** { *; }

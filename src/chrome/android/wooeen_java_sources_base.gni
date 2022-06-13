@@ -1,0 +1,60 @@
+# Copyright 2020 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# To regenerate this list, run:
+# sed -i '/^[^#][^[]*$/d' wooeen_java_sources_base.gni
+# (for f in $(find java/src_wooeen_base/*/ -type f); do echo '  "'$f'",'; done; echo ']') >> wooeen_java_sources_base.gni
+# git cl format
+
+wooeen_java_sources_base = [
+  "java/src_wooeen_base/com/wooeen/utils/NumberUtils.java",
+  "java/src_wooeen_base/com/wooeen/utils/TextUtils.java",
+  "java/src_wooeen_base/com/wooeen/utils/UserUtils.java",
+  "java/src_wooeen_base/com/wooeen/utils/DeviceUtils.java",
+  "java/src_wooeen_base/com/wooeen/utils/TrackingUtils.java",
+  "java/src_wooeen_base/com/wooeen/utils/DatetimeUtils.java",
+  "java/src_wooeen_base/com/wooeen/utils/Decodificador.java",
+  "java/src_wooeen_base/com/wooeen/model/sync/WoeSyncAdapterService.java",
+  "java/src_wooeen_base/com/wooeen/model/sync/WoeSyncAdapter.java",
+  "java/src_wooeen_base/com/wooeen/model/sync/WoeAuthenticatorService.java",
+  "java/src_wooeen_base/com/wooeen/model/sync/WoeAuthenticator.java",
+  "java/src_wooeen_base/com/wooeen/model/dao/utils/WoeDBSchema.java",
+  "java/src_wooeen_base/com/wooeen/model/dao/utils/WoeDBProvider.java",
+  "java/src_wooeen_base/com/wooeen/model/dao/utils/WoeDBContract.java",
+  "java/src_wooeen_base/com/wooeen/model/dao/AdvertiserDAO.java",
+  "java/src_wooeen_base/com/wooeen/model/dao/TrackingDAO.java",
+  "java/src_wooeen_base/com/wooeen/model/dao/PostDAO.java",
+  "java/src_wooeen_base/com/wooeen/model/dao/TaskDAO.java",
+  "java/src_wooeen_base/com/wooeen/model/dao/CouponDAO.java",
+  "java/src_wooeen_base/com/wooeen/model/dao/OfferDAO.java",
+  "java/src_wooeen_base/com/wooeen/model/api/utils/WoeDAOUtils.java",
+  "java/src_wooeen_base/com/wooeen/model/api/utils/ApiCallReturn.java",
+  "java/src_wooeen_base/com/wooeen/model/api/utils/WebServiceClient.java",
+  "java/src_wooeen_base/com/wooeen/model/api/CouponAPI.java",
+  "java/src_wooeen_base/com/wooeen/model/api/OfferAPI.java",
+  "java/src_wooeen_base/com/wooeen/model/api/TaskAPI.java",
+  "java/src_wooeen_base/com/wooeen/model/api/TrackingAPI.java",
+  "java/src_wooeen_base/com/wooeen/model/api/AdvertiserAPI.java",
+  "java/src_wooeen_base/com/wooeen/model/api/UserAPI.java",
+  "java/src_wooeen_base/com/wooeen/model/api/PostAPI.java",
+  "java/src_wooeen_base/com/wooeen/model/api/UtilsAPI.java",
+  "java/src_wooeen_base/com/wooeen/model/api/CountryAPI.java",
+  "java/src_wooeen_base/com/wooeen/model/to/CountryTO.java",
+  "java/src_wooeen_base/com/wooeen/model/to/UserAuthTO.java",
+  "java/src_wooeen_base/com/wooeen/model/to/UserTokenTO.java",
+  "java/src_wooeen_base/com/wooeen/model/to/UserTO.java",
+  "java/src_wooeen_base/com/wooeen/model/to/UserQuickAccessTO.java",
+  "java/src_wooeen_base/com/wooeen/model/to/TrackingTO.java",
+  "java/src_wooeen_base/com/wooeen/model/to/PostTO.java",
+  "java/src_wooeen_base/com/wooeen/model/to/AdvertiserTO.java",
+  "java/src_wooeen_base/com/wooeen/model/top/AdvertiserTOP.java",
+  "java/src_wooeen_base/com/wooeen/model/top/PostTOP.java",
+  "java/src_wooeen_base/com/wooeen/model/top/TaskTOP.java",
+  "java/src_wooeen_base/com/wooeen/model/top/CouponTOP.java",
+  "java/src_wooeen_base/com/wooeen/model/top/OfferTOP.java",
+  "java/src_wooeen_base/com/wooeen/model/to/CheckoutTO.java",
+  "java/src_wooeen_base/com/wooeen/model/to/TaskTO.java",
+  "java/src_wooeen_base/com/wooeen/model/to/CouponTO.java",
+  "java/src_wooeen_base/com/wooeen/model/to/OfferTO.java",
+]

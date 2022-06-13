@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:background="@drawable/woe_offer_item_bg"
+    android:clickable="true">
+
+    <RelativeLayout
+        android:id="@+id/offer_image_box"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/woe_list_layout_border"
+        android:padding="1dp"
+        android:elevation="10dp"
+        >
+
+        <ImageView
+            android:id="@+id/offer_media"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:background="@drawable/woe_list_layout_transparent"
+            ></ImageView>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="20dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="start"
+            >
+
+            <TextView
+                android:id="@+id/offer_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginBottom="5dp"
+                android:gravity="center_vertical|start"
+                android:text=""
+                android:textColor="@color/woe_offer_item_title"
+                android:fontFamily="@font/montserrat_bold"
+                android:textAllCaps="true"
+                android:textSize="13dp"
+                android:textFontWeight="600"
+                android:maxLines="3"
+                android:ellipsize="end"
+                android:singleLine="false"/>
+
+            <TextView
+                android:id="@+id/offer_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical|start"
+                android:text=""
+                android:textColor="@color/woe_offer_item_price"
+                android:fontFamily="@font/montserrat_bold"
+                android:textSize="14dp"
+                android:textFontWeight="700"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

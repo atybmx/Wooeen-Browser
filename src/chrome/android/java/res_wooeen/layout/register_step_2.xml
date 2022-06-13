@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/activities_mg"
+    android:background="@drawable/woe_bg_primary">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/woe_attention"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/Theme.Wooeen.TextH1"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/woe_must_be_legal_age"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/Theme.Wooeen.TextH3"
+            android:textColor="@color/white" />
+
+        <CheckBox
+            android:id="@+id/woe_legal_age"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/woe_must_be_legal_age_confirm"
+            android:textColor="@color/woe_white"
+            android:buttonTint="@color/white"/>
+
+
+    </LinearLayout>
+
+    <com.wooeen.view.ui.WoeButton
+        android:id="@+id/btn_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="60dp"
+        android:layout_weight="0"
+        android:layout_marginBottom="10dp"
+        android:enabled="false"
+        android:text="@string/woe_next" />
+
+    <com.wooeen.view.ui.WoeButtonTransparent
+        android:id="@+id/btn_back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:textColor="@color/white"
+        android:text="@string/woe_back" />
+
+</LinearLayout>
