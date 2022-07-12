@@ -72,3 +72,37 @@ export const RealboxButton = styled('button')<{}>`
     background: #22236c;
   }
 `
+
+export const Realboxwoesearch = styled('div')<{}>`
+  display: block;
+  width: 100%;
+  text-align: center;
+  position:relative;
+  padding:0 30px;
+  margin-top: 10px;
+  opacity: .6;
+
+  &::before{
+    content:' ';
+    position:absolute;
+    width:100%;
+    height:1px;
+    top:50%;
+    transform:translateY(-50%);
+    left:0;
+    background:#d0d0d0;
+  }
+
+`
+
+export const Realboxwoesearchbrand = styled('span')<{}>`
+  color: #5f5f5f;
+  padding:0 20px;
+  background:#fff;
+  position: relative;
+
+  @media (prefers-color-scheme: dark) {
+      color: #d0d0d0;
+      background:#495154;
+  }
+`

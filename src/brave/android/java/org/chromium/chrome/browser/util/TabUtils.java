@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.PopupMenu;
 
+// import com.appsflyer.AppsFlyerLib;
+
 import com.wooeen.utils.UserUtils;
 import com.wooeen.model.api.UserAPI;
 import com.wooeen.model.api.utils.WoeDAOUtils;
@@ -135,6 +137,9 @@ public class TabUtils {
 
             if(userId > 0)
               new UserQuickAccessTask(userId, braveActivity).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+            //set AF customer id
+            // AppsFlyerLib.getInstance().setCustomerUserId(userId > 0 ? ""+userId : "");
         }
     }
 

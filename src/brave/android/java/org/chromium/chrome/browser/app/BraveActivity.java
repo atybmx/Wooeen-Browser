@@ -20,8 +20,8 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.provider.Settings;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,9 +32,20 @@ import androidx.collection.ArraySet;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.android.installreferrer.api.InstallReferrerClient;
+import com.android.installreferrer.api.InstallReferrerClient.InstallReferrerResponse;
+import com.android.installreferrer.api.InstallReferrerStateListener;
+import com.android.installreferrer.api.ReferrerDetails;
+
+import com.wooeen.model.api.UserInstallAPI;
+import com.wooeen.model.api.WoeTrkAPI;
 import com.wooeen.model.sync.WoeSyncAdapter;
+import com.wooeen.model.to.WoeTrkClickTO;
+import com.wooeen.utils.NumberUtils;
+import com.wooeen.utils.TextUtils;
 import com.wooeen.utils.TrackingUtils;
 import com.wooeen.utils.UserUtils;
+import com.wooeen.utils.WoeTrkUtils;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -44,7 +55,8 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 // import com.uxcam.UXCam;
 
-import com.appsflyer.AppsFlyerLib;
+// import com.appsflyer.AppsFlyerLib;
+// import com.appsflyer.AppsFlyerProperties;
 
 import com.flurry.android.FlurryAgent;
 import com.flurry.android.FlurryPerformance;
@@ -313,14 +325,23 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         if(userId > 0)
           FlurryAgent.setUserId("u-"+userId);
 
-        try(StrictModeContext ignored = StrictModeContext.allowDiskWrites()) {
-          System.out.println("WOE Init Appsflyer");
-          AppsFlyerLib.getInstance().init("ZDZmZ2oFtFnXVJxwggya3L", null, this);
-          AppsFlyerLib.getInstance().start(this);
-          AppsFlyerLib.getInstance().setDebugLog(true);
-          System.out.println("WOE End Appsflyer");
-        }
+        // try(StrictModeContext ignored = StrictModeContext.allowDiskWrites()) {
+        //   System.out.println("WOE Init Appsflyer");
+        //   if(userId > 0){
+        //     String customerIdAF = AppsFlyerProperties.getInstance().getString(AppsFlyerProperties.APP_USER_ID);
+        //     if(TextUtils.isEmpty(customerIdAF) || !customerIdAF.equals(""+userId)){
+        //       AppsFlyerLib.getInstance().setCustomerUserId(""+userId);
+        //     }
+        //   }
+        //   AppsFlyerLib.getInstance().init("ZDZmZ2oFtFnXVJxwggya3L", null, this);
+        //   AppsFlyerLib.getInstance().start(this);
+        //   // AppsFlyerLib.getInstance().setDebugLog(true);
+        //   System.out.println("WOE End Appsflyer");
+        // }
 
+        /*
+        * FIREBASE TOKEN
+        */
         FirebaseOptions options = new FirebaseOptions.Builder()
                 .setApplicationId("1:175408039946:android:db2ad685dcff7755d777f3") // Required for Analytics.
                 .setApiKey("AIzaSyBzZaRUqRkX_z1jaalUei47OkknQRMSdmI") // Required for Auth.
@@ -330,25 +351,104 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
                 .build();
         FirebaseApp.initializeApp(this /* Context */, options);
 
-        if(userId > 0){
-            FirebaseMessaging.getInstance().getToken()
-                  .addOnCompleteListener(new OnCompleteListener<String>() {
-                      @Override
-                      public void onComplete(@NonNull Task<String> task) {
-                          if (!task.isSuccessful() || task.getResult() == null || "".equals(task.getResult())) {
-                              System.out.println("WOE Fetching FCM registration token failed");
-                              return;
-                          }
-
-                          String userToken = UserUtils.getUserFcmToken(getApplicationContext());
-                          String token = task.getResult();
-                          if(userToken == null || !userToken.equals(token)){
-                              UserUtils.saveUserFcmToken(getApplicationContext(), token);
-                          }
-                          // System.out.println("WOE FCM "+userToken+" "+token);
+        FirebaseMessaging.getInstance().getToken()
+              .addOnCompleteListener(new OnCompleteListener<String>() {
+                  @Override
+                  public void onComplete(@NonNull Task<String> task) {
+                      if (!task.isSuccessful() || task.getResult() == null || "".equals(task.getResult())) {
+                          System.out.println("WOE Fetching FCM registration token failed");
+                          return;
                       }
-                  });
-        }
+                      String fcmToken = task.getResult();
+                      if(userId > 0){
+                        String userToken = UserUtils.getUserFcmToken(getApplicationContext());
+                        if(userToken == null || !userToken.equals(fcmToken)){
+                            //save user token
+                            UserUtils.saveUserFcmToken(getApplicationContext(), fcmToken);
+                        }
+                        // System.out.println("WOE FCM "+userToken+" "+token);
+                      }
+
+                      //save install/uninstall log
+                      boolean clickStatus = WoeTrkUtils.getStatus(getApplicationContext());
+                      if(!clickStatus) {
+                          InstallReferrerClient referrerClient = InstallReferrerClient.newBuilder(getApplicationContext()).build();
+                          referrerClient.startConnection(new InstallReferrerStateListener() {
+                              @Override
+                              public void onInstallReferrerSetupFinished(int responseCode) {
+                                  switch (responseCode) {
+                                      case InstallReferrerResponse.OK:
+                                          // Connection established.
+                                          try {
+                                              //create a click with referrer params
+                                              WoeTrkClickTO click = new WoeTrkClickTO();
+
+                                              ReferrerDetails response = referrerClient.getInstallReferrer();
+                                              if(response != null && response.getInstallReferrer() != null) {
+                                                  String referrerUrl = "https://www.wooeen.com/download?"
+                                                          + response.getInstallReferrer();
+                                                  if (!TextUtils.isEmpty(referrerUrl) && TextUtils.isUrlValid(
+                                                          referrerUrl)) {
+                                                      Uri uri = Uri.parse(referrerUrl);
+                                                      click.setUser(
+                                                              NumberUtils.getInteger(uri.getQueryParameter("u")));
+                                                      click.setSource(NumberUtils.getInteger(
+                                                              uri.getQueryParameter("so")));
+                                                      click.setLink(NumberUtils.getInteger(
+                                                              uri.getQueryParameter("lk")));
+                                                      click.setDateClick(uri.getQueryParameter("dr"));
+                                                  }
+                                              }
+
+                                              boolean clickStatusAgain = WoeTrkUtils.getStatus(getBaseContext());
+                                              if(!clickStatusAgain){
+                                                //save click in preferences
+                                                WoeTrkUtils.saveClick(getBaseContext(), click);
+                                                
+                                                //save click and track in dao
+                                                Thread t = new Thread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                       //save a trk conversion install
+                                                       WoeTrkAPI.purchase(
+                                                               WoeTrkClickTO.Event.INSTALLS.getValue(),
+                                                               click.getUser(),
+                                                               click.getSource(),
+                                                               click.getLink(),
+                                                               click.getDateClick());
+
+                                                        //save install in dao
+                                                        UserInstallAPI userInstallAPI = new UserInstallAPI();
+                                                        userInstallAPI.newUserInstall(fcmToken, click);
+                                                    }
+                                                });
+                                                t.start();
+                                              }
+
+                                          } catch (RemoteException e) {
+                                              e.printStackTrace();
+                                          }
+
+                                          break;
+                                      case InstallReferrerResponse.FEATURE_NOT_SUPPORTED:
+                                          // API not available on the current Play Store app.
+                                          break;
+                                      case InstallReferrerResponse.SERVICE_UNAVAILABLE:
+                                          // Connection couldn't be established.
+                                          break;
+                                  }
+                              }
+
+                              @Override
+                              public void onInstallReferrerServiceDisconnected() {
+                                  // Try to restart the connection on the next request to
+                                  // Google Play by calling the startConnection() method.
+                              }
+                          });
+                      }
+                  }
+              });
+
     }
 
     @Override

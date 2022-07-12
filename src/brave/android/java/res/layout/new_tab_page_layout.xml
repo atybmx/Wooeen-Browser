@@ -81,6 +81,31 @@
                 <include layout="@layout/fake_search_box_layout"/>
             </FrameLayout>
 
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingStart="50dp"
+                android:paddingEnd="50dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center"
+                    android:background="@color/woe_search_color"></FrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="10dp"
+                    android:text="Wooeen Search Engine"
+                    android:textColor="@color/woe_search_color"
+                    android:background="@color/woe_bg"></TextView>
+
+            </FrameLayout>
+
             <!-- Favorites -->
             <FrameLayout
                 android:id="@+id/user_favorites"

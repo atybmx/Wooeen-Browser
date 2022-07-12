@@ -3,7 +3,9 @@ import * as React from 'react'
 import {
   RealboxContainer,
   RealboxInput,
-  RealboxButton
+  RealboxButton,
+  Realboxwoesearch,
+  Realboxwoesearchbrand
 } from './style'
 
 import { WoeIcSearch } from '../styles/icons'
@@ -28,8 +30,6 @@ export default class Realbox extends React.PureComponent<RealboxProps, {}> {
       woeCountry
     } = this.props
 
-    console.log(woeUser)
-    console.log(woeCountry);
     window["realbox"](woeUser && woeUser && woeUser.country && woeUser.country.id ? woeUser.country.id : woeCountry && woeCountry.id ? woeCountry.id : 'BR', myLg());
   }
 
@@ -47,6 +47,7 @@ export default class Realbox extends React.PureComponent<RealboxProps, {}> {
           <RealboxInput name="q" type="text" autoComplete="off" id="realbox-input" placeholder={getLocale('woeRealboxInputPlaceholder')}/>
           <RealboxButton type="submit"><WoeIcSearch /></RealboxButton>
         </RealboxContainer>
+        <Realboxwoesearch><Realboxwoesearchbrand>Wooeen Search Engine</Realboxwoesearchbrand></Realboxwoesearch>
       </form>
     )
   }

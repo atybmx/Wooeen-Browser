@@ -16,6 +16,8 @@ import android.text.TextUtils;
 
 import androidx.core.app.NotificationCompat;
 
+// import com.appsflyer.AppsFlyerLib;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -59,6 +61,12 @@ public class ChromeGcmListenerServiceImpl extends ChromeGcmListenerService.Impl 
     public void onMessageReceived(final String from, final Bundle data) {
         //WOE push urls
         if(data != null){
+            //WOE af "uinstall" is not a typo
+            // if(data.containsKey("af-uinstall-tracking")){
+            if(data.containsKey("woe-islive")){
+              return;
+            }
+
             String urlAction = data.getString("url_action");
             if(TextUtils.isEmpty(urlAction))
                 urlAction = data.getString("woe-link");
@@ -168,6 +176,9 @@ public class ChromeGcmListenerServiceImpl extends ChromeGcmListenerService.Impl 
         // we need another mechanism that supports multiple FirebaseApp
         // instances.
         Log.d(TAG, "New FCM Token: %s", token);
+
+        //WOE appsflyer uninstall
+        // AppsFlyerLib.getInstance().updateServerUninstallToken(ContextUtils.getApplicationContext(), token);
     }
 
     /**

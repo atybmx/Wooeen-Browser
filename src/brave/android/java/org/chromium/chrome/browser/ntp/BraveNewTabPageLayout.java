@@ -66,8 +66,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.flurry.android.FlurryAgent;
 
-import com.appsflyer.AppsFlyerLib;
-import com.appsflyer.AFInAppEventParameterName;
+// import com.appsflyer.AppsFlyerLib;
+// import com.appsflyer.AFInAppEventParameterName;
 
 import com.squareup.picasso.Picasso;
 
@@ -770,41 +770,17 @@ public class BraveNewTabPageLayout
                           if(tab.getPosition() == postPosition){
                               FlurryAgent.logEvent("Post_List");
 
-                              Map<String, Object> eventValues = new HashMap<String, Object>();
-                              eventValues.put(AFInAppEventParameterName.CONTENT,"Post");
-                              AppsFlyerLib.getInstance().logEvent(mActivity,
-                                    "af_list_view",
-                                    eventValues);
-
                               loadPosts(inflater, feedList);
                           }else if(tab.getPosition() == offerPosition){
                               FlurryAgent.logEvent("Offer_List");
-
-                              Map<String, Object> eventValues = new HashMap<String, Object>();
-                              eventValues.put(AFInAppEventParameterName.CONTENT,"Offer");
-                              AppsFlyerLib.getInstance().logEvent(mActivity,
-                                    "af_list_view",
-                                    eventValues);
 
                               loadOffers(inflater, feedList);
                           }else if(tab.getPosition() == couponPosition){
                               FlurryAgent.logEvent("Coupon_List");
 
-                              Map<String, Object> eventValues = new HashMap<String, Object>();
-                              eventValues.put(AFInAppEventParameterName.CONTENT,"Coupon");
-                              AppsFlyerLib.getInstance().logEvent(mActivity,
-                                    "af_list_view",
-                                    eventValues);
-
                               loadCoupons(inflater, feedList);
                           }else if(tab.getPosition() == taskPosition){
                               FlurryAgent.logEvent("Task_List");
-
-                              Map<String, Object> eventValues = new HashMap<String, Object>();
-                              eventValues.put(AFInAppEventParameterName.CONTENT,"Task");
-                              AppsFlyerLib.getInstance().logEvent(mActivity,
-                                    "af_list_view",
-                                    eventValues);
 
                               loadTasks(inflater, feedList);
                           }
