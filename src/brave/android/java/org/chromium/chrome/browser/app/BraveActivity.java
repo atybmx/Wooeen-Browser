@@ -400,23 +400,15 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
                                                   }
                                               }
 
-                                              boolean clickStatusAgain = WoeTrkUtils.getStatus(getBaseContext());
+                                              boolean clickStatusAgain = WoeTrkUtils.getStatus(getApplicationContext());
                                               if(!clickStatusAgain){
                                                 //save click in preferences
-                                                WoeTrkUtils.saveClick(getBaseContext(), click);
-                                                
+                                                WoeTrkUtils.saveClick(getApplicationContext(), click);
+
                                                 //save click and track in dao
                                                 Thread t = new Thread(new Runnable() {
                                                     @Override
                                                     public void run() {
-                                                       //save a trk conversion install
-                                                       WoeTrkAPI.purchase(
-                                                               WoeTrkClickTO.Event.INSTALLS.getValue(),
-                                                               click.getUser(),
-                                                               click.getSource(),
-                                                               click.getLink(),
-                                                               click.getDateClick());
-
                                                         //save install in dao
                                                         UserInstallAPI userInstallAPI = new UserInstallAPI();
                                                         userInstallAPI.newUserInstall(fcmToken, click);

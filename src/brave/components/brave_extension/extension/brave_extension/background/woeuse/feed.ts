@@ -1,5 +1,5 @@
 import * as Auth from './auth'
-import { getApiUrl } from '../woeutils/urls'
+import { getApiUrlPath } from '../woeutils/urls'
 
 let memoryTodayData: Wooeen.FeedUser | undefined
 let readLock: Promise<void> | null
@@ -79,10 +79,9 @@ function performUpdateFeed () {
         let user = await Auth.getLocalData();
         if(user && user.id && user.tokenId && user.tokenAccess){
           await fetch(
-            await getApiUrl(
-                "wallet/get",
-                new URLSearchParams({})),
+            await getApiUrlPath("wallet/get"),
               {
+                method: 'GET',
                 headers: new Headers({
                   'uti': user.tokenId,
                   'uta': user.tokenAccess
@@ -110,7 +109,11 @@ function performUpdateFeed () {
                       currency: {
                         id: o.country.currency.id,
                         symbol: o.country.currency.symbol
-                      }
+                      },
+                      loadPosts: o.country.loadPosts,
+                      loadOffers: o.country.loadOffers,
+                      loadCoupons: o.country.loadCoupons,
+                      loadTasks: o.country.loadTasks
                     },
                     wallet:{
                       conversionsPending: o.wallet.conversionsPending,

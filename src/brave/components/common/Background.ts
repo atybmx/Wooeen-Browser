@@ -40,6 +40,10 @@ export namespace MessageTypes {
   export enum Country {
     getMyCountry = 'getMyCountry'
   }
+
+  export enum Version {
+    getScript = 'getScript'
+  }
 }
 export type Payload = any
 type MessageName = string | number

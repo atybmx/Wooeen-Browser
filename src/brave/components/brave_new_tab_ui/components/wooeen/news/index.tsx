@@ -20,9 +20,13 @@ import WooeenCoupons from './coupons'
 import { getLocale } from '../../../../common/locale'
 
 export interface Props {
+  woeLoadPosts: Boolean | undefined,
   woePosts: Array<Wooeen.Post> | undefined,
+  woeLoadTasks: Boolean | undefined,
   woeTasks: Array<Wooeen.Task> | undefined,
+  woeLoadOffers: Boolean | undefined,
   woeOffers: Array<Wooeen.Offer> | undefined,
+  woeLoadCoupons: Boolean | undefined,
   woeCoupons: Array<Wooeen.Coupon> | undefined
 }
 
@@ -66,9 +70,13 @@ export default class Balance extends React.PureComponent<Props, State> {
 
   render(){
     const {
+      woeLoadPosts,
       woePosts,
+      woeLoadTasks,
       woeTasks,
+      woeLoadOffers,
       woeOffers,
+      woeLoadCoupons,
       woeCoupons
     } = this.props
     const { newsType } = this.state;
@@ -78,22 +86,30 @@ export default class Balance extends React.PureComponent<Props, State> {
       <span id="woeContentCopied">{getLocale('woeContentShareCopied')}</span>
       <WooeenNewsElement.NavMenuCont>
         <WooeenNewsElement.NavMenu>
+          {woeLoadPosts &&
           <WooeenNewsElement.NavMenuItem isSelected={newsType == 'posts' ? true : false} onClick={this.loadPosts}>
             <WooeenNewsElement.NavMenuItemName>{getLocale('woeNewsPosts')}</WooeenNewsElement.NavMenuItemName>
             <WooeenNewsElement.NavMenuItemIcon><WoeIcPost/></WooeenNewsElement.NavMenuItemIcon>
           </WooeenNewsElement.NavMenuItem>
+          }
+          {woeLoadOffers &&
           <WooeenNewsElement.NavMenuItem isSelected={newsType == 'offers' ? true : false} onClick={this.loadOffers}>
             <WooeenNewsElement.NavMenuItemName>{getLocale('woeNewsOffers')}</WooeenNewsElement.NavMenuItemName>
             <WooeenNewsElement.NavMenuItemIcon><WoeIcOffer/></WooeenNewsElement.NavMenuItemIcon>
           </WooeenNewsElement.NavMenuItem>
+          }
+          {woeLoadCoupons &&
           <WooeenNewsElement.NavMenuItem isSelected={newsType == 'coupons' ? true : false} onClick={this.loadCoupons}>
             <WooeenNewsElement.NavMenuItemName>{getLocale('woeNewsCoupons')}</WooeenNewsElement.NavMenuItemName>
             <WooeenNewsElement.NavMenuItemIcon><WoeIcCoupon/></WooeenNewsElement.NavMenuItemIcon>
           </WooeenNewsElement.NavMenuItem>
+          }
+          {woeLoadTasks &&
           <WooeenNewsElement.NavMenuItem isSelected={newsType == 'tasks' ? true : false} onClick={this.loadTasks}>
             <WooeenNewsElement.NavMenuItemName>{getLocale('woeNewsTasks')}</WooeenNewsElement.NavMenuItemName>
             <WooeenNewsElement.NavMenuItemIcon><WoeIcTask/></WooeenNewsElement.NavMenuItemIcon>
           </WooeenNewsElement.NavMenuItem>
+          }
         </WooeenNewsElement.NavMenu>
       </WooeenNewsElement.NavMenuCont>
       {newsType == 'posts' &&

@@ -4,6 +4,7 @@ public class TrackingTO {
 
     private int id;
     private int platformId;
+    private int advertiserId;
     private String deeplink;
     private String params;
     private String domain;
@@ -46,5 +47,13 @@ public class TrackingTO {
 
     public void setPlatformId(int platformId) {
         this.platformId = platformId;
+    }
+
+    public int getAdvertiserId() {
+        return advertiserId;
+    }
+
+    public void setAdvertiserId(int advertiserId) {
+        this.advertiserId = advertiserId;
     }
 }

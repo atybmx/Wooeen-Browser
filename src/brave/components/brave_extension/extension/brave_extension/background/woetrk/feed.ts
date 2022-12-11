@@ -94,6 +94,7 @@ function performUpdateFeed () {
                   items.push({
                     id: o.id,
                     platformId: o.platformId,
+                    advertiserId: o.advertiserId,
                     deeplink: o.deeplink,
                     params: o.params,
                     domain: o.domain

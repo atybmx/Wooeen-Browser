@@ -18,6 +18,9 @@ import androidx.core.app.NotificationCompat;
 
 // import com.appsflyer.AppsFlyerLib;
 
+import com.wooeen.model.api.WoePushAPI;
+import com.wooeen.utils.NumberUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -112,6 +115,19 @@ public class ChromeGcmListenerServiceImpl extends ChromeGcmListenerService.Impl 
                   NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                   notificationManager.notify(NOTIFICATION_ID, b.build());
                 }
+            }
+
+            //send conversion readed
+            if(data.containsKey("woe-notification")){
+              int notification = NumberUtils.getInteger(data.getString("woe-notification"));
+              int push = NumberUtils.getInteger(data.getString("woe-push"));
+              int user = NumberUtils.getInteger(data.getString("woe-user"));
+              int advertiser = 0;
+              if(data.containsKey("woe-ad"))
+                advertiser = NumberUtils.getInteger(data.getString("woe-ad"));
+              if(notification > 0 && push > 0 && user > 0){
+                  WoePushAPI.event(2, notification, push, user, advertiser);
+              }
             }
         }
 

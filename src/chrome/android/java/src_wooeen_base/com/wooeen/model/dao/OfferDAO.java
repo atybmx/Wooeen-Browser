@@ -179,7 +179,7 @@ public class OfferDAO {
 
         if(!TextUtils.isEmpty(search.getQ())) {
             sqlWhere += WoeDBContract.Offer.TITLE+" LIKE ? AND ";
-            selectionArgs.add(search.getQ()+"%");
+            selectionArgs.add("%"+search.getQ()+"%");
         }
 
         if(sqlWhere.endsWith("AND "))

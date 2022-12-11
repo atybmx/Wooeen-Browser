@@ -1,6 +1,10 @@
 import * as FeedCr from '../woecr/feed'
 import * as FeedUser from '../woeuse/feed'
 
+export async function getApiUrlPath (path: string) {
+  return `https://api.wooeen.com/api/${path}`
+}
+
 export async function getApiUrl (path: string, params: URLSearchParams) {
   //append auth params
   let searchParams = new URLSearchParams({

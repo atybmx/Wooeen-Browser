@@ -39,6 +39,7 @@ public class TrackingDAO {
         ContentValues item = new ContentValues();
         item.put(WoeDBContract.Tracking._ID,        tracking.getId());
         item.put(WoeDBContract.Tracking.PLATFORM,   tracking.getPlatformId());
+        item.put(WoeDBContract.Tracking.ADVERTISER,   tracking.getAdvertiserId());
         item.put(WoeDBContract.Tracking.DEEPLINK,   tracking.getDeeplink());
         item.put(WoeDBContract.Tracking.PARAMS,     tracking.getParams());
         item.put(WoeDBContract.Tracking.DOMAIN,     tracking.getDomain());
@@ -68,6 +69,7 @@ public class TrackingDAO {
             ContentValues item = new ContentValues();
             item.put(WoeDBContract.Tracking._ID,        tracking.getId());
             item.put(WoeDBContract.Tracking.PLATFORM,   tracking.getPlatformId());
+            item.put(WoeDBContract.Tracking.ADVERTISER,   tracking.getAdvertiserId());
             item.put(WoeDBContract.Tracking.DEEPLINK,   tracking.getDeeplink());
             item.put(WoeDBContract.Tracking.PARAMS,     tracking.getParams());
             item.put(WoeDBContract.Tracking.DOMAIN,     tracking.getDomain());
@@ -125,6 +127,7 @@ public class TrackingDAO {
         String[] projections = {
                 WoeDBContract.Tracking._ID,
                 WoeDBContract.Tracking.PLATFORM,
+                WoeDBContract.Tracking.ADVERTISER,
                 WoeDBContract.Tracking.DEEPLINK,
                 WoeDBContract.Tracking.PARAMS,
                 WoeDBContract.Tracking.DOMAIN,
@@ -152,6 +155,7 @@ public class TrackingDAO {
                     TrackingTO item = new TrackingTO();
                     item.setId(cursor.getInt(cursor.getColumnIndex(WoeDBContract.Tracking._ID)));
                     item.setPlatformId(cursor.getInt(cursor.getColumnIndex(WoeDBContract.Tracking.PLATFORM)));
+                    item.setAdvertiserId(cursor.getInt(cursor.getColumnIndex(WoeDBContract.Tracking.ADVERTISER)));
                     item.setDeeplink(cursor.getString(cursor.getColumnIndex(WoeDBContract.Tracking.DEEPLINK)));
                     item.setParams(cursor.getString(cursor.getColumnIndex(WoeDBContract.Tracking.PARAMS)));
                     item.setDomain(cursor.getString(cursor.getColumnIndex(WoeDBContract.Tracking.DOMAIN)));

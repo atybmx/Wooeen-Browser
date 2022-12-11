@@ -9,6 +9,7 @@ import com.wooeen.model.api.utils.WebServiceClient;
 import com.wooeen.model.api.utils.WebServiceClient.Header;
 import com.wooeen.model.api.utils.WoeDAOUtils;
 import com.wooeen.model.to.CouponTO;
+import com.wooeen.utils.TextUtils;
 
 import java.util.List;
 
@@ -25,6 +26,10 @@ public class CouponAPI {
     }
 
     public List<CouponTO> get(int pg,int qtdPerPage){
+        return get(pg, qtdPerPage, null);
+    }
+
+    public List<CouponTO> get(int pg,int qtdPerPage,String q){
         try {
             //configura a url e os parametros
             Uri.Builder builder = new Uri.Builder();
@@ -37,6 +42,9 @@ public class CouponAPI {
                     .appendQueryParameter("st","1")
                     .appendQueryParameter("pg",""+pg)
                     .appendQueryParameter("qpp",""+qtdPerPage);
+
+            if(!TextUtils.isEmpty(q))
+                builder.appendQueryParameter("q",q);
 
             String[] resposta = new WebServiceClient()
                     .get(builder.build().toString(),

@@ -271,6 +271,10 @@ public class UserAPI {
     }
 
     public UserQuickAccessTO quickAccessNew(){
+        return quickAccessNew(null);
+    }
+
+    public UserQuickAccessTO quickAccessNew(String redirect){
         if(token == null ||
                 TextUtils.isEmpty(token.getIdToken()) ||
                 TextUtils.isEmpty(token.getAccessToken()))
@@ -287,6 +291,8 @@ public class UserAPI {
                     .appendPath("new");
 
             Map<String,Object> pars = new HashMap<String,Object>();
+            if(!TextUtils.isEmpty(redirect))
+                pars.put("redirect",redirect);
 
             Gson gsonBuilder = WoeDAOUtils.getGson();
 

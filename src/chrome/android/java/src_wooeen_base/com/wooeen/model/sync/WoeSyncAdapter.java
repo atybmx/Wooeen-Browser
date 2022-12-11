@@ -18,6 +18,7 @@ import com.wooeen.model.api.TaskAPI;
 import com.wooeen.model.api.TrackingAPI;
 import com.wooeen.model.api.UserAPI;
 import com.wooeen.model.api.UtilsAPI;
+import com.wooeen.model.api.VersionAPI;
 import com.wooeen.model.dao.AdvertiserDAO;
 import com.wooeen.model.dao.CouponDAO;
 import com.wooeen.model.dao.OfferDAO;
@@ -32,6 +33,7 @@ import com.wooeen.model.to.PostTO;
 import com.wooeen.model.to.TaskTO;
 import com.wooeen.model.to.TrackingTO;
 import com.wooeen.model.to.UserTO;
+import com.wooeen.model.to.VersionTO;
 import com.wooeen.utils.TextUtils;
 import com.wooeen.utils.TrackingUtils;
 import com.wooeen.utils.UserUtils;
@@ -95,10 +97,21 @@ public class WoeSyncAdapter extends AbstractThreadedSyncAdapter {
 
         syncCr(provider);
         syncUser(provider);
+        syncVersion(context, provider);
         syncCountry(context, provider);
         syncAll(context, provider);
 
         System.out.println("WOE SYNC END");
+    }
+
+    private void syncVersion(Context context, ContentProviderClient provider) {
+        if(context == null)
+            return;
+
+        VersionAPI versionAPI = new VersionAPI();
+        VersionTO versionScript = versionAPI.getVersionScript();
+        if(versionScript != null && versionScript.getCheckout() > 0 && versionScript.getProduct() > 0 && versionScript.getQuery() > 0)
+            UserUtils.saveVersionData(context, versionScript);
     }
 
     private void syncCountry(Context context, ContentProviderClient provider) {

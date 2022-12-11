@@ -54,6 +54,7 @@ import com.wooeen.utils.TrackingUtils;
 import com.wooeen.model.to.AdvertiserTO;
 import com.wooeen.model.to.TaskTO;
 import com.wooeen.model.to.TrackingTO;
+import com.wooeen.model.to.VersionTO;
 import com.wooeen.view.tracking.TrackingHandler;
 import com.wooeen.view.utils.DepsUtils;
 
@@ -183,7 +184,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private static final String WOOEEN_SEARCH = "https://search.wooeen.com";
     private static final String WOOEEN_LOGOUT = "https://app.wooeen.com/u/logout";
     private static final String WOOEEN_CHECKOUT = "https://api.wooeen.com/checkout.js";
-    // private static final String WOOEEN_CHECKOUT = "https://woe.onboardtools.com.br/wooeen/checkout-teste.js";
+    private static final String WOOEEN_PRODUCT = "https://api.wooeen.com/product.js";
+    private static final String WOOEEN_QUERY = "https://api.wooeen.com/query.js";
+
+    // private static final String WOOEEN_PRODUCT = "https://woe.onboardtools.com.br/product2.js";
 
     public BraveToolbarLayoutImpl(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -376,6 +380,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
             @Override
             public void onPageLoadFinished(final Tab tab, GURL url) {
+              String mUrlNavig = tab == null ? null : tab.getUrl().getSpec();
+
                 if (getToolbarDataProvider().getTab() == tab) {
                     mBraveShieldsHandler.updateHost(url.getSpec());
                     updateBraveShieldsButtonState(tab);
@@ -450,93 +456,137 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                          tab.loadUrl(loadUrlParams);
                     }
 
-                    //WOE CHECKOUT
-                    if(tab != null && tab.getWebContents() != null && mainDomain != null){
+                    //SCRIPTS
+                    if(userId > 0){
 
-                        int platformId = mWooeenTrackingHandler.getPlatform(tab.getId());
-                        if(platformId > 0){
-                          String checkoutEndpoint = mUrlNavig.contains(mainDomain) ? mUrlNavig.substring(mUrlNavig.indexOf(mainDomain)) : null;
-                          if(checkoutEndpoint != null && checkoutEndpoint.contains("?"))
-                            checkoutEndpoint = checkoutEndpoint.substring(0, checkoutEndpoint.indexOf("?"));
-                          if(checkoutEndpoint != null && checkoutEndpoint.contains("/")) {
-                            String checkoutPath = checkoutEndpoint.substring(checkoutEndpoint.lastIndexOf("/"));
-                            if(checkoutPath != null && checkoutPath.contains(".")) {
-                              checkoutEndpoint =
-                                        checkoutEndpoint.substring(0, checkoutEndpoint.lastIndexOf("/")) +
-                                        checkoutPath.substring(0, checkoutPath.indexOf("."));
-                            }
-                          }
+                      //WOE CHECKOUT
+                      if(tab != null && tab.getWebContents() != null){
 
-                          // System.out.println("WOE "+checkoutEndpoint);
-                          if(checkoutEndpoint != null){
-                            //Advertiser checkout endpoint
-                            AdvertiserTO advertiser = TrackingUtils.checkout(getContext().getContentResolver(), checkoutEndpoint);
-                            if(advertiser != null && advertiser.getId() > 0 && advertiser.getCheckout() != null && !TextUtils.isEmpty(advertiser.getCheckout().getData())){
-                              // System.out.println("WOE "+advertiser.getCheckout().getData());
-                                tab.getWebContents().evaluateJavaScriptForTests(
-                                  "var woecheckout = {"+
-                                    "pl: "+platformId+","+
-                                    "u: "+userId+","+
-                                    "a: "+advertiser.getId()+","+
-                                    "data: "+advertiser.getCheckout().getData()+
-                                  "};"+
-                                  "var woeCheckoutJs = document.createElement('script');"+
-                                	"woeCheckoutJs.type = 'application/javascript';"+
-                                	"woeCheckoutJs.src = '"+WOOEEN_CHECKOUT+"';"+
-                                	"if(document.body) document.body.appendChild(woeCheckoutJs);"
-                                  ,
-                                  new JavaScriptCallback(){
-                                    @Override
-                                    public void handleJavaScriptResult(String jsonResult){
+                          int platformId = mWooeenTrackingHandler.getPlatform(tab.getId());
+                          int advertiserId = mWooeenTrackingHandler.getAdvertiser(tab.getId());
+                          if(platformId > 0 && advertiserId > 0){
+                              //get version
+                              VersionTO version = TrackingUtils.getVersion(getContext());
+
+                              //checkout
+                              String checkoutEndpoint = mWooeenTrackingHandler.getCheckoutEndpoint(tab.getId());
+                              String checkoutData = mWooeenTrackingHandler.getCheckoutData(tab.getId());
+                              if(!TextUtils.isEmpty(checkoutEndpoint) && !TextUtils.isEmpty(checkoutData)){
+                                  tab.getWebContents().evaluateJavaScriptForTests(
+                                    "if(typeof woecheckoutDone === \"undefined\"){var woecheckoutDone = '';}"+
+                                        "var woecheckout = {"+
+                                          "pl: "+platformId+","+
+                                          "u: "+userId+","+
+                                          "a: "+advertiserId+","+
+                                          "endpoint: '"+checkoutEndpoint+"',"+
+                                          "data: "+checkoutData+
+                                        "};"+
+                                      "if(typeof woecheckoutInvoke === \"function\"){"+
+                                        "woecheckoutInvoke();"+
+                                      "}else{"+
+                                        "var woeCheckoutJs = document.createElement('script');"+
+                                        "woeCheckoutJs.type = 'application/javascript';"+
+                                        "woeCheckoutJs.src = '"+WOOEEN_CHECKOUT+(version != null && version.getCheckout() > 0 ? "?v="+version.getCheckout() : "?v="+new Date().getTime())+"';"+
+                                        "if(document.body) document.body.appendChild(woeCheckoutJs);"+
+                                      "}"
+                                    ,
+                                    new JavaScriptCallback(){
+                                      @Override
+                                      public void handleJavaScriptResult(String jsonResult){
+                                      }
                                     }
+                                  );
+                                }
+
+                                //product
+                                String productEndpoint = mWooeenTrackingHandler.getProductEndpoint(tab.getId());
+                                String productData = mWooeenTrackingHandler.getProductData(tab.getId());
+                                if(!TextUtils.isEmpty(productEndpoint) && !TextUtils.isEmpty(productData)){
+                                    tab.getWebContents().evaluateJavaScriptForTests(
+                                    "if(typeof woeproductDone === \"undefined\"){var woeproductDone = '';}"+
+                                          "var woeproduct = {"+
+                                            "pl: "+platformId+","+
+                                            "u: "+userId+","+
+                                            "a: "+advertiserId+","+
+                                            "endpoint: '"+productEndpoint+"',"+
+                                            "data: "+productData+
+                                          "};"+
+                                        "if(typeof woeproductInvoke === \"function\"){"+
+                                          "woeproductInvoke();"+
+                                        "}else{"+
+                                          "var woeProductJs = document.createElement('script');"+
+                                          "woeProductJs.type = 'application/javascript';"+
+                                          "woeProductJs.src = '"+WOOEEN_PRODUCT+(version != null && version.getProduct() > 0 ? "?v="+version.getProduct() : "?v="+new Date().getTime())+"';"+
+                                          "if(document.body) document.body.appendChild(woeProductJs);"+
+                                        "}"
+                                      ,
+                                      new JavaScriptCallback(){
+                                        @Override
+                                        public void handleJavaScriptResult(String jsonResult){
+                                        }
+                                      }
+                                    );
                                   }
-                                );
-                              }
-                            }
-                          }
 
-                          String checkoutAbsoluteEndpoint = mUrlNavig.contains(absoluteDomain) ? mUrlNavig.substring(mUrlNavig.indexOf(absoluteDomain)) : null;
-                          if(checkoutAbsoluteEndpoint != null && checkoutAbsoluteEndpoint.contains("?"))
-                            checkoutAbsoluteEndpoint = checkoutAbsoluteEndpoint.substring(0, checkoutAbsoluteEndpoint.indexOf("?"));
-                          if(checkoutAbsoluteEndpoint != null && checkoutAbsoluteEndpoint.contains("/")) {
-                            String checkoutPath = checkoutAbsoluteEndpoint.substring(checkoutAbsoluteEndpoint.lastIndexOf("/"));
-                            if(checkoutPath != null && checkoutPath.contains(".")) {
-                              checkoutAbsoluteEndpoint =
-                                        checkoutAbsoluteEndpoint.substring(0, checkoutAbsoluteEndpoint.lastIndexOf("/")) +
-                                        checkoutPath.substring(0, checkoutPath.indexOf("."));
-                            }
-                          }
-
-                          // System.out.println("WOE "+checkoutAbsoluteEndpoint);
-                          if(checkoutAbsoluteEndpoint != null){
-
-                            //Task checkout endpoint
-                            TaskTO task = TrackingUtils.checkoutTask(getContext().getContentResolver(), checkoutAbsoluteEndpoint);
-                            // System.out.println("WOE "+checkoutAbsoluteEndpoint+" "+task);
-                            if(task != null && task.getId() > 0 && task.getCheckout() != null){
-                                // System.out.println("WOE "+task.getPlatformId()+" "+task.getAdvertiserId()+" "+task.getId());
-                                tab.getWebContents().evaluateJavaScriptForTests(
-                                  "var woecheckout = {"+
-                                    "pl: "+task.getPlatformId()+","+
-                                    "u: "+userId+","+
-                                    "a: "+task.getAdvertiserId()+","+
-                                    "t: "+task.getId()+
-                                    (!TextUtils.isEmpty(task.getCheckout().getData()) ? ",data: "+task.getCheckout().getData() : "")+
-                                  "};"+
-                                  "var woeCheckoutJs = document.createElement('script');"+
-                                  "woeCheckoutJs.type = 'application/javascript';"+
-                                  "woeCheckoutJs.src = '"+WOOEEN_CHECKOUT+"';"+
-                                  "if(document.body) document.body.appendChild(woeCheckoutJs);"
-                                  ,
-                                  new JavaScriptCallback(){
-                                    @Override
-                                    public void handleJavaScriptResult(String jsonResult){
+                                  //query
+                                  String queryEndpoint = mWooeenTrackingHandler.getQueryEndpoint(tab.getId());
+                                  String queryData = mWooeenTrackingHandler.getQueryData(tab.getId());
+                                  if(!TextUtils.isEmpty(queryEndpoint) && !TextUtils.isEmpty(queryData)){
+                                      tab.getWebContents().evaluateJavaScriptForTests(
+                                      "if(typeof woequeryDone === \"undefined\"){var woequeryDone = '';}"+
+                                            "var woequery = {"+
+                                              "pl: "+platformId+","+
+                                              "u: "+userId+","+
+                                              "a: "+advertiserId+","+
+                                              "endpoint: '"+queryEndpoint+"',"+
+                                              "data: "+queryData+
+                                            "};"+
+                                          "if(typeof woequeryInvoke === \"function\"){"+
+                                            "woequeryInvoke();"+
+                                          "}else{"+
+                                            "var woeQueryJs = document.createElement('script');"+
+                                            "woeQueryJs.type = 'application/javascript';"+
+                                            "woeQueryJs.src = '"+WOOEEN_QUERY+(version != null && version.getQuery() > 0 ? "?v="+version.getQuery() : "?v="+new Date().getTime())+"';"+
+                                            "if(document.body) document.body.appendChild(woeQueryJs);"+
+                                          "}"
+                                        ,
+                                        new JavaScriptCallback(){
+                                          @Override
+                                          public void handleJavaScriptResult(String jsonResult){
+                                          }
+                                        }
+                                      );
                                     }
-                                  }
-                                );
+
+                                    //Task
+                                    // TaskTO task = TrackingUtils.checkoutTask(getContext().getContentResolver(), checkoutAbsoluteEndpoint);
+                                    // // System.out.println("WOE "+checkoutAbsoluteEndpoint+" "+task);
+                                    // if(task != null && task.getId() > 0 && task.getCheckout() != null){
+                                    //     // System.out.println("WOE "+task.getPlatformId()+" "+task.getAdvertiserId()+" "+task.getId());
+                                    //     tab.getWebContents().evaluateJavaScriptForTests(
+                                    //       "var woecheckout = {"+
+                                    //         "pl: "+task.getPlatformId()+","+
+                                    //         "u: "+userId+","+
+                                    //         "a: "+task.getAdvertiserId()+","+
+                                    //         "t: "+task.getId()+
+                                    //         (!TextUtils.isEmpty(task.getCheckout().getData()) ? ",data: "+task.getCheckout().getData() : "")+
+                                    //       "};"+
+                                    //       "var woeCheckoutJs = document.createElement('script');"+
+                                    //       "woeCheckoutJs.type = 'application/javascript';"+
+                                    //       "woeCheckoutJs.src = '"+WOOEEN_CHECKOUT+"';"+
+                                    //       "if(document.body) document.body.appendChild(woeCheckoutJs);"
+                                    //       ,
+                                    //       new JavaScriptCallback(){
+                                    //         @Override
+                                    //         public void handleJavaScriptResult(String jsonResult){
+                                    //         }
+                                    //       }
+                                    //     );
+                                    // }
                             }
-                          }
-                    }
+
+                      }//END checkouts
+                    }//END SCRITPS
                 }
 
                 if (getToolbarDataProvider().getTab() == tab && mBraveRewardsNativeWorker != null
@@ -582,12 +632,30 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         TrackingTO tracking = TrackingUtils.tracked(getContext().getContentResolver(), newDomain);
                         // System.out.println("WOE "+newDomain+" "+tracking);
                         if(tracking != null){
+                            //get script data from advertiser dao
+                            AdvertiserTO advertiser =
+                                        tracking.getAdvertiserId() > 0 ?
+                                        TrackingUtils.script(getContext().getContentResolver(), tracking.getAdvertiserId()) :
+                                        TrackingUtils.script(getContext().getContentResolver(), newDomain);
+                            if(advertiser == null)
+                              advertiser = new AdvertiserTO();
+
                             // boolean isWoeTrack = TrackingUtils.isWoe(tracking.getDeeplink());
                             // if(!isWoeTrack || !TrackingUtils.isWoeTracked(getContext())){
                             //     if(isWoeTrack)
                             //       TrackingUtils.setWoeTracked(getContext(), true);
 
-                                mWooeenTrackingHandler.addTracking(tab.getId(), newDomain, tracking.getPlatformId());
+                                mWooeenTrackingHandler.addTracking(
+                                      tab.getId(),
+                                      newDomain,
+                                      tracking.getPlatformId(),
+                                      advertiser.getId(),
+                                      advertiser.getCheckout() != null ? advertiser.getCheckout().getEndpoint() : "",
+                                      advertiser.getCheckout() != null ? advertiser.getCheckout().getData() : "",
+                                      advertiser.getProduct() != null ? advertiser.getProduct().getEndpoint() : "",
+                                      advertiser.getProduct() != null ? advertiser.getProduct().getData() : "",
+                                      advertiser.getQuery() != null ? advertiser.getQuery().getEndpoint() : "",
+                                      advertiser.getQuery() != null ? advertiser.getQuery().getData() : "");
                                 String gotoTracking = TrackingUtils.parseTrackingLink(tracking.getDeeplink(), tracking.getParams(), tab.getUrl().getSpec(), userId);
                                 // System.out.println("WOE GO TO "+gotoTracking);
                                 //System.out.println("WOE TRACKING "+gotoTracking);

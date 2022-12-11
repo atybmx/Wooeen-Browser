@@ -56,4 +56,12 @@
   <message name="IDS_WOE_SECONDS_SYMBOL" desc="">S</message>
   <message name="IDS_WOE_SEE_RULES" desc="">See rules</message>
   <message name="IDS_WOE_SHOW_MORE" desc="">Show more</message>
+  <message name="IDS_WOE_NTP_CASHBACK_TITLE" desc="">Cashback</message>
+  <message name="IDS_WOE_NTP_CASHBACK_DESC" desc="">Report and referrals</message>
+  <message name="IDS_WOE_NTP_CHALLENGES_TITLE" desc="">Challenges</message>
+  <message name="IDS_WOE_NTP_CHALLENGES_DESC" desc="">Get money by playing</message>
+  <message name="IDS_WOE_NTP_ADVERTISERS_TITLE" desc="">Partners</message>
+  <message name="IDS_WOE_NTP_ADVERTISERS_DESC" desc="">See available stores</message>
+  <message name="IDS_WOE_NTP_SHARE_TITLE" desc="">Share</message>
+  <message name="IDS_WOE_NTP_SHARE_DESC" desc="">Get money by referring people</message>
 </grit-part>

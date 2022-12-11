@@ -16,7 +16,7 @@ public class WoeDBSchema extends SQLiteOpenHelper {
     public static final String TABLE_NAME_COUPON = "coupon";
     public static final String TABLE_NAME_OFFER = "offer";
 
-    public static final int DATABASE_VERSION = 7; // This is the current version of the database
+    public static final int DATABASE_VERSION = 9; // This is the current version of the database
 
     private static final String CREATE_TABLE_ADVERTISER;
     private static final String CREATE_TABLE_TRACKING;
@@ -35,14 +35,20 @@ public class WoeDBSchema extends SQLiteOpenHelper {
                 " logo TEXT,"+
                 "checkout_endpoint TEXT,"+
                 "checkout_data TEXT,"+
+                "product_endpoint TEXT,"+
+                "product_data TEXT,"+
+                "query_endpoint TEXT,"+
+                "query_data TEXT,"+
                 "omnibox_title TEXT,"+
                 "omnibox_description TEXT);"+
                 "CREATE INDEX idx_advertiser_name ON " + TABLE_NAME_ADVERTISER + "(name);"+
+                "CREATE INDEX idx_advertiser_domain ON " + TABLE_NAME_ADVERTISER + "(domain);"+
                 "CREATE INDEX idx_advertiser_checkout ON " + TABLE_NAME_ADVERTISER + "(checkout_endpoint);";
 
         CREATE_TABLE_TRACKING = "CREATE TABLE " + TABLE_NAME_TRACKING +
                 " ( id INTEGER PRIMARY KEY, " +
                 " id_platform INTEGER," +
+                " id_advertiser INTEGER," +
                 " deeplink TEXT," +
                 " params TEXT," +
                 " domain TEXT NOT NULL);" +
@@ -145,6 +151,23 @@ public class WoeDBSchema extends SQLiteOpenHelper {
             db.execSQL(CREATE_TABLE_COUPON);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_OFFER);
             db.execSQL(CREATE_TABLE_OFFER);
+        }
+        if(oldVersion < 8){
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_COUPON);
+            db.execSQL(CREATE_TABLE_COUPON);
+        }
+
+        if(oldVersion < 9){
+            db.execSQL("ALTER TABLE "+ TABLE_NAME_ADVERTISER +" ADD COLUMN product_endpoint TEXT;");
+            db.execSQL("ALTER TABLE "+ TABLE_NAME_ADVERTISER +" ADD COLUMN product_data TEXT;");
+            db.execSQL("ALTER TABLE "+ TABLE_NAME_ADVERTISER +" ADD COLUMN query_endpoint TEXT;");
+            db.execSQL("ALTER TABLE "+ TABLE_NAME_ADVERTISER +" ADD COLUMN query_data TEXT;");
+            db.execSQL("CREATE INDEX idx_advertiser_domain ON " + TABLE_NAME_ADVERTISER + " (domain);");
+
+            db.execSQL("ALTER TABLE "+ TABLE_NAME_TRACKING +" ADD COLUMN id_advertiser INTEGER;");
+
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_COUPON);
+            db.execSQL(CREATE_TABLE_COUPON);
         }
 
 //        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_ADVERTISER);

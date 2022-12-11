@@ -64,6 +64,30 @@ public class WoeDBContract {
         public static final String CHECKOUT_DATA = "checkout_data";
 
         /**
+         * The product endpoint column.
+         * <p>TYPE: TEXT</p>
+         */
+        public static final String PRODUCT_ENDPOINT = "product_endpoint";
+
+        /**
+         * The product data column.
+         * <p>TYPE: TEXT</p>
+         */
+        public static final String PRODUCT_DATA = "product_data";
+
+        /**
+         * The query endpoint column.
+         * <p>TYPE: TEXT</p>
+         */
+        public static final String QUERY_ENDPOINT = "query_endpoint";
+
+        /**
+         * The query data column.
+         * <p>TYPE: TEXT</p>
+         */
+        public static final String QUERY_DATA = "query_data";
+
+        /**
          * The omnibox_title data column.
          * <p>TYPE: TEXT</p>
          */
@@ -130,6 +154,12 @@ public class WoeDBContract {
          * <p>TYPE: INTEGER</p>
          */
         public static final String PLATFORM = "id_platform";
+
+        /**
+         * The advertiser column.
+         * <p>TYPE: INTEGER</p>
+         */
+        public static final String ADVERTISER = "id_advertiser";
 
 
         /**

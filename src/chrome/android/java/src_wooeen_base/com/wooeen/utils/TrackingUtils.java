@@ -11,6 +11,7 @@ import com.wooeen.model.dao.TrackingDAO;
 import com.wooeen.model.to.AdvertiserTO;
 import com.wooeen.model.to.TaskTO;
 import com.wooeen.model.to.TrackingTO;
+import com.wooeen.model.to.VersionTO;
 import com.wooeen.model.top.AdvertiserTOP;
 import com.wooeen.model.top.TaskTOP;
 
@@ -27,6 +28,16 @@ import java.util.Random;
 
 public class TrackingUtils {
 
+    private static VersionTO version;
+
+    public static VersionTO getVersion(Context context){
+        if(version == null) {
+            version = UserUtils.getVersion(context);
+        }
+
+        return version;
+    }
+
     public static TaskTO checkoutTask(ContentResolver mContent, String checkout){
         if(TextUtils.isEmpty(checkout))
             return null;
@@ -41,18 +52,32 @@ public class TrackingUtils {
         return items.get(0);
     }
 
-    public static AdvertiserTO checkout(ContentResolver mContent, String checkout){
-        if(TextUtils.isEmpty(checkout))
+    public static AdvertiserTO script(ContentResolver mContent, int id){
+        if(TextUtils.isEmpty(id))
             return null;
 
+        AdvertiserTOP top = new AdvertiserTOP();
+        top.setId(id);
         AdvertiserDAO dao = new AdvertiserDAO(mContent);
-        AdvertiserTOP search = new AdvertiserTOP();
-        search.setCheckout(checkout);
-        List<AdvertiserTO> items = dao.get(search);
+        List<AdvertiserTO> items = dao.get(top);
         if(items == null || items.isEmpty())
             return null;
 
-        return items.get(0);
+        return items.get(new Random().nextInt(items.size()));
+    }
+
+    public static AdvertiserTO script(ContentResolver mContent, String domain){
+        if(TextUtils.isEmpty(domain))
+            return null;
+
+        AdvertiserTOP top = new AdvertiserTOP();
+        top.setDomain(domain);
+        AdvertiserDAO dao = new AdvertiserDAO(mContent);
+        List<AdvertiserTO> items = dao.get(top);
+        if(items == null || items.isEmpty())
+            return null;
+
+        return items.get(new Random().nextInt(items.size()));
     }
 
     public static TrackingTO tracked(ContentResolver mContent, String domain){

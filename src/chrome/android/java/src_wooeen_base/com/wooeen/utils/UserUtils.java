@@ -9,11 +9,14 @@ import com.wooeen.model.api.UserAPI;
 import com.wooeen.model.to.CountryTO;
 import com.wooeen.model.to.UserTO;
 import com.wooeen.model.to.UserTokenTO;
+import com.wooeen.model.to.VersionTO;
 
 import org.chromium.base.StrictModeContext;
 import org.chromium.base.task.AsyncTask;
 
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -187,6 +190,38 @@ public class UserUtils {
         }
     }
 
+    public static void saveVersionData(Context context, VersionTO versionScript){
+        if(versionScript == null)
+            return;
+
+        try(StrictModeContext ignored = StrictModeContext.allowDiskWrites()) {
+            SharedPreferences versionPreferences = context.getSharedPreferences("com.wooeen.version",
+                    Context.MODE_PRIVATE);
+            SharedPreferences.Editor versionEditor = versionPreferences.edit();
+
+            if (versionScript.getCheckout() > 0) versionEditor.putInt("checkout",versionScript.getCheckout());
+            if (versionScript.getProduct() > 0) versionEditor.putInt("product",versionScript.getProduct());
+            if (versionScript.getQuery() > 0) versionEditor.putInt("query",versionScript.getQuery());
+            versionEditor.apply();
+        }
+    }
+
+    public static VersionTO getVersion(Context context){
+        try(StrictModeContext ignored = StrictModeContext.allowDiskWrites()) {
+            SharedPreferences versionPreferences = context.getSharedPreferences("com.wooeen.version",
+                    Context.MODE_PRIVATE);
+
+
+            VersionTO version = new VersionTO();
+
+            version.setCheckout(versionPreferences.getInt("checkout", 0));
+            version.setProduct(versionPreferences.getInt("product", 0));
+            version.setQuery(versionPreferences.getInt("query", 0));
+
+            return version;
+        }
+    }
+
     public static CountryTO getCountry(Context context){
         try(StrictModeContext ignored = StrictModeContext.allowDiskWrites()) {
             SharedPreferences countryPreferences = context.getSharedPreferences("com.wooeen.country",
@@ -330,6 +365,83 @@ public class UserUtils {
             }
 
             return token;
+        }
+    }
+
+    public static List<String> getSearchTags(Context context, String prefix){
+        try(StrictModeContext ignored = StrictModeContext.allowDiskWrites()) {
+            SharedPreferences userPreferences = context.getSharedPreferences("com.wooeen.search."+prefix,
+                    Context.MODE_PRIVATE);
+            List<String> list = new ArrayList<String>();
+
+            String text1 = userPreferences.getString("text1", null);
+            if(!TextUtils.isEmpty(text1))
+                list.add(text1);
+
+            String text2 = userPreferences.getString("text2", null);
+            if(!TextUtils.isEmpty(text2))
+                list.add(text2);
+
+            String text3 = userPreferences.getString("text3", null);
+            if(!TextUtils.isEmpty(text3))
+                list.add(text3);
+
+            return list;
+        }
+    }
+
+    public static void removeSearchTags(Context context, String prefix, String q){
+        try(StrictModeContext ignored = StrictModeContext.allowDiskWrites()) {
+            SharedPreferences userPreferences = context.getSharedPreferences("com.wooeen.search."+prefix,
+                    Context.MODE_PRIVATE);
+            SharedPreferences.Editor userEditor = userPreferences.edit();
+
+            String text1 = userPreferences.getString("text1", null);
+            if(!TextUtils.isEmpty(text1) && q.equalsIgnoreCase(text1))
+                userEditor.remove("text1");
+
+            String text2 = userPreferences.getString("text2", null);
+            if(!TextUtils.isEmpty(text2) && q.equalsIgnoreCase(text2))
+                userEditor.remove("text2");
+
+            String text3 = userPreferences.getString("text3", null);
+            if(!TextUtils.isEmpty(text3) && q.equalsIgnoreCase(text3))
+                userEditor.remove("text3");
+
+            userEditor.apply();
+        }
+    }
+
+    public static boolean saveSearchTags(Context context,String prefix,String q){
+        if(TextUtils.isEmpty(q))
+            return false;
+
+        List<String> texts = getSearchTags(context, prefix);
+
+        try(StrictModeContext ignored = StrictModeContext.allowDiskWrites()) {
+            SharedPreferences userPreferences = context.getSharedPreferences("com.wooeen.search."+prefix,
+                    Context.MODE_PRIVATE);
+            SharedPreferences.Editor userEditor = userPreferences.edit();
+
+            boolean alreadyRegistered = false;
+            for(String text:texts){
+                if(q.equalsIgnoreCase(text))
+                    alreadyRegistered = true;
+            }
+
+            if(!alreadyRegistered) {
+                if(texts.size() >= 2)
+                    userEditor.putString("text3", texts.get(1));
+
+                if(texts.size() >= 1)
+                    userEditor.putString("text2", texts.get(0));
+
+                userEditor.putString("text1", q);
+            }
+
+            userEditor.apply();
+
+            return !alreadyRegistered;
         }
     }
 }

@@ -278,7 +278,7 @@ public class WoeDBProvider extends ContentProvider {
               case COUPON_ITEM_LIST:
                   tableName = WoeDBSchema.TABLE_NAME_COUPON;
                   idColumn = WoeDBContract.Coupon._ID;
-                  where = idColumn + " = " + values.getAsInteger(idColumn);
+                  where = idColumn + " = " + values.getAsString(idColumn);
 
                   sqLiteQueryBuilder.setTables(tableName);
                   sqLiteQueryBuilder.appendWhere(where);

@@ -62,12 +62,31 @@ export const StyledCashbackCtaItem = styled('div')<{}>`
   }
 `
 
+export const StyledCashbackCtaItemInfo = styled('div')<{}>`
+  max-width: 115px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+`
+
+export const StyledCashbackCtaItemTitle = styled('span')<{}>`
+  color: inherit;
+  font-family: ${p => p.theme.fontFamily.heading};
+  font-size: 12px;
+  color: #ffffff;
+  font-weight: 700;
+  text-transform: uppercase;
+  max-width: 115px;
+  line-height: 20px;
+`
+
 export const StyledCashbackCtaItemText = styled('span')<{}>`
   color: inherit;
   font-family: ${p => p.theme.fontFamily.heading};
-  font-size: 13px;
+  font-size: 10px;
   color: #ffffff;
-  font-weight: 700;
+  font-weight: 500;
   text-transform: uppercase;
   max-width: 115px;
   line-height: 20px;

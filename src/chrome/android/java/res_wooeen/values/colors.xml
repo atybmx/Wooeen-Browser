@@ -58,6 +58,9 @@
     <color name="woe_coupon_item_expire_stopwatch">#ffffff</color>
     <color name="woe_coupon_item_expire_stopwatch_bg">@color/woe_color_purple</color>
 
+    <color name="woe_tag_bg">#f2f3f5</color>
+    <color name="woe_tag_text">#555555</color>
+
     <color name="default_bg_color_dark">#333c41</color>
 
     <color name="woe_search_color">#805f5f5f</color>

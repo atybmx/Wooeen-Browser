@@ -50,6 +50,10 @@ public class AdvertiserDAO {
         item.put(WoeDBContract.Advertiser.LOGO,    advertiser.getLogo());
         item.put(WoeDBContract.Advertiser.CHECKOUT_ENDPOINT,    advertiser.getCheckout() != null ? advertiser.getCheckout().getEndpoint() : null);
         item.put(WoeDBContract.Advertiser.CHECKOUT_DATA,        advertiser.getCheckout() != null ? advertiser.getCheckout().getData() : null);
+        item.put(WoeDBContract.Advertiser.PRODUCT_ENDPOINT,    advertiser.getProduct() != null ? advertiser.getProduct().getEndpoint() : null);
+        item.put(WoeDBContract.Advertiser.PRODUCT_DATA,        advertiser.getProduct() != null ? advertiser.getProduct().getData() : null);
+        item.put(WoeDBContract.Advertiser.QUERY_ENDPOINT,    advertiser.getQuery() != null ? advertiser.getQuery().getEndpoint() : null);
+        item.put(WoeDBContract.Advertiser.QUERY_DATA,        advertiser.getQuery() != null ? advertiser.getQuery().getData() : null);
         item.put(WoeDBContract.Advertiser.OMNIBOX_TITLE,    advertiser.getOmniboxTitle());
         item.put(WoeDBContract.Advertiser.OMNIBOX_DESCRIPTION,    advertiser.getOmniboxDescription());
 
@@ -87,6 +91,10 @@ public class AdvertiserDAO {
             item.put(WoeDBContract.Advertiser.LOGO,    advertiser.getLogo());
             item.put(WoeDBContract.Advertiser.CHECKOUT_ENDPOINT,    advertiser.getCheckout() != null ? advertiser.getCheckout().getEndpoint() : null);
             item.put(WoeDBContract.Advertiser.CHECKOUT_DATA,        advertiser.getCheckout() != null ? advertiser.getCheckout().getData() : null);
+            item.put(WoeDBContract.Advertiser.PRODUCT_ENDPOINT,    advertiser.getProduct() != null ? advertiser.getProduct().getEndpoint() : null);
+            item.put(WoeDBContract.Advertiser.PRODUCT_DATA,        advertiser.getProduct() != null ? advertiser.getProduct().getData() : null);
+            item.put(WoeDBContract.Advertiser.QUERY_ENDPOINT,    advertiser.getQuery() != null ? advertiser.getQuery().getEndpoint() : null);
+            item.put(WoeDBContract.Advertiser.QUERY_DATA,        advertiser.getQuery() != null ? advertiser.getQuery().getData() : null);
             item.put(WoeDBContract.Advertiser.LOGO,    advertiser.getLogo());
             item.put(WoeDBContract.Advertiser.OMNIBOX_TITLE,    advertiser.getOmniboxTitle());
             item.put(WoeDBContract.Advertiser.OMNIBOX_DESCRIPTION,    advertiser.getOmniboxDescription());
@@ -157,6 +165,10 @@ public class AdvertiserDAO {
                 WoeDBContract.Advertiser.LOGO,
                 WoeDBContract.Advertiser.CHECKOUT_ENDPOINT,
                 WoeDBContract.Advertiser.CHECKOUT_DATA,
+                WoeDBContract.Advertiser.PRODUCT_ENDPOINT,
+                WoeDBContract.Advertiser.PRODUCT_DATA,
+                WoeDBContract.Advertiser.QUERY_ENDPOINT,
+                WoeDBContract.Advertiser.QUERY_DATA,
                 WoeDBContract.Advertiser.OMNIBOX_TITLE,
                 WoeDBContract.Advertiser.OMNIBOX_DESCRIPTION
         };
@@ -165,9 +177,14 @@ public class AdvertiserDAO {
         String sqlWhere = "";
         List<String> selectionArgs = new ArrayList<String>();
 
-        if(!TextUtils.isEmpty(search.getCheckout())) {
-            sqlWhere += WoeDBContract.Advertiser.CHECKOUT_ENDPOINT+" = ? AND ";
-            selectionArgs.add(search.getCheckout());
+        if (!TextUtils.isEmpty(search.getId())){
+            sqlWhere = WoeDBContract.Advertiser._ID + " = ? ";
+            selectionArgs.add(""+search.getId());
+        }
+
+        if (!TextUtils.isEmpty(search.getDomain())){
+            sqlWhere = WoeDBContract.Advertiser.DOMAIN + " = ? ";
+            selectionArgs.add(search.getDomain());
         }
 
         if(!TextUtils.isEmpty(search.getQ())) {
@@ -209,6 +226,16 @@ public class AdvertiserDAO {
                     checkout.setEndpoint(cursor.getString(cursor.getColumnIndex(WoeDBContract.Advertiser.CHECKOUT_ENDPOINT)));
                     checkout.setData(cursor.getString(cursor.getColumnIndex(WoeDBContract.Advertiser.CHECKOUT_DATA)));
                     item.setCheckout(checkout);
+
+                    CheckoutTO product = new CheckoutTO();
+                    product.setEndpoint(cursor.getString(cursor.getColumnIndex(WoeDBContract.Advertiser.PRODUCT_ENDPOINT)));
+                    product.setData(cursor.getString(cursor.getColumnIndex(WoeDBContract.Advertiser.PRODUCT_DATA)));
+                    item.setProduct(product);
+
+                    CheckoutTO query = new CheckoutTO();
+                    query.setEndpoint(cursor.getString(cursor.getColumnIndex(WoeDBContract.Advertiser.QUERY_ENDPOINT)));
+                    query.setData(cursor.getString(cursor.getColumnIndex(WoeDBContract.Advertiser.QUERY_DATA)));
+                    item.setQuery(query);
 
                     items.add(item);
                     cursor.moveToNext();

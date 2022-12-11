@@ -22,13 +22,16 @@ import androidx.loader.content.Loader;
 
 import com.wooeen.model.api.UserAPI;
 import com.wooeen.model.api.UtilsAPI;
+import com.wooeen.model.api.WoeTrkAPI;
 import com.wooeen.model.to.CountryTO;
 import com.wooeen.model.to.UserAuthTO;
 import com.wooeen.model.to.UserTO;
 import com.wooeen.model.to.UserTokenTO;
+import com.wooeen.model.to.WoeTrkClickTO;
 import com.wooeen.utils.Decodificador;
 import com.wooeen.utils.TextUtils;
 import com.wooeen.utils.UserUtils;
+import com.wooeen.utils.WoeTrkUtils;
 import com.wooeen.view.ui.MaskEditUtil;
 
 import org.chromium.chrome.R;
@@ -188,11 +191,15 @@ public class RegisterStepPassView extends Fragment implements LoaderManager.Load
     public static class RegisterUser extends AsyncTaskLoader<Map<String,Object>> {
 
         private UserTO mUser;
+        private WoeTrkClickTO click;
 
         public RegisterUser(Context context,UserTO mUser) {
             super(context);
 
             this.mUser = mUser;
+
+            //get the click
+            click = WoeTrkUtils.getClick(context);
         }
 
         @Override
@@ -213,6 +220,21 @@ public class RegisterStepPassView extends Fragment implements LoaderManager.Load
             if(user.getId() > 0){
                 UserTokenTO token = apiDAO.login(mUser.getEmail(), mUser.getPass());
                 result.put("token", token);
+
+                //woe trk api
+                if(click != null) {
+                    //send user tracking
+                    if (click.getSource() > 0 &&
+                            click.getLink() > 0 &&
+                            !TextUtils.isEmpty(click.getDateClick())) {
+                        WoeTrkAPI.user(user.getId(), click.getSource(), click.getLink(),
+                                click.getDateClick());
+                    }
+
+                    //send click tracking
+                    WoeTrkAPI.event(2, user.getId(), click.getSource(), click.getLink(),
+                            click.getDateClick());
+                }
             }
 
             return result;

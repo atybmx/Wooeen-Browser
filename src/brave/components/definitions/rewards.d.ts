@@ -374,8 +374,10 @@ declare namespace Wooeen {
     url?: string,
     domain?: string,
     omniboxTitle?: string,
-    omniboxDescription?: string
-    checkout?: Checkout
+    omniboxDescription?: string,
+    checkout?: Checkout,
+    product?: Checkout,
+    query?: Checkout
   }
 
   export type Checkout= {
@@ -390,6 +392,7 @@ declare namespace Wooeen {
   export type Tracking = {
     id: string,
     platformId?: string,
+    advertiserId?: string,
     deeplink?: string,
     params?: string,
     domain?: string
@@ -480,7 +483,11 @@ declare namespace Wooeen {
   export type Country = {
     id?: string,
     language?: string,
-    currency?: Currency
+    currency?: Currency,
+    loadPosts?: boolean,
+    loadOffers?: boolean,
+    loadCoupons?: boolean,
+    loadTasks?: boolean
   }
 
   export type Currency = {
@@ -506,6 +513,12 @@ declare namespace Wooeen {
     recommendationsConvertedAmount: number;
   	recommendationsConfirmedAmount: number;
   	balance: number;
+  }
+
+  export type Version = {
+    checkout?: string,
+    product?: string,
+    query?: string
   }
 
 }

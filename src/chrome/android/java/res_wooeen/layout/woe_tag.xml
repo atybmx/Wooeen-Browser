@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:layout_margin="10dp"
+    android:background="@drawable/woe_tag_bg"
+    android:gravity="center"
+    >
+
+    <TextView
+        android:id="@+id/woe_tag_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:textColor="@color/woe_tag_text"
+        android:fontFamily="@font/montserrat_bold"
+        android:textAllCaps="true"
+        android:textSize="12dp"
+        android:textFontWeight="600"
+        ></TextView>
+
+    <ImageButton
+        android:id="@+id/woe_tag_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/woe_btn_icon"
+        android:src="@drawable/woe_close_gray">
+
+    </ImageButton>
+
+</LinearLayout>

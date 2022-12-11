@@ -45,6 +45,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -72,6 +73,9 @@ import com.flurry.android.FlurryAgent;
 import com.squareup.picasso.Picasso;
 
 import com.wooeen.model.api.AdvertiserAPI;
+import com.wooeen.model.api.CouponAPI;
+import com.wooeen.model.api.OfferAPI;
+import com.wooeen.model.api.PostAPI;
 import com.wooeen.model.api.UserAPI;
 import com.wooeen.model.api.utils.WoeDAOUtils;
 import com.wooeen.model.dao.AdvertiserDAO;
@@ -227,6 +231,9 @@ public class BraveNewTabPageLayout
     public static final String WOOEEN_CASHBACK_URL = "https://app.wooeen.com";
     public static final String WOOEEN_RECOMMENDATION_URL = "https://app.wooeen.com/u/rec/%s";
     public static final String WOOEEN_ADVERTISERS_URL = "https://app.wooeen.com/c/advertisers";
+    public static final String WOOEEN_OFFERS_URL = "https://app.wooeen.com/c/offers";
+    public static final String WOOEEN_COUPONS_URL = "https://app.wooeen.com/c/coupons";
+    public static final String WOOEEN_CHALLENGES_URL = "https://app.wooeen.com/u/challenges";
     public static final String WOOEEN_HELP_URL = "https://www.wooeen.com/help";
 
     public BraveNewTabPageLayout(Context context, AttributeSet attrs) {
@@ -603,11 +610,12 @@ public class BraveNewTabPageLayout
         * Initialize cashback button
         */
         mWoeCbdProgress = findViewById(R.id.woe_cbd_progress);
-        btnCashback = (Button) findViewById(R.id.woe_cbd_button);
+        btnCashback = (LinearLayout) findViewById(R.id.woe_cbd_button);
+        btnCashbackText = (TextView) findViewById(R.id.woe_cbd_button_text);
         if(UserUtils.getUserId(mActivity) > 0)
-            btnCashback.setText(mActivity.getString(R.string.woe_see_cashback_main));
+            btnCashbackText.setText(mActivity.getString(R.string.woe_see_cashback_main));
         else
-            btnCashback.setText(mActivity.getString(R.string.woe_enable_cashback_main));
+            btnCashbackText.setText(mActivity.getString(R.string.woe_enable_cashback_main));
         btnCashback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -625,35 +633,56 @@ public class BraveNewTabPageLayout
         });
 
         /*
+        * Initialize challenges button
+        */
+        mWoeChaProgress = findViewById(R.id.woe_cha_progress);
+        btnChallenges = (LinearLayout) findViewById(R.id.woe_challenges_button);
+        btnChallenges.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final int userId = UserUtils.getUserId(mActivity);
+                if(userId <= 0) {
+                    //open auth wooeen
+                    Intent intent = new Intent(mActivity, LoginView.class);
+                    mActivity.startActivity(intent);
+                }else{
+                    FlurryAgent.logEvent("Challenges_Area");
+
+                    new UserQuickAccessChallengesTask(userId).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                }
+            }
+        });
+
+        /*
         * initialize recommendation button
         */
-        btnRecommendation = (Button) findViewById(R.id.woe_rec_button);
-        if(UserUtils.getUserId(mActivity) > 0)
-            btnRecommendation.setVisibility(View.VISIBLE);
-        else
-            btnRecommendation.setVisibility(View.GONE);
+        btnRecommendation = (LinearLayout) findViewById(R.id.woe_rec_button);
         btnRecommendation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final int userId = UserUtils.getUserId(mActivity);
-                if(userId > 0) {
-                  FlurryAgent.logEvent("Share_Referral");
+                if(userId <= 0) {
+                    //open auth wooeen
+                    Intent intent = new Intent(mActivity, LoginView.class);
+                    mActivity.startActivity(intent);
+                }else{
+                    FlurryAgent.logEvent("Share_Referral");
 
-                  if(UserUtils.getUserRecTerms(mActivity)) {
-                      Intent sendIntent = new Intent();
-                      sendIntent.setAction(Intent.ACTION_SEND);
-                      sendIntent.putExtra(Intent.EXTRA_TITLE, mActivity.getString(R.string.app_name)+" - "+mActivity.getString(R.string.woe_slogan));
-                      sendIntent.putExtra(Intent.EXTRA_SUBJECT, mActivity.getString(R.string.woe_rec_share_title));
-                      sendIntent.putExtra(Intent.EXTRA_TEXT,
-                                mActivity.getString(R.string.woe_rec_share_text)+
-                                "\n\n"+
-                                String.format(WOOEEN_RECOMMENDATION_URL,""+userId));
-                      sendIntent.setType("text/plain");
-                      mActivity.startActivity(sendIntent);
-                  }else{
-                      Intent intent = new Intent(mActivity, RecTermsView.class);
-                      mActivity.startActivity(intent);
-                  }
+                    if(UserUtils.getUserRecTerms(mActivity)) {
+                        Intent sendIntent = new Intent();
+                        sendIntent.setAction(Intent.ACTION_SEND);
+                        sendIntent.putExtra(Intent.EXTRA_TITLE, mActivity.getString(R.string.app_name)+" - "+mActivity.getString(R.string.woe_slogan));
+                        sendIntent.putExtra(Intent.EXTRA_SUBJECT, mActivity.getString(R.string.woe_rec_share_title));
+                        sendIntent.putExtra(Intent.EXTRA_TEXT,
+                                  mActivity.getString(R.string.woe_rec_share_text)+
+                                  "\n\n"+
+                                  String.format(WOOEEN_RECOMMENDATION_URL,""+userId));
+                        sendIntent.setType("text/plain");
+                        mActivity.startActivity(sendIntent);
+                    }else{
+                        Intent intent = new Intent(mActivity, RecTermsView.class);
+                        mActivity.startActivity(intent);
+                    }
                 }
             }
         });
@@ -661,7 +690,7 @@ public class BraveNewTabPageLayout
         /*
         * initialize advertisers button
         */
-        Button btnAdvertisers = (Button) findViewById(R.id.woe_adv_button);
+        LinearLayout btnAdvertisers = (LinearLayout) findViewById(R.id.woe_adv_button);
         btnAdvertisers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -734,8 +763,19 @@ public class BraveNewTabPageLayout
               country.getLoadCoupons() ||
               country.getLoadTasks())){
 
-           LinearLayout feedList = findViewById(R.id.woe_feed);
+          mWoeFeedProgress = findViewById(R.id.woe_feed_progress);
+           feedList = findViewById(R.id.woe_feed);
            if(feedList != null) {
+              woeFiltersPost = findViewById(R.id.woe_filters_post);
+              woePostTags = findViewById(R.id.woe_post_tags);
+              woeFiltersOffer = findViewById(R.id.woe_filters_offer);
+              woeOfferTags = findViewById(R.id.woe_offer_tags);
+              woeFiltersCoupon = findViewById(R.id.woe_filters_coupon);
+              woeCouponTags = findViewById(R.id.woe_coupon_tags);
+              woePostQ = findViewById(R.id.woe_post_q);
+              woeOfferQ = findViewById(R.id.woe_offer_q);
+              woeCouponQ = findViewById(R.id.woe_coupon_q);
+
               TabLayout tabs = findViewById(R.id.woe_tabs);
 
               if(tabs.getTabCount() <= 0){
@@ -755,13 +795,13 @@ public class BraveNewTabPageLayout
                     createTabTasks(tabs);
 
                   if(postPosition == 0)
-                    loadPosts(inflater, feedList);
+                    loadPosts(inflater);
                   else if(offerPosition == 0)
-                    loadOffers(inflater, feedList);
+                    loadOffers(inflater);
                   else if(couponPosition == 0)
-                    loadCoupons(inflater, feedList);
+                    loadCoupons(inflater);
                   else if(taskPosition == 0)
-                    loadTasks(inflater, feedList);
+                    loadTasks(inflater);
 
                   tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
@@ -770,19 +810,19 @@ public class BraveNewTabPageLayout
                           if(tab.getPosition() == postPosition){
                               FlurryAgent.logEvent("Post_List");
 
-                              loadPosts(inflater, feedList);
+                              loadPosts(inflater);
                           }else if(tab.getPosition() == offerPosition){
                               FlurryAgent.logEvent("Offer_List");
 
-                              loadOffers(inflater, feedList);
+                              loadOffers(inflater);
                           }else if(tab.getPosition() == couponPosition){
                               FlurryAgent.logEvent("Coupon_List");
 
-                              loadCoupons(inflater, feedList);
+                              loadCoupons(inflater);
                           }else if(tab.getPosition() == taskPosition){
                               FlurryAgent.logEvent("Task_List");
 
-                              loadTasks(inflater, feedList);
+                              loadTasks(inflater);
                           }
                       }
 
@@ -797,6 +837,83 @@ public class BraveNewTabPageLayout
 
                       @Override
                       public void onTabReselected(TabLayout.Tab tab) {
+                      }
+                  });
+
+                  /*
+                  * Create filters
+                  */
+                  ImageButton woePostFilterBtn = findViewById(R.id.woe_post_btn);
+                  woePostFilterBtn.setOnClickListener(new View.OnClickListener() {
+                      @Override
+                      public void onClick(View v) {
+                          String q = woePostQ.getText().toString();
+                          if(!TextUtils.isEmpty(q)) {
+                              boolean registered = UserUtils.saveSearchTags(mActivity, "post", q);
+                              if(registered){
+                                  if(woePostTags.getChildCount() >= 3)
+                                      woePostTags.removeViewAt(2);
+
+                                  appendPostTag(inflater, q);
+                              }
+                          }
+
+                          feedList.removeAllViews();
+                          loadPosts(inflater);
+                      }
+                  });
+
+                  ImageButton woeOfferFilterBtn = findViewById(R.id.woe_offer_btn);
+                  woeOfferFilterBtn.setOnClickListener(new View.OnClickListener() {
+                      @Override
+                      public void onClick(View v) {
+                          String q = woeOfferQ.getText().toString();
+                          if(!TextUtils.isEmpty(q)) {
+                              boolean registered = UserUtils.saveSearchTags(mActivity, "offer", q);
+                              if(registered){
+                                  if(woeOfferTags.getChildCount() >= 3)
+                                      woeOfferTags.removeViewAt(2);
+
+                                  appendOfferTag(inflater, q);
+                              }
+                          }
+
+                          feedList.removeAllViews();
+                          loadOffers(inflater);
+                      }
+                  });
+                  ImageButton woeOfferFilterMore = findViewById(R.id.woe_offer_filter);
+                  woeOfferFilterMore.setOnClickListener(new View.OnClickListener() {
+                      @Override
+                      public void onClick(View v) {
+                        TabUtils.openUrlInSameTab(WOOEEN_OFFERS_URL+"?cr="+UserUtils.getCrFinal(mActivity.getBaseContext()));
+                      }
+                  });
+
+                  ImageButton woeCouponFilterBtn = findViewById(R.id.woe_coupon_btn);
+                  woeCouponFilterBtn.setOnClickListener(new View.OnClickListener() {
+                      @Override
+                      public void onClick(View v) {
+                          String q = woeCouponQ.getText().toString();
+                          if(!TextUtils.isEmpty(q)) {
+                              boolean registered = UserUtils.saveSearchTags(mActivity, "coupon", q);
+                              if(registered){
+                                  if(woeCouponTags.getChildCount() >= 3)
+                                      woeCouponTags.removeViewAt(2);
+
+                                  appendCouponTag(inflater, q);
+                              }
+                          }
+
+                          feedList.removeAllViews();
+                          loadCoupons(inflater);
+                      }
+                  });
+                  ImageButton woeCouponFilterMore = findViewById(R.id.woe_coupon_filter);
+                  woeCouponFilterMore.setOnClickListener(new View.OnClickListener() {
+                      @Override
+                      public void onClick(View v) {
+                        TabUtils.openUrlInSameTab(WOOEEN_COUPONS_URL+"?cr="+UserUtils.getCrFinal(mActivity.getBaseContext()));
                       }
                   });
               }
@@ -856,81 +973,198 @@ public class BraveNewTabPageLayout
     }
 
     private void createTabCoupons(TabLayout tabs) {
-        TabLayout.Tab tab = tabs.newTab();
-        tab.setText(mActivity.getString(R.string.woe_feed_coupons));
-        tab.setCustomView(R.layout.badged_tab);
-        if(tab != null && tab.getCustomView() != null) {
-            int couponLast = TrackingUtils.getCouponLast(mActivity.getBaseContext());
-            CouponDAO couponDAO = new CouponDAO(mActivity.getContentResolver());
-            List<CouponTO> coupons = couponDAO.get(new CouponTOP().withIdFrom(couponLast));
-            if(coupons != null && !coupons.isEmpty()){
-                TextView b = (TextView) tab.getCustomView().findViewById(R.id.badge);
-                if(b != null) {
-                    b.setText(coupons.size() >= 100 ? "+99" : ""+coupons.size());
-                }
-                View v = tab.getCustomView().findViewById(R.id.badgeCotainer);
-                if(v != null) {
-                    v.setVisibility(View.VISIBLE);
-                }
-            }
-        }
-        tabs.addTab(tab);
-    }
-
-    private void loadPosts(LayoutInflater inflater, LinearLayout feedList) {
-      PostTOP postTOP = new PostTOP();
-      postTOP.setQtdPerPage(20);
-      PostDAO postDAO = new PostDAO(mActivity.getContentResolver());
-      List<PostTO> posts = postDAO.get(postTOP);
-      if(posts != null && !posts.isEmpty()){
-          for (PostTO post : posts) {
-              View postHolder = inflater.inflate(
-                      R.layout.post_item, null);
-              if (postHolder != null) {
-                  postHolder.setOnClickListener(new View.OnClickListener() {
-                      @Override
-                      public void onClick(View v) {
-                          FlurryAgent.logEvent("Post_Read");
-                          TabUtils.openUrlInSameTab(post.getLink());
-                      }
-                  });
-                  ImageView postImage = postHolder.findViewById(R.id.post_image);
-                  TextView postTitle = postHolder.findViewById(R.id.post_title);
-                  ImageButton postShare = postHolder.findViewById(R.id.post_share);
-
-                  if (postImage != null) {
-                      Picasso.with(mActivity.getBaseContext()).load(post.getImage()).into(postImage);
-                      postImage.setClipToOutline(true);
-                  }
-
-                  if (postTitle != null)
-                      postTitle.setText(post.getTitle());
-
-                  if (postShare != null) {
-                      postShare.setOnClickListener(new View.OnClickListener() {
-                          @Override
-                          public void onClick(View v) {
-                              FlurryAgent.logEvent("Post_Share");
-
-                              Intent sendIntent = new Intent();
-
-                              sendIntent.setAction(Intent.ACTION_SEND);
-                              sendIntent.putExtra(Intent.EXTRA_TITLE, post.getTitle());
-                              sendIntent.putExtra(Intent.EXTRA_SUBJECT, post.getTitle());
-                              sendIntent.putExtra(Intent.EXTRA_TEXT, post.getLink());
-                              sendIntent.setType("text/plain");
-                              mActivity.startActivity(sendIntent);
-                          }
-                      });
-                  }
-
-                  feedList.addView(postHolder);
+      TabLayout.Tab tab = tabs.newTab();
+      tab.setText(mActivity.getString(R.string.woe_feed_coupons));
+      tab.setCustomView(R.layout.badged_tab);
+      if(tab != null && tab.getCustomView() != null) {
+          int couponLast = TrackingUtils.getCouponLast(mActivity.getBaseContext());
+          CouponDAO couponDAO = new CouponDAO(mActivity.getContentResolver());
+          List<CouponTO> coupons = couponDAO.get(new CouponTOP().withIdFrom(couponLast));
+          if(coupons != null && !coupons.isEmpty()){
+              TextView b = (TextView) tab.getCustomView().findViewById(R.id.badge);
+              if(b != null) {
+                  b.setText(coupons.size() >= 100 ? "+99" : ""+coupons.size());
+              }
+              View v = tab.getCustomView().findViewById(R.id.badgeCotainer);
+              if(v != null) {
+                  v.setVisibility(View.VISIBLE);
               }
           }
       }
+      tabs.addTab(tab);
     }
 
-    private void loadTasks(LayoutInflater inflater, LinearLayout feedList) {
+    private boolean woePostTagsLoaded;
+    private LinearLayout woePostTags;
+    private void loadPostsTags(LayoutInflater inflater){
+        //load the tags
+        final String prefix = "post";
+        List<String> tags = UserUtils.getSearchTags(mActivity.getBaseContext(), prefix);
+        if(tags != null && !tags.isEmpty()){
+            for(int x = tags.size(); x > 0; x--){
+                final String tag = tags.get(x - 1);
+                appendPostTag(inflater, tag);
+            }
+        }
+
+        woePostTagsLoaded = true;
+    }
+    private void appendPostTag(LayoutInflater inflater, String q){
+        String prefix = "post";
+        View tagHolder = inflater.inflate(
+                R.layout.woe_tag, null);
+        if (tagHolder != null) {
+            TextView tagText = tagHolder.findViewById(R.id.woe_tag_text);
+            ImageButton tagClose = tagHolder.findViewById(R.id.woe_tag_close);
+
+            if(tagText != null) {
+                tagText.setText(q);
+                tagText.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        woePostQ.setText(q);
+                        feedList.removeAllViews();
+                        loadPosts(inflater);
+                    }
+                });
+            }
+
+            if(tagClose != null)
+                tagClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        UserUtils.removeSearchTags(mActivity.getBaseContext(), prefix, q);
+                        woePostTags.removeView(tagHolder);
+                    }
+                });
+
+            woePostTags.addView(tagHolder, 0);
+        }
+    }
+
+    private boolean woeOfferTagsLoaded;
+    private LinearLayout woeOfferTags;
+    private void loadOffersTags(LayoutInflater inflater){
+        //load the tags
+        final String prefix = "offer";
+        List<String> tags = UserUtils.getSearchTags(mActivity.getBaseContext(), prefix);
+        if(tags != null && !tags.isEmpty()){
+            for(int x = tags.size(); x > 0; x--){
+                final String tag = tags.get(x - 1);
+                appendOfferTag(inflater, tag);
+            }
+        }
+
+        woeOfferTagsLoaded = true;
+    }
+    private void appendOfferTag(LayoutInflater inflater,String q){
+        String prefix = "offer";
+        View tagHolder = inflater.inflate(
+                R.layout.woe_tag, null);
+        if (tagHolder != null) {
+            TextView tagText = tagHolder.findViewById(R.id.woe_tag_text);
+            ImageButton tagClose = tagHolder.findViewById(R.id.woe_tag_close);
+
+            if(tagText != null) {
+                tagText.setText(q);
+                tagText.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        woeOfferQ.setText(q);
+                        feedList.removeAllViews();
+                        loadOffers(inflater);
+                    }
+                });
+            }
+
+            if(tagClose != null)
+                tagClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        UserUtils.removeSearchTags(mActivity.getBaseContext(), prefix, q);
+                        woeOfferTags.removeView(tagHolder);
+                    }
+                });
+
+            woeOfferTags.addView(tagHolder, 0);
+        }
+    }
+
+    private boolean woeCouponTagsLoaded;
+    private LinearLayout woeCouponTags;
+    private void loadCouponsTags(LayoutInflater inflater){
+        //load the tags
+        final String prefix = "coupon";
+        List<String> tags = UserUtils.getSearchTags(mActivity.getBaseContext(), prefix);
+        if(tags != null && !tags.isEmpty()){
+            for(int x = tags.size(); x > 0; x--){
+                final String tag = tags.get(x - 1);
+                appendCouponTag(inflater, tag);
+            }
+        }
+
+        woeCouponTagsLoaded = true;
+    }
+    private void appendCouponTag(LayoutInflater inflater, String q){
+        String prefix = "coupon";
+        View tagHolder = inflater.inflate(
+                R.layout.woe_tag, null);
+        if (tagHolder != null) {
+            TextView tagText = tagHolder.findViewById(R.id.woe_tag_text);
+            ImageButton tagClose = tagHolder.findViewById(R.id.woe_tag_close);
+
+            if(tagText != null) {
+                tagText.setText(q);
+                tagText.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        woeCouponQ.setText(q);
+                        feedList.removeAllViews();
+                        loadCoupons(inflater);
+                    }
+                });
+            }
+
+            if(tagClose != null)
+                tagClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        UserUtils.removeSearchTags(mActivity.getBaseContext(), prefix, q);
+                        woeCouponTags.removeView(tagHolder);
+                    }
+                });
+
+            woeCouponTags.addView(tagHolder, 0);
+        }
+    }
+
+    private LinearLayout feedList;
+    private LinearLayout woeFiltersPost;
+    private LinearLayout woeFiltersOffer;
+    private LinearLayout woeFiltersCoupon;
+    private EditText woePostQ;
+    private EditText woeOfferQ;
+    private EditText woeCouponQ;
+
+    private void loadPosts(LayoutInflater inflater) {
+      woeFiltersPost.setVisibility(View.VISIBLE);
+     woeFiltersOffer.setVisibility(View.GONE);
+     woeFiltersCoupon.setVisibility(View.GONE);
+
+     if(!woePostTagsLoaded)
+         loadPostsTags(inflater);
+
+     //load the content
+     new LoadPostsTask(inflater).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private void loadTasks(LayoutInflater inflater) {
+        woeFiltersPost.setVisibility(View.GONE);
+        woeFiltersOffer.setVisibility(View.GONE);
+        woeFiltersCoupon.setVisibility(View.GONE);
+
+        if(mWoeFeedProgress != null) mWoeFeedProgress.setVisibility(View.INVISIBLE);
+
         TaskTOP taskTOP = new TaskTOP();
         taskTOP.setQtdPerPage(30);
         TaskDAO taskDAO = new TaskDAO(mActivity.getContentResolver());
@@ -989,256 +1223,26 @@ public class BraveNewTabPageLayout
         }
     }
 
-    private void loadOffers(LayoutInflater inflater, LinearLayout feedList) {
-        OfferTOP offerTOP = new OfferTOP();
-        offerTOP.setOrderBy("RANDOM()");
-        offerTOP.setQtdPerPage(30);
-        OfferDAO offerDAO = new OfferDAO(mActivity.getContentResolver());
-        List<OfferTO> offers = offerDAO.get(offerTOP);
-        if (offers != null && !offers.isEmpty()) {
-            //create two colluns layout
-            LinearLayout twoColluns = new LinearLayout(mActivity.getBaseContext());
-            twoColluns.setOrientation(LinearLayout.HORIZONTAL);
-            twoColluns.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1));
+    private void loadOffers(LayoutInflater inflater) {
+        woeFiltersPost.setVisibility(View.GONE);
+        woeFiltersOffer.setVisibility(View.VISIBLE);
+        woeFiltersCoupon.setVisibility(View.GONE);
 
-            LinearLayout column1 = new LinearLayout(mActivity.getBaseContext());
-            column1.setOrientation(LinearLayout.VERTICAL);
-            column1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1));
-            twoColluns.addView(column1);
-
-            LinearLayout column2 = new LinearLayout(mActivity.getBaseContext());
-            column2.setOrientation(LinearLayout.VERTICAL);
-            column2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1));
-            twoColluns.addView(column2);
-
-            //set the last id
-            TrackingUtils.setOfferLast(mActivity.getBaseContext(), offers.get(0).getId());
-
-            int col = 0;
-            for (OfferTO offer : offers) {
-                View offerHolder = inflater.inflate(
-                        R.layout.offer_item, null);
-                if (offerHolder != null) {
-                    offerHolder.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            FlurryAgent.logEvent("Offer_Open");
-                            TabUtils.openUrlInSameTab(offer.getUrl());
-                        }
-                    });
-                    RelativeLayout offerMediaBox = offerHolder.findViewById(R.id.offer_image_box);
-                    GradientDrawable imageDrawable = (GradientDrawable)offerMediaBox.getBackground();
-                    ImageView offerMedia = offerHolder.findViewById(R.id.offer_media);
-                    TextView offerTitle = offerHolder.findViewById(R.id.offer_title);
-                    TextView offerPrice = offerHolder.findViewById(R.id.offer_price);
-
-                    if (offerMedia != null && !TextUtils.isEmpty(offer.getMedia())) {
-                        Picasso.with(mActivity.getBaseContext()).load(offer.getMedia()).into(offerMedia);
-
-                        if(TextUtils.isEmpty(offer.getAdvertiserColor())) {
-                            imageDrawable.setColor(Color.parseColor("#FFFFFF"));
-                            offerMedia.setClipToOutline(true);
-                        }else{
-                            offerMediaBox.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                            offerMediaBox.setPadding(50, 50, 50, 50);
-                            imageDrawable.setColor(Color.parseColor(offer.getAdvertiserColor()));
-                        }
-                    }
-
-                    if (offerTitle != null)
-                        offerTitle.setText(offer.getTitle());
-
-                    if (offerPrice != null){
-                        if(offer.getPrice() > 0)
-                          offerPrice.setText(NumberUtils.realToString("BRL","BR","pt_BR", offer.getPrice()));
-                        else
-                          offerPrice.setVisibility(View.GONE);
-                    }
-
-                    if(col % 2 == 0)
-                        column1.addView(offerHolder);
-                    else
-                        column2.addView(offerHolder);
-
-                    col++;
-                }
-            }
-
-            feedList.addView(twoColluns);
-        }
+        if(!woeOfferTagsLoaded)
+            loadOffersTags(inflater);
+        //load the content
+        new LoadOffersTask(inflater).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    private void loadCoupons(LayoutInflater inflater, LinearLayout feedList) {
-        CouponTOP couponTOP = new CouponTOP();
-        couponTOP.setQtdPerPage(30);
-        CouponDAO couponDAO = new CouponDAO(mActivity.getContentResolver());
-        List<CouponTO> coupons = couponDAO.get(couponTOP);
-        if (coupons != null && !coupons.isEmpty()) {
-            //set the last id
-            TrackingUtils.setCouponLast(mActivity.getBaseContext(), coupons.get(0).getId());
+    private void loadCoupons(LayoutInflater inflater) {
+      woeFiltersPost.setVisibility(View.GONE);
+        woeFiltersOffer.setVisibility(View.GONE);
+        woeFiltersCoupon.setVisibility(View.VISIBLE);
 
-            final String daySingle = mActivity.getString(R.string.woe_day_single);
-            final String hourSingle = mActivity.getString(R.string.woe_hour_single);
-            final String minuteSingle = mActivity.getString(R.string.woe_minute_single);
-            final String secondSingle = mActivity.getString(R.string.woe_second_single);
-            final String couponExpired = mActivity.getString(R.string.woe_coupon_expired);
-
-            for (CouponTO coupon : coupons) {
-                View couponHolder = inflater.inflate(
-                        R.layout.coupon_item, null);
-                if (couponHolder != null) {
-                    couponHolder.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            FlurryAgent.logEvent("Coupon_Open");
-                            TabUtils.openUrlInSameTab(coupon.getUrl());
-                        }
-                    });
-                    RelativeLayout couponMediaBox = couponHolder.findViewById(R.id.coupon_image_box);
-                    GradientDrawable imageDrawable = (GradientDrawable)couponMediaBox.getBackground();
-                    ImageView couponMedia = couponHolder.findViewById(R.id.coupon_media);
-                    TextView couponTitle = couponHolder.findViewById(R.id.coupon_title);
-                    TextView couponVoucher = couponHolder.findViewById(R.id.coupon_voucher);
-                    ImageButton couponAction = couponHolder.findViewById(R.id.coupon_action);
-                    LinearLayout couponStopwatchContainer = couponHolder.findViewById(R.id.coupon_stopwatch_container);
-                    TextView couponStopwatcher = couponHolder.findViewById(R.id.coupon_stopwatch);
-                    Button couponRules = couponHolder.findViewById(R.id.coupon_rules);
-
-                    if (couponMedia != null && !TextUtils.isEmpty(coupon.getMedia())) {
-                        Picasso.with(mActivity.getBaseContext()).load(coupon.getMedia()).into(couponMedia);
-
-                        if(TextUtils.isEmpty(coupon.getAdvertiserColor())) {
-                            imageDrawable.setColor(Color.parseColor("#FFFFFF"));
-                            couponMedia.setClipToOutline(true);
-                        }else{
-                            couponMediaBox.setPadding(50, 50, 50, 50);
-                            imageDrawable.setColor(Color.parseColor(coupon.getAdvertiserColor()));
-                        }
-                    }
-
-                    if (couponTitle != null)
-                        couponTitle.setText(coupon.getTitle());
-
-                    if (couponVoucher != null) {
-                        if(!TextUtils.isEmpty(coupon.getVoucher()))
-                            couponVoucher.setText(coupon.getVoucher());
-                        else if(!TextUtils.isEmpty(coupon.getUrl()))
-                            couponVoucher.setText(mActivity.getString(R.string.woe_coupon_active));
-                    }
-
-                    if(couponAction != null){
-                        if(!TextUtils.isEmpty(coupon.getVoucher())){
-                            couponAction.setImageResource(R.drawable.woe_copy_white);
-                        }
-                    }
-                    couponAction.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            FlurryAgent.logEvent("Coupon_Copy");
-
-                            if(!TextUtils.isEmpty(coupon.getUrl())){
-
-                            }
-
-                            if(!TextUtils.isEmpty(coupon.getVoucher())){
-                                ClipboardManager clipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
-                                ClipData clip = ClipData.newPlainText("Wooeen Coupon Code", coupon.getVoucher());
-                                clipboard.setPrimaryClip(clip);
-
-                                Toast.makeText(mActivity.getBaseContext(), R.string.woe_coupon_copied ,Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
-
-                    //verify if show the expiration
-                    boolean showExpiration = false;
-                    if(coupon.getDateExpiration() != null) {
-                        Date eventDate = coupon.getDateExpiration();
-                        Date currentDate = new Date();
-                        if (!currentDate.after(eventDate)) {
-                            long diff = eventDate.getTime() - currentDate.getTime();
-                            long days = diff / (24 * 60 * 60 * 1000);
-                            if(days <= 0)
-                                showExpiration = true;
-                        }
-                    }
-
-                    if(!showExpiration){
-                        couponStopwatchContainer.setVisibility(View.GONE);
-                    }else{
-                        android.os.CountDownTimer timer = new android.os.CountDownTimer(coupon.getDateExpiration().getTime(), 1000) {
-
-                            @Override
-                            public void onTick(long millisUntilFinished) {
-                                Date eventDate = coupon.getDateExpiration();
-                                Date currentDate = new Date();
-                                if (!currentDate.after(eventDate)) {
-                                    long diff = eventDate.getTime() - currentDate.getTime();
-                                    long days = diff / (24 * 60 * 60 * 1000);
-                                    long hours = diff / (60 * 60 * 1000) % 24;
-                                    long minutes = diff / (60 * 1000) % 60;
-                                    long seconds = diff / 1000 % 60;
-
-                                    couponStopwatcher.setText(
-                                            (days > 0 ? days + daySingle +" : " : "")+
-                                            (hours > 0 ? String.format("%02d", hours) + hourSingle + " : " : "")+
-                                            (minutes > 0 ? String.format("%02d", minutes) + minuteSingle +" : " : "")+
-                                            (seconds > 0 ? String.format("%02d", seconds) + secondSingle : "")
-                                    );
-                                } else {
-                                    couponStopwatcher.setText(couponExpired);
-                                }
-                            }
-
-                            @Override
-                            public void onFinish() {
-                                couponStopwatcher.setText(couponExpired);
-                            }
-
-                        }.start();
-                        couponsTimers.add(timer);
-                    }
-
-                    if(TextUtils.isEmpty(coupon.getDescription())){
-                        couponRules.setVisibility(View.GONE);
-                    }else{
-                        couponRules.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                              FlurryAgent.logEvent("Coupon_Rules");
-
-                              AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mActivity);
-
-                              View dialogView = inflater.inflate(R.layout.dialog_layout, null);
-                              alertDialogBuilder.setView(dialogView);
-
-                              AlertDialog alertDialog = alertDialogBuilder.create();
-                              alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-                              TextView dialogTitle = dialogView.findViewById(R.id.woe_dialog_panel_title);
-                              dialogTitle.setText(mActivity.getString(R.string.woe_coupon_see_rules));
-
-                              TextView dialogText = dialogView.findViewById(R.id.woe_dialog_panel_text);
-                              dialogText.setText(coupon.getDescription());
-
-                              Button dialogButton = dialogView.findViewById(R.id.woe_dialog_panel_btn);
-                                dialogButton.setOnClickListener(
-                                        new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                alertDialog.dismiss();
-                                            }
-                                        });
-
-                              alertDialog.show();
-                            }
-                        });
-                    }
-
-                    feedList.addView(couponHolder);
-                }
-            }
-        }
+        if(!woeCouponTagsLoaded)
+            loadCouponsTags(inflater);
+        //load the content
+        new LoadCouponsTask(inflater).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private List<android.os.CountDownTimer> couponsTimers = new ArrayList<android.os.CountDownTimer>();
@@ -1251,9 +1255,426 @@ public class BraveNewTabPageLayout
         }
     }
 
+    private ProgressBar mWoeFeedProgress;
+    private class LoadPostsTask extends AsyncTask<List<PostTO>>{
+
+        private LayoutInflater inflater;
+
+        public LoadPostsTask(LayoutInflater inflater){
+            this.inflater = inflater;
+        }
+
+        @Override
+        protected List<PostTO> doInBackground() {
+            PostTOP postTOP = new PostTOP();
+            postTOP.setQtdPerPage(20);
+            postTOP.setQ(woePostQ.getText().toString());
+            PostDAO postDAO = new PostDAO(mActivity.getContentResolver());
+            List<PostTO> posts = postDAO.get(postTOP);
+
+            if (posts != null && !posts.isEmpty())
+              return posts;
+
+            PostAPI api = new PostAPI();
+            return api.get(postTOP.getPage() + 1, postTOP.getQtdPerPage(), postTOP.getQ());
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            if(mWoeFeedProgress != null) mWoeFeedProgress.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected void onPostExecute(List<PostTO> items) {
+            if(mWoeFeedProgress != null) mWoeFeedProgress.setVisibility(View.GONE);
+
+            if (isCancelled()) return;
+
+            if(items != null && inflater != null && feedList != null){
+              for (PostTO post : items) {
+                  View postHolder = inflater.inflate(
+                          R.layout.post_item, null);
+                  if (postHolder != null) {
+                      postHolder.setOnClickListener(new View.OnClickListener() {
+                          @Override
+                          public void onClick(View v) {
+                              FlurryAgent.logEvent("Post_Read");
+                              TabUtils.openUrlInSameTab(post.getLink());
+                          }
+                      });
+                      ImageView postImage = postHolder.findViewById(R.id.post_image);
+                      TextView postTitle = postHolder.findViewById(R.id.post_title);
+                      ImageButton postShare = postHolder.findViewById(R.id.post_share);
+
+                      if (postImage != null) {
+                          Picasso.with(mActivity.getBaseContext()).load(post.getImage()).into(postImage);
+                          postImage.setClipToOutline(true);
+                      }
+
+                      if (postTitle != null)
+                          postTitle.setText(post.getTitle());
+
+                      if (postShare != null) {
+                          postShare.setOnClickListener(new View.OnClickListener() {
+                              @Override
+                              public void onClick(View v) {
+                                  FlurryAgent.logEvent("Post_Share");
+
+                                  Intent sendIntent = new Intent();
+
+                                  sendIntent.setAction(Intent.ACTION_SEND);
+                                  sendIntent.putExtra(Intent.EXTRA_TITLE, post.getTitle());
+                                  sendIntent.putExtra(Intent.EXTRA_SUBJECT, post.getTitle());
+                                  sendIntent.putExtra(Intent.EXTRA_TEXT, post.getLink());
+                                  sendIntent.setType("text/plain");
+                                  mActivity.startActivity(sendIntent);
+                              }
+                          });
+                      }
+
+                      feedList.addView(postHolder);
+                  }
+              }
+            }
+        }
+    }
+
+    private class LoadOffersTask extends AsyncTask<List<OfferTO>>{
+
+        private LayoutInflater inflater;
+        private boolean loadedDAO;
+        public LoadOffersTask(LayoutInflater inflater){
+            this.inflater = inflater;
+        }
+
+        @Override
+        protected List<OfferTO> doInBackground() {
+          OfferTOP offerTOP = new OfferTOP();
+          offerTOP.setOrderBy("RANDOM()");
+          offerTOP.setQtdPerPage(30);
+          offerTOP.setQ(woeOfferQ.getText().toString());
+          OfferDAO offerDAO = new OfferDAO(mActivity.getContentResolver());
+          List<OfferTO> offers = offerDAO.get(offerTOP);
+          if (offers != null && !offers.isEmpty()){
+            loadedDAO = true;
+            return offers;
+          }
+
+          OfferAPI api = new OfferAPI(UserUtils.getCrFinal(mActivity.getBaseContext()));
+          return api.get(offerTOP.getPage(), offerTOP.getQtdPerPage(), offerTOP.getQ());
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            if(mWoeFeedProgress != null) mWoeFeedProgress.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected void onPostExecute(List<OfferTO> items) {
+            if(mWoeFeedProgress != null) mWoeFeedProgress.setVisibility(View.GONE);
+
+            if (isCancelled()) return;
+
+            if(items != null && inflater != null && feedList != null){
+              //create two colluns layout
+              LinearLayout twoColluns = new LinearLayout(mActivity.getBaseContext());
+              twoColluns.setOrientation(LinearLayout.HORIZONTAL);
+              twoColluns.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1));
+
+              LinearLayout column1 = new LinearLayout(mActivity.getBaseContext());
+              column1.setOrientation(LinearLayout.VERTICAL);
+              column1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1));
+              twoColluns.addView(column1);
+
+              LinearLayout column2 = new LinearLayout(mActivity.getBaseContext());
+              column2.setOrientation(LinearLayout.VERTICAL);
+              column2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1));
+              twoColluns.addView(column2);
+
+              int col = 0;
+              int lastId = 0;
+              for (OfferTO offer : items) {
+                if(offer.getId() > lastId) lastId = offer.getId();
+
+                  View offerHolder = inflater.inflate(
+                          R.layout.offer_item, null);
+                  if (offerHolder != null) {
+                      offerHolder.setOnClickListener(new View.OnClickListener() {
+                          @Override
+                          public void onClick(View v) {
+                              FlurryAgent.logEvent("Offer_Open");
+                              TabUtils.openUrlInSameTab(offer.getUrl());
+                          }
+                      });
+                      RelativeLayout offerMediaBox = offerHolder.findViewById(R.id.offer_image_box);
+                      GradientDrawable imageDrawable = (GradientDrawable)offerMediaBox.getBackground();
+                      ImageView offerMedia = offerHolder.findViewById(R.id.offer_media);
+                      TextView offerTitle = offerHolder.findViewById(R.id.offer_title);
+                      TextView offerPrice = offerHolder.findViewById(R.id.offer_price);
+
+                      if (offerMedia != null && !TextUtils.isEmpty(offer.getMedia())) {
+                          Picasso.with(mActivity.getBaseContext()).load(offer.getMedia()).into(offerMedia);
+
+                          if(TextUtils.isEmpty(offer.getAdvertiserColor())) {
+                              imageDrawable.setColor(Color.parseColor("#FFFFFF"));
+                              offerMedia.setClipToOutline(true);
+                          }else{
+                              offerMediaBox.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                              offerMediaBox.setPadding(50, 50, 50, 50);
+                              imageDrawable.setColor(Color.parseColor(offer.getAdvertiserColor()));
+                          }
+                      }
+
+                      if (offerTitle != null)
+                          offerTitle.setText(offer.getTitle());
+
+                      if (offerPrice != null){
+                          if(offer.getPrice() > 0)
+                            offerPrice.setText(NumberUtils.realToString("BRL","BR","pt_BR", offer.getPrice()));
+                          else
+                            offerPrice.setVisibility(View.GONE);
+                      }
+
+                      if(col % 2 == 0)
+                          column1.addView(offerHolder);
+                      else
+                          column2.addView(offerHolder);
+
+                      col++;
+                  }
+              }
+
+              feedList.addView(twoColluns);
+
+              //set the last id
+              if(loadedDAO){
+                TrackingUtils.setOfferLast(mActivity.getBaseContext(), lastId);
+              }
+            }
+        }
+    }
+
+    private class LoadCouponsTask extends AsyncTask<List<CouponTO>>{
+
+        private LayoutInflater inflater;
+        private boolean loadedDAO;
+        public LoadCouponsTask(LayoutInflater inflater){
+            this.inflater = inflater;
+        }
+
+        @Override
+        protected List<CouponTO> doInBackground() {
+          CouponTOP couponTOP = new CouponTOP();
+          couponTOP.setQtdPerPage(30);
+          couponTOP.setQ(woeCouponQ.getText().toString());
+          CouponDAO couponDAO = new CouponDAO(mActivity.getContentResolver());
+          List<CouponTO> coupons = couponDAO.get(couponTOP);
+          if (coupons != null && !coupons.isEmpty()) {
+            loadedDAO = true;
+            return coupons;
+          }
+
+          CouponAPI api = new CouponAPI(UserUtils.getCrFinal(mActivity.getBaseContext()));
+          return api.get(couponTOP.getPage(), couponTOP.getQtdPerPage(), couponTOP.getQ());
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            if(mWoeFeedProgress != null) mWoeFeedProgress.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected void onPostExecute(List<CouponTO> items) {
+            if(mWoeFeedProgress != null) mWoeFeedProgress.setVisibility(View.GONE);
+
+            if (isCancelled()) return;
+
+            if(items != null && inflater != null && feedList != null){
+              final String daySingle = mActivity.getString(R.string.woe_day_single);
+              final String hourSingle = mActivity.getString(R.string.woe_hour_single);
+              final String minuteSingle = mActivity.getString(R.string.woe_minute_single);
+              final String secondSingle = mActivity.getString(R.string.woe_second_single);
+              final String couponExpired = mActivity.getString(R.string.woe_coupon_expired);
+
+              int lastId = 0;
+              for (CouponTO coupon : items) {
+                  if(coupon.getId() > lastId) lastId = coupon.getId();
+
+                  View couponHolder = inflater.inflate(
+                          R.layout.coupon_item, null);
+                  if (couponHolder != null) {
+                      couponHolder.setOnClickListener(new View.OnClickListener() {
+                          @Override
+                          public void onClick(View v) {
+                              FlurryAgent.logEvent("Coupon_Open");
+                              TabUtils.openUrlInSameTab(coupon.getUrl());
+                          }
+                      });
+                      RelativeLayout couponMediaBox = couponHolder.findViewById(R.id.coupon_image_box);
+                      GradientDrawable imageDrawable = (GradientDrawable)couponMediaBox.getBackground();
+                      ImageView couponMedia = couponHolder.findViewById(R.id.coupon_media);
+                      TextView couponTitle = couponHolder.findViewById(R.id.coupon_title);
+                      TextView couponVoucher = couponHolder.findViewById(R.id.coupon_voucher);
+                      ImageButton couponAction = couponHolder.findViewById(R.id.coupon_action);
+                      LinearLayout couponStopwatchContainer = couponHolder.findViewById(R.id.coupon_stopwatch_container);
+                      TextView couponStopwatcher = couponHolder.findViewById(R.id.coupon_stopwatch);
+                      Button couponRules = couponHolder.findViewById(R.id.coupon_rules);
+
+                      if (couponMedia != null && !TextUtils.isEmpty(coupon.getMedia())) {
+                          Picasso.with(mActivity.getBaseContext()).load(coupon.getMedia()).into(couponMedia);
+
+                          if(TextUtils.isEmpty(coupon.getAdvertiserColor())) {
+                              imageDrawable.setColor(Color.parseColor("#FFFFFF"));
+                              couponMedia.setClipToOutline(true);
+                          }else{
+                              couponMediaBox.setPadding(50, 50, 50, 50);
+                              imageDrawable.setColor(Color.parseColor(coupon.getAdvertiserColor()));
+                          }
+                      }
+
+                      if (couponTitle != null)
+                          couponTitle.setText(coupon.getTitle());
+
+                      if (couponVoucher != null) {
+                          if(!TextUtils.isEmpty(coupon.getVoucher()))
+                              couponVoucher.setText(coupon.getVoucher());
+                          else if(!TextUtils.isEmpty(coupon.getUrl()))
+                              couponVoucher.setText(mActivity.getString(R.string.woe_coupon_active));
+                      }
+
+                      if(couponAction != null){
+                          if(!TextUtils.isEmpty(coupon.getVoucher())){
+                              couponAction.setImageResource(R.drawable.woe_copy_white);
+                          }
+                      }
+                      couponAction.setOnClickListener(new View.OnClickListener() {
+                          @Override
+                          public void onClick(View v) {
+                              FlurryAgent.logEvent("Coupon_Copy");
+
+                              if(!TextUtils.isEmpty(coupon.getUrl())){
+
+                              }
+
+                              if(!TextUtils.isEmpty(coupon.getVoucher())){
+                                  ClipboardManager clipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
+                                  ClipData clip = ClipData.newPlainText("Wooeen Coupon Code", coupon.getVoucher());
+                                  clipboard.setPrimaryClip(clip);
+
+                                  Toast.makeText(mActivity.getBaseContext(), R.string.woe_coupon_copied ,Toast.LENGTH_LONG).show();
+                              }
+                          }
+                      });
+
+                      //verify if show the expiration
+                      boolean showExpiration = false;
+                      if(coupon.getDateExpiration() != null) {
+                          Date eventDate = coupon.getDateExpiration();
+                          Date currentDate = new Date();
+                          if (!currentDate.after(eventDate)) {
+                              long diff = eventDate.getTime() - currentDate.getTime();
+                              long days = diff / (24 * 60 * 60 * 1000);
+                              if(days <= 0)
+                                  showExpiration = true;
+                          }
+                      }
+
+                      if(!showExpiration){
+                          couponStopwatchContainer.setVisibility(View.GONE);
+                      }else{
+                          android.os.CountDownTimer timer = new android.os.CountDownTimer(coupon.getDateExpiration().getTime(), 1000) {
+
+                              @Override
+                              public void onTick(long millisUntilFinished) {
+                                  Date eventDate = coupon.getDateExpiration();
+                                  Date currentDate = new Date();
+                                  if (!currentDate.after(eventDate)) {
+                                      long diff = eventDate.getTime() - currentDate.getTime();
+                                      long days = diff / (24 * 60 * 60 * 1000);
+                                      long hours = diff / (60 * 60 * 1000) % 24;
+                                      long minutes = diff / (60 * 1000) % 60;
+                                      long seconds = diff / 1000 % 60;
+
+                                      couponStopwatcher.setText(
+                                              (days > 0 ? days + daySingle +" : " : "")+
+                                              (hours > 0 ? String.format("%02d", hours) + hourSingle + " : " : "")+
+                                              (minutes > 0 ? String.format("%02d", minutes) + minuteSingle +" : " : "")+
+                                              (seconds > 0 ? String.format("%02d", seconds) + secondSingle : "")
+                                      );
+                                  } else {
+                                      couponStopwatcher.setText(couponExpired);
+                                  }
+                              }
+
+                              @Override
+                              public void onFinish() {
+                                  couponStopwatcher.setText(couponExpired);
+                              }
+
+                          }.start();
+                          couponsTimers.add(timer);
+                      }
+
+                      if(TextUtils.isEmpty(coupon.getDescription())){
+                          couponRules.setVisibility(View.GONE);
+                      }else{
+                          couponRules.setOnClickListener(new View.OnClickListener() {
+                              @Override
+                              public void onClick(View v) {
+                                FlurryAgent.logEvent("Coupon_Rules");
+
+                                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mActivity);
+
+                                View dialogView = inflater.inflate(R.layout.dialog_layout, null);
+                                alertDialogBuilder.setView(dialogView);
+
+                                AlertDialog alertDialog = alertDialogBuilder.create();
+                                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                                TextView dialogTitle = dialogView.findViewById(R.id.woe_dialog_panel_title);
+                                dialogTitle.setText(mActivity.getString(R.string.woe_coupon_see_rules));
+
+                                TextView dialogText = dialogView.findViewById(R.id.woe_dialog_panel_text);
+                                dialogText.setText(coupon.getDescription());
+
+                                Button dialogButton = dialogView.findViewById(R.id.woe_dialog_panel_btn);
+                                  dialogButton.setOnClickListener(
+                                          new View.OnClickListener() {
+                                              @Override
+                                              public void onClick(View v) {
+                                                  alertDialog.dismiss();
+                                              }
+                                          });
+
+                                alertDialog.show();
+                              }
+                          });
+                      }
+
+                      feedList.addView(couponHolder);
+                  }
+              }
+
+              //set the last id
+              if(loadedDAO){
+                TrackingUtils.setCouponLast(mActivity.getBaseContext(), lastId);
+              }
+            }
+        }
+    }
+
     private ProgressBar mWoeCbdProgress;
-    private Button btnCashback;
-    private Button btnRecommendation;
+    private LinearLayout btnCashback;
+    private TextView btnCashbackText;
+    private ProgressBar mWoeChaProgress;
+    private LinearLayout btnChallenges;
+    private LinearLayout btnRecommendation;
 
     private class UserQuickAccessTask extends AsyncTask<UserQuickAccessTO>{
 
@@ -1281,6 +1702,42 @@ public class BraveNewTabPageLayout
         protected void onPostExecute(UserQuickAccessTO result) {
             if(mWoeCbdProgress != null) mWoeCbdProgress.setVisibility(View.INVISIBLE);
             if(btnCashback != null ) btnCashback.setEnabled(true);
+
+            if (isCancelled()) return;
+
+            if(result != null){
+                String uqa = WoeDAOUtils.BASE_URL+"u/uqa?u="+userId+"&i="+result.getId()+"&v="+result.getValidator();
+                TabUtils.openUrlInSameTab(uqa);
+            }
+        }
+    }
+
+    private class UserQuickAccessChallengesTask extends AsyncTask<UserQuickAccessTO>{
+
+        private int userId;
+
+        public UserQuickAccessChallengesTask(int userId){
+            this.userId = userId;
+        }
+
+        @Override
+        protected UserQuickAccessTO doInBackground() {
+            UserAPI apiDAO = new UserAPI(UserUtils.getToken(mActivity));
+            return apiDAO.quickAccessNew(WOOEEN_CHALLENGES_URL);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            if(mWoeChaProgress != null) mWoeChaProgress.setVisibility(View.VISIBLE);
+            if(btnChallenges != null ) btnChallenges.setEnabled(false);
+        }
+
+        @Override
+        protected void onPostExecute(UserQuickAccessTO result) {
+            if(mWoeChaProgress != null) mWoeChaProgress.setVisibility(View.INVISIBLE);
+            if(btnChallenges != null ) btnChallenges.setEnabled(true);
 
             if (isCancelled()) return;
 

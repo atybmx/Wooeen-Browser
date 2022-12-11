@@ -12,11 +12,17 @@ import android.content.Context;
 import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.PopupMenu;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 // import com.appsflyer.AppsFlyerLib;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import com.wooeen.utils.UserUtils;
 import com.wooeen.model.api.UserAPI;
@@ -117,26 +123,34 @@ public class TabUtils {
             if(currentTab != null){
                 View view = currentTab.getView();
                 if(view != null){
-                    Button btnCashback = (Button) view.findViewById(R.id.woe_cbd_button);
-                    if(btnCashback != null){
+                    TextView btnCashbackText = (TextView) view.findViewById(R.id.woe_cbd_button_text);
+                    if(btnCashbackText != null){
                         if(userId > 0)
-                          btnCashback.setText(braveActivity.getString(R.string.woe_see_cashback_main));
+                          btnCashbackText.setText(braveActivity.getString(R.string.woe_see_cashback_main));
                         else
-                          btnCashback.setText(braveActivity.getString(R.string.woe_enable_cashback_main));
-                    }
-
-                    Button btnRecommendation = (Button) view.findViewById(R.id.woe_rec_button);
-                    if(btnRecommendation != null){
-                      if(userId > 0)
-                          btnRecommendation.setVisibility(View.VISIBLE);
-                      else
-                          btnRecommendation.setVisibility(View.GONE);
+                          btnCashbackText.setText(braveActivity.getString(R.string.woe_enable_cashback_main));
                     }
                 }
             }
 
-            if(userId > 0)
+            if(userId > 0){
+              //create a browser section
               new UserQuickAccessTask(userId, braveActivity).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+              //update the fcm TOKEN
+              FirebaseMessaging.getInstance().getToken()
+                    .addOnCompleteListener(new OnCompleteListener<String>() {
+                        @Override
+                        public void onComplete(@NonNull Task<String> task) {
+                            if (!task.isSuccessful() || task.getResult() == null || "".equals(task.getResult())) {
+                                System.out.println("WOE Fetching FCM registration token failed");
+                                return;
+                            }
+
+                            //save user token
+                            UserUtils.saveUserFcmToken(braveActivity, task.getResult());
+                          }
+                        });
+            }
 
             //set AF customer id
             // AppsFlyerLib.getInstance().setCustomerUserId(userId > 0 ? ""+userId : "");

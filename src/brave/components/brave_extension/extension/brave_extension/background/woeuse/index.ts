@@ -50,6 +50,16 @@ function ensureUpdateFrequency () {
 }
 
 function stopUpdateFrequency () {
+  chrome.alarms.clear(ALARM_KEY_FEED_UPDATE, () => {
+    if (chrome.runtime.lastError) {
+      console.error('alarms.clear failed: ' + chrome.runtime.lastError.message)
+    }
+  })
+  chrome.alarms.clear(ALARM_KEY_FEED_MEMORY, () => {
+    if (chrome.runtime.lastError) {
+      console.error('alarms.clear failed: ' + chrome.runtime.lastError.message)
+    }
+  })
   chrome.alarms.clear(ALARM_KEY_AUTH_MEMORY, () => {
     if (chrome.runtime.lastError) {
       console.error('alarms.clear failed: ' + chrome.runtime.lastError.message)

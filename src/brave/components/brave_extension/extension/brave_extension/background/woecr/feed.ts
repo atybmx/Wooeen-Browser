@@ -1,3 +1,5 @@
+import { getApiUrl } from '../woeutils/urls'
+
 let memoryTodayData: Wooeen.Country | undefined
 let readLock: Promise<void> | null
 let isKnownRemoteUpdateAvailable = false
@@ -72,17 +74,18 @@ function performUpdateFeed () {
   // Only run this once at a time, otherwise wait for the update
   readLock = new Promise(async function (resolve, reject) {
     try {
+        let cr = '';
+
         await fetch(
           "https://geolocation-db.com/json/"
         )
         .then(res => res.json())
         .then(
           (result) => {
-            console.log(result)
             setLastUpdateCheckTime(Date.now())
 
-            memoryTodayData = {
-              id: result.country_code
+            if(result && result.country_code){
+              cr = result.country_code;
             }
 
             isKnownRemoteUpdateAvailable = false
@@ -91,6 +94,47 @@ function performUpdateFeed () {
             console.error('WOECR: Could not get feed contents');
           }
         )
+
+        if(cr){
+          await fetch(
+            await getApiUrl(
+              "country/get",
+              new URLSearchParams({
+                  id: cr
+                }))
+          )
+          .then(res => res.json())
+          .then(
+            (result) => {
+              if(result && result.result && result.callback && result.callback.length > 0){
+                let o = result.callback[0];
+                memoryTodayData = {
+                  id: o.id,
+                  language: o.language,
+                  currency: {
+                    id: o.currency
+                  },
+                  loadPosts: o.loadPosts,
+                  loadOffers: o.loadOffers,
+                  loadCoupons: o.loadCoupons,
+                  loadTasks: o.loadTasks
+                }
+              }else{
+                memoryTodayData = {
+                  id: result.country_code,
+                  loadPosts: false,
+                  loadOffers: false,
+                  loadCoupons: false,
+                  loadTasks: false
+                }
+              }
+            }
+            ,
+            (error) => {
+              console.error('WOECR: Could not get feed contents');
+            }
+          )
+        }
 
         resolve()
         if (memoryTodayData) {

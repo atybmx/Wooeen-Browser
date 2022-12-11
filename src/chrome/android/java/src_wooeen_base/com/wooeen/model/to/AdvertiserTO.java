@@ -8,6 +8,8 @@ public class AdvertiserTO {
     private String url;
     private String domain;
     private CheckoutTO checkout;
+    private CheckoutTO product;
+    private CheckoutTO query;
     private String omniboxTitle;
     private String omniboxDescription;
 
@@ -87,5 +89,21 @@ public class AdvertiserTO {
 
     public void setOmniboxDescription(String omniboxDescription) {
         this.omniboxDescription = omniboxDescription;
+    }
+
+    public CheckoutTO getQuery() {
+        return query;
+    }
+
+    public void setQuery(CheckoutTO query) {
+        this.query = query;
+    }
+
+    public CheckoutTO getProduct() {
+        return product;
+    }
+
+    public void setProduct(CheckoutTO product) {
+        this.product = product;
     }
 }

@@ -102,6 +102,14 @@ function performUpdateFeed () {
                     checkout: {
                       endpoint: o.checkout ? o.checkout.endpoint : undefined,
                       data: o.checkout ? o.checkout.data : undefined
+                    },
+                    product: {
+                      endpoint: o.product ? o.product.endpoint : undefined,
+                      data: o.product ? o.product.data : undefined
+                    },
+                    query: {
+                      endpoint: o.query ? o.query.endpoint : undefined,
+                      data: o.query ? o.query.data : undefined
                     }
                   })
               }
@@ -144,6 +152,26 @@ export function checkout(endpoint: string) : Wooeen.Advertiser | undefined {
 
   if (memoryTodayData && memoryTodayData.items && memoryTodayData.items.length > 0){
     return memoryTodayData.items.find(a => a && a.checkout && a.checkout.endpoint && ("."+endpoint).endsWith("."+a.checkout.endpoint))
+  }
+
+  return
+}
+
+export function getAdvertiserById(id: string | undefined) : Wooeen.Advertiser | undefined {
+  if(!id) return;
+
+  if (memoryTodayData && memoryTodayData.items && memoryTodayData.items.length > 0){
+    return memoryTodayData.items.find(a => a && a.id && a.id == id)
+  }
+
+  return
+}
+
+export function getAdvertiserByDomain(domain: string | undefined) : Wooeen.Advertiser | undefined {
+  if(!domain) return;
+
+  if (memoryTodayData && memoryTodayData.items && memoryTodayData.items.length > 0){
+    return memoryTodayData.items.find(a => a && a.domain && ("."+domain).endsWith("."+a.domain))
   }
 
   return

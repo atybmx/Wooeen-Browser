@@ -9,8 +9,8 @@ import settingsActions from '../actions/settingsActions'
 import * as WoeState from '../../types/state/woeCashbackState'
 import { state } from '../reducers/woeCashbackReducer'
 import { isHttpOrHttps, getDomain, parseTrackingLink, getCheckoutEndpoint } from '../../helpers/urlUtils'
-import { checkout } from '../woeadv/feed'
-import { checkout as checkoutTask } from '../woetsk/feed'
+import { getAdvertiserById, getAdvertiserByDomain } from '../woeadv/feed'
+import { getVersion } from '../woever/feed'
 import { tracked } from '../woetrk/feed'
 import * as Auth from '../woeuse/auth'
 import { getAppDomain } from '../woeutils/urls'
@@ -48,51 +48,74 @@ function verifyUrl(tabId: number | undefined, url: string){
     if(checkoutEndpoint){
       let tab: WoeState.Tab = state.tabs[tabId];
       if(tab && tab.platformId){
-        let adv = checkout(checkoutEndpoint)
-        if(adv && adv.id && adv.checkout && adv.checkout.data){
+        let advertiserId = tab.advertiserId;
+        if(advertiserId){
           let user = Auth.getUser();
           if(user && user.id){
-            let woecheckout = {
-                    pl: tab.platformId,
-                    u: user.id,
-                    a: adv.id,
-                    data: adv.checkout.data
-                  }
-            chrome.storage.local.set(
-              {checkoutTemp: JSON.stringify(woecheckout)}
-            );
+            let version = getVersion();
 
-            chrome.scripting.executeScript({
-      				target: { tabId: tabId },
-      				function: checkoutInject
-      			});
+            //CHECKOUT
+            if(tab.checkoutEndpoint && tab.checkoutData){
+              let woecheckout = {
+                      version: version && version.checkout ? version.checkout : new Date().getTime(),
+                      pl: tab.platformId,
+                      u: user.id,
+                      a: advertiserId,
+                      endpoint: ''+tab.checkoutEndpoint,
+                      data: tab.checkoutData
+                    }
+              chrome.storage.local.set(
+                {checkoutTemp: JSON.stringify(woecheckout)}
+              );
+
+              chrome.scripting.executeScript({
+        				target: { tabId: tabId },
+        				function: checkoutInject
+        			});
+            }
+
+            //PRODUCT
+            if(tab.productEndpoint && tab.productData){
+              let woeproduct = {
+                      version: version && version.product ? version.product : new Date().getTime(),
+                      pl: tab.platformId,
+                      u: user.id,
+                      a: advertiserId,
+                      endpoint: ''+tab.productEndpoint,
+                      data: tab.productData
+                    }
+              chrome.storage.local.set(
+                {productTemp: JSON.stringify(woeproduct)}
+              );
+
+              chrome.scripting.executeScript({
+        				target: { tabId: tabId },
+        				function: productInject
+        			});
+            }
+
+            //QUERY
+            if(tab.queryEndpoint && tab.queryData){
+              let woequery = {
+                      version: version && version.query ? version.query : new Date().getTime(),
+                      pl: tab.platformId,
+                      u: user.id,
+                      a: advertiserId,
+                      endpoint: ''+tab.queryEndpoint,
+                      data: tab.queryData
+                    }
+              chrome.storage.local.set(
+                {queryTemp: JSON.stringify(woequery)}
+              );
+
+              chrome.scripting.executeScript({
+        				target: { tabId: tabId },
+        				function: queryInject
+        			});
+            }
           }
         }
-      }
 
-      //Task checkout endpoint
-      let tsk = checkoutTask(checkoutEndpoint)
-      if(tsk && tsk.id && tsk.checkout){
-        let user = Auth.getUser();
-        if(user && user.id){
-          let woecheckoutTask = {
-                  pl: tsk.platformId,
-                  u: user.id,
-                  a: tsk.advertiserId,
-                  t: tsk.id
-                }
-          if(tsk.checkout.data)
-            woecheckoutTask['data'] = tsk.checkout.data;
-
-          chrome.storage.local.set(
-            {checkoutTaskTemp: JSON.stringify(woecheckoutTask)}
-          );
-
-          chrome.scripting.executeScript({
-            target: { tabId: tabId },
-            function: checkoutTaskInject
-          });
-        }
       }
     }
   }
@@ -107,16 +130,18 @@ function checkoutInject(){
     ) {
       let woeCheckout = document.createElement('script');
       woeCheckout.innerHTML =
+        'if(typeof woecheckoutDone === "undefined"){var woecheckoutDone = "";}'+
         'var woecheckout = {'+
           'pl: '+data.pl+','+
           'u: '+data.u+','+
           'a: '+data.a+','+
+          'endpoint: "'+data.endpoint+'",'+
           'data: '+data.data+
         '}';
 
       let woeCheckoutJs = document.createElement('script');
       woeCheckoutJs.type = 'application/javascript';
-      woeCheckoutJs.src = 'https://app.wooeen.com/checkout.js';
+      woeCheckoutJs.src = 'https://app.wooeen.com/checkout.js?v='+data.version;
       if(document.body){
         document.body.appendChild(woeCheckout);
         document.body.appendChild(woeCheckoutJs);
@@ -125,38 +150,68 @@ function checkoutInject(){
       chrome.storage.local.remove("checkoutTemp");
     }
   });
-
 }
 
-function checkoutTaskInject(){
-  chrome.storage.local.get(["checkoutTaskTemp"], ({ checkoutTaskTemp }) => {
-    let data = JSON.parse(checkoutTaskTemp);
+function productInject(){
+  chrome.storage.local.get(["productTemp"], ({ productTemp }) => {
+    let data = JSON.parse(productTemp);
     if (typeof data === 'object' &&
         !Array.isArray(data) &&
         data !== null
     ) {
-      let woeCheckout = document.createElement('script');
-      woeCheckout.innerHTML =
-        'var woecheckout = {'+
+      let woeProduct = document.createElement('script');
+      woeProduct.innerHTML =
+        'if(typeof woeproductDone === "undefined"){var woeproductDone = "";}'+
+        'var woeproduct = {'+
           'pl: '+data.pl+','+
           'u: '+data.u+','+
           'a: '+data.a+','+
-          't: '+data.t+
-          (data.data ? ',data: '+data.data : '')+
+          'endpoint: "'+data.endpoint+'",'+
+          'data: '+data.data+
         '}';
 
-      let woeCheckoutJs = document.createElement('script');
-      woeCheckoutJs.type = 'application/javascript';
-      woeCheckoutJs.src = 'https://app.wooeen.com/checkout.js';
+      let woeProductJs = document.createElement('script');
+      woeProductJs.type = 'application/javascript';
+      woeProductJs.src = 'https://app.wooeen.com/product.js?v='+data.version;
       if(document.body){
-        document.body.appendChild(woeCheckout);
-        document.body.appendChild(woeCheckoutJs);
+        document.body.appendChild(woeProduct);
+        document.body.appendChild(woeProductJs);
       }
 
-      chrome.storage.local.remove("checkoutTaskTemp");
+      chrome.storage.local.remove("productTemp");
     }
   });
+}
 
+function queryInject(){
+  chrome.storage.local.get(["queryTemp"], ({ queryTemp }) => {
+    let data = JSON.parse(queryTemp);
+    if (typeof data === 'object' &&
+        !Array.isArray(data) &&
+        data !== null
+    ) {
+      let woeQuery = document.createElement('script');
+      woeQuery.innerHTML =
+        'if(typeof woequeryDone === "undefined"){var woequeryDone = "";}'+
+        'var woequery = {'+
+          'pl: '+data.pl+','+
+          'u: '+data.u+','+
+          'a: '+data.a+','+
+          'endpoint: "'+data.endpoint+'",'+
+          'data: '+data.data+
+        '}';
+
+      let woeQueryJs = document.createElement('script');
+      woeQueryJs.type = 'application/javascript';
+      woeQueryJs.src = 'https://app.wooeen.com/query.js?v='+data.version;
+      if(document.body){
+        document.body.appendChild(woeQuery);
+        document.body.appendChild(woeQueryJs);
+      }
+
+      chrome.storage.local.remove("queryTemp");
+    }
+  });
 }
 
 chrome.webRequest.onBeforeRequest.addListener(
@@ -187,6 +242,23 @@ chrome.webRequest.onBeforeRequest.addListener(
             tab.count = 0;
             tab.domain = domain;
             tab.platformId = tracking.platformId;
+            tab.checkoutEndpoint = undefined;
+            tab.checkoutData = undefined;
+            tab.productEndpoint = undefined;
+            tab.productData = undefined;
+            tab.queryEndpoint = undefined;
+            tab.queryData = undefined;
+
+            let advertiser = tracking.advertiserId ? getAdvertiserById(tracking.advertiserId) :  getAdvertiserByDomain(domain);
+            if(advertiser){
+              tab.advertiserId = advertiser.id;
+              tab.checkoutEndpoint = advertiser.checkout ? advertiser.checkout.endpoint : undefined;
+              tab.checkoutData = advertiser.checkout ? advertiser.checkout.data : undefined;
+              tab.productEndpoint = advertiser.product ? advertiser.product.endpoint : undefined;
+              tab.productData = advertiser.product ? advertiser.product.data : undefined;
+              tab.queryEndpoint = advertiser.query ? advertiser.query.endpoint : undefined;
+              tab.queryData = advertiser.query ? advertiser.query.data : undefined;
+            }
 
             let user = Auth.getUser();
             let goto: string | null = parseTrackingLink(tracking.deeplink, tracking.params, details.url, user && user.id ? user.id : '' )

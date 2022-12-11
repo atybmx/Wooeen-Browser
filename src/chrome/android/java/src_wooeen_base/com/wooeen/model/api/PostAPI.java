@@ -10,6 +10,7 @@ import com.wooeen.model.api.utils.WebServiceClient.Header;
 import com.wooeen.model.api.utils.WoeDAOUtils;
 import com.wooeen.model.to.PostTO;
 import com.wooeen.utils.DatetimeUtils;
+import com.wooeen.utils.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,10 @@ public class PostAPI {
     }
 
     public List<PostTO> get(int pg,int qtdPerPage){
+        return get(pg, qtdPerPage, null);
+    }
+
+    public List<PostTO> get(int pg,int qtdPerPage, String q){
         try {
             //configura a url e os parametros
             Uri.Builder builder = new Uri.Builder();
@@ -35,6 +40,9 @@ public class PostAPI {
                     .appendQueryParameter("_fields","id,featured_media,fimg_url,title,link,date")
                     .appendQueryParameter("page",""+pg)
                     .appendQueryParameter("per_page",""+qtdPerPage);
+
+            if(!TextUtils.isEmpty(q))
+                builder.appendQueryParameter("search",q);
 
             String[] resposta = new WebServiceClient()
                     .get(builder.build().toString());

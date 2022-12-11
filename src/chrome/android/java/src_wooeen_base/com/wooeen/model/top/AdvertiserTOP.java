@@ -2,11 +2,13 @@ package com.wooeen.model.top;
 
 public class AdvertiserTOP {
 
+    private int id;
+    private String domain;
     private String q;
-    private String checkout;
     private int page;
     private int qtdPerPage;
     private String orderBy;
+
 
     public String getQ() {
         return q;
@@ -55,11 +57,19 @@ public class AdvertiserTOP {
         this.orderBy = orderBy;
     }
 
-    public String getCheckout() {
-        return checkout;
+    public String getDomain() {
+        return domain;
     }
 
-    public void setCheckout(String checkout) {
-        this.checkout = checkout;
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

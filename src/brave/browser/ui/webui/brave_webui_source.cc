@@ -226,6 +226,14 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "woeSeeRules", IDS_WOE_SEE_RULES},
         { "woeShowMore", IDS_WOE_SHOW_MORE},
         { "woeNewsScrollHint", IDS_WOE_NEWS_SCROLL_HINT},
+        { "woeNtpCashbackTitle", IDS_WOE_NTP_CASHBACK_TITLE},
+        { "woeNtpCashbackDesc", IDS_WOE_NTP_CASHBACK_DESC},
+        { "woeNtpChallengesTitle", IDS_WOE_NTP_CHALLENGES_TITLE},
+        { "woeNtpChallengesDesc", IDS_WOE_NTP_CHALLENGES_DESC},
+        { "woeNtpAdvertisersTitle", IDS_WOE_NTP_ADVERTISERS_TITLE},
+        { "woeNtpAdvertisersDesc", IDS_WOE_NTP_ADVERTISERS_DESC},
+        { "woeNtpShareTitle", IDS_WOE_NTP_SHARE_TITLE},
+        { "woeNtpShareDesc", IDS_WOE_NTP_SHARE_DESC},
 #if BUILDFLAG(CRYPTO_DOT_COM_ENABLED)
         { "cryptoDotComWidgetDesc", IDS_BRAVE_NEW_TAB_CRYPTO_DOT_COM_WIDGET_DESC },              // NOLINT
 #endif

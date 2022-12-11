@@ -539,9 +539,13 @@ class NewTabPage extends React.Component<Props, State> {
         </Page.Page>
         {newTabData.showNews &&
         <WooeenNews
+          woeLoadPosts={newTabData.woeUser && newTabData.woeUser.id && newTabData.woeUser.country && newTabData.woeUser.country.id ? newTabData.woeUser.country.loadPosts : newTabData.woeCountry && newTabData.woeCountry.id ? newTabData.woeCountry.loadPosts : false}
           woePosts={newTabData.woePosts ? newTabData.woePosts.items : undefined}
+          woeLoadTasks={newTabData.woeUser && newTabData.woeUser.id && newTabData.woeUser.country && newTabData.woeUser.country.id ? newTabData.woeUser.country.loadTasks : newTabData.woeCountry && newTabData.woeCountry.id ? newTabData.woeCountry.loadTasks : false}
           woeTasks={newTabData.woeTasks ? newTabData.woeTasks.items : undefined}
+          woeLoadOffers={newTabData.woeUser && newTabData.woeUser.id && newTabData.woeUser.country && newTabData.woeUser.country.id ? newTabData.woeUser.country.loadOffers : newTabData.woeCountry && newTabData.woeCountry.id ? newTabData.woeCountry.loadOffers : false}
           woeOffers={newTabData.woeOffers ? newTabData.woeOffers.items : undefined}
+          woeLoadCoupons={newTabData.woeUser && newTabData.woeUser.id && newTabData.woeUser.country && newTabData.woeUser.country.id ? newTabData.woeUser.country.loadCoupons : newTabData.woeCountry && newTabData.woeCountry.id ? newTabData.woeCountry.loadCoupons : false}
           woeCoupons={newTabData.woeCoupons ? newTabData.woeCoupons.items : undefined}/>
         }
         <Settings

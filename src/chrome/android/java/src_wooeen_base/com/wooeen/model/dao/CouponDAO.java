@@ -192,7 +192,7 @@ public class CouponDAO {
 
         if(!TextUtils.isEmpty(search.getQ())) {
             sqlWhere += WoeDBContract.Coupon.TITLE+" LIKE ? AND ";
-            selectionArgs.add(search.getQ()+"%");
+            selectionArgs.add("%"+search.getQ()+"%");
         }
 
         if(sqlWhere.endsWith("AND "))

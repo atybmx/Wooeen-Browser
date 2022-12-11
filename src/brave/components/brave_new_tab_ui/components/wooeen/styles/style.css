@@ -9,6 +9,9 @@
 .CashbackCtaContainerWhite:hover svg{fill: #fff;}
 .CashbackCtaContainerWhite:hover span{color: #fff;}
 
+.CashbackCtaContainerHiglight {background-image: linear-gradient(25deg, #cf2f29 0%, #f5d943 100%);}
+.CashbackCtaContainerHiglight:hover{background-image: linear-gradient(25deg, #f5d943 0%, #cf2f29 100%);}
+
 .WoeModalContentHeader{padding: 2px 16px;color: #3b3e4f;}
 .WoeModalContentBody{padding: 2px 16px;}
 .WoeModalContentBody p.big{text-align: center;font-size: 1.2rem;}

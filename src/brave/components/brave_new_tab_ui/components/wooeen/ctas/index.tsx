@@ -8,6 +8,8 @@ import {
   StyledCashbackCtaDialog,
   StyledCashbackCtaContainer,
   StyledCashbackCtaItem,
+  StyledCashbackCtaItemInfo,
+  StyledCashbackCtaItemTitle,
   StyledCashbackCtaItemText,
   StyledCashbackCtaItemImage,
   StyledCashbackCtaAnchor
@@ -37,6 +39,7 @@ export class CashbackCtaContainer extends React.PureComponent<CashbackCtaProps, 
 }
 
 export interface CashbackCtaItemProps {
+  title: string
   text: string
   className?: string
   destinationUrl?: string
@@ -52,13 +55,16 @@ export interface CashbackCtaItemProps {
  */
 export class CashbackCtaItem extends React.PureComponent<CashbackCtaItemProps, {}> {
   render () {
-    const { text, className, destinationUrl, onClickItem, children } = this.props
+    const { title, text, className, destinationUrl, onClickItem, children } = this.props
 
     return (
       <StyledCashbackCtaAnchor href={destinationUrl} onClick={onClickItem}>
         <StyledCashbackCtaItem className={`CashbackCtaContainer ${className}`}>
           <StyledCashbackCtaItemImage>{children}</StyledCashbackCtaItemImage>
-          <StyledCashbackCtaItemText>{text}</StyledCashbackCtaItemText>
+          <StyledCashbackCtaItemInfo>
+            <StyledCashbackCtaItemTitle>{title}</StyledCashbackCtaItemTitle>
+            <StyledCashbackCtaItemText>{text}</StyledCashbackCtaItemText>
+          </StyledCashbackCtaItemInfo>
         </StyledCashbackCtaItem>
       </StyledCashbackCtaAnchor>
     )
@@ -114,7 +120,7 @@ export class CtaShareDialog extends React.PureComponent<DialogProps, {}> {
     let woeShareLink = document.getElementById("WoeCtaShareModalLink");
     if(woeShareLink)
       toClipboard(woeShareLink.innerText || woeShareLink.textContent)
-      
+
     let woeActionTextHide = document.getElementById("woeCtaShareModalCopied");
     if(woeActionTextHide){
       woeActionTextHide.style.display = "block";

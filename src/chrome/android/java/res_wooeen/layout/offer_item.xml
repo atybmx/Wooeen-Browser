@@ -62,7 +62,6 @@
                 android:textAllCaps="true"
                 android:textSize="13dp"
                 android:textFontWeight="600"
-                android:maxLines="3"
                 android:ellipsize="end"
                 android:singleLine="false"/>
 

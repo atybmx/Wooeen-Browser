@@ -5,11 +5,12 @@
 import * as bluebird from 'bluebird'
 
 import './background/greaselion'
-import './background/today'
+// import './background/today'
 import './background/woecr'
 import './background/woeadv'
 import './background/woetrk'
 import './background/woeuse'
+import './background/woever'
 import './background/woepos'
 import './background/woeoff'
 import './background/woecou'
