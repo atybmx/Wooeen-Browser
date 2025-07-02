@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/activities_mg"
+    android:background="@drawable/woe_bg_primary">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <TextView
+            android:labelFor="@id/txt_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/woe_whats_your_country"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/Theme.Wooeen.TextH1"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/woe_whats_your_country_desc"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/Theme.Wooeen.TextH3"
+            android:textColor="@color/white" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/txt_data"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingBottom="10dp"
+            android:gravity="center"
+            android:background="@drawable/woe_edit">
+
+            <ImageView
+                android:id="@+id/cr_img"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="10dp" />
+
+            <TextView
+                android:id="@+id/cr_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:gravity="center">
+
+            </TextView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <com.wooeen.view.ui.WoeButton
+        android:id="@+id/btn_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="60dp"
+        android:layout_weight="0"
+        android:layout_marginBottom="10dp"
+        android:text="@string/woe_next" />
+
+    <com.wooeen.view.ui.WoeButtonTransparent
+        android:id="@+id/btn_back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:textColor="@color/white"
+        android:text="@string/woe_back" />
+
+</LinearLayout>

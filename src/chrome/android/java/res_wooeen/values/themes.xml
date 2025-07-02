@@ -21,7 +21,7 @@
     </style>
 
     <style name="Theme.Wooeen.TextH1" parent="TextAppearance.AppCompat.Large">
-        <item name="android:textSize">34sp</item>
+        <item name="android:textSize">28sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textColor">@color/woe_style_h1</item>
@@ -51,5 +51,14 @@
         <item name="android:textAlignment">center</item>
         <item name="android:textColor">@color/woe_color_font</item>
     </style>
+
+    <style name="Theme.Wooeen.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Wooeen.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Wooeen.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

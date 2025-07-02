@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 public class WoeSyncAdapterService extends Service {
 
     private static final Object sSyncAdapterLock = new Object();
-    private static WoeSyncAdapter sWoeSyncAdapter;
+    private WoeSyncAdapter sWoeSyncAdapter;
 
     @Override
     public void onCreate() {

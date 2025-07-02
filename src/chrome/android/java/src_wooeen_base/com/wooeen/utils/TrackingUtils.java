@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.webkit.URLUtil;
 
+import com.wooeen.model.api.NavigationAPI;
 import com.wooeen.model.dao.AdvertiserDAO;
 import com.wooeen.model.dao.TaskDAO;
 import com.wooeen.model.dao.TrackingDAO;
 import com.wooeen.model.to.AdvertiserTO;
+import com.wooeen.model.to.CountryTO;
 import com.wooeen.model.to.TaskTO;
 import com.wooeen.model.to.TrackingTO;
 import com.wooeen.model.to.VersionTO;
@@ -16,11 +18,11 @@ import com.wooeen.model.top.AdvertiserTOP;
 import com.wooeen.model.top.TaskTOP;
 
 import org.chromium.base.StrictModeContext;
+import org.chromium.base.task.AsyncTask;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,6 +91,30 @@ public class TrackingUtils {
         if(items == null || items.isEmpty())
             return null;
 
+        //return if has only one
+        if(items.size() == 1)
+            return items.get(0);
+
+        //return the priority
+        TrackingTO trk = null;
+        boolean hasPriority = false;
+        for(TrackingTO t:items) {
+            if(trk == null) {
+                trk = t;
+                continue;
+            }
+
+            if(t.getPriority() != trk.getPriority())
+                hasPriority = true;
+
+            if(t.getPriority() > trk.getPriority()) {
+                trk = t;
+            }
+        }
+        if(hasPriority)
+            return trk;
+
+        //return random
         return items.get(new Random().nextInt(items.size()));
     }
 
@@ -229,14 +255,34 @@ public class TrackingUtils {
         }
     }
 
+    public static final int SOURCE_APP = 16;
+    public static final int SOURCE_SOCIAL = 6;
+    public static final int SOURCE_RTG_ANDROID = 7;
+    public static final int SOURCE_PUSH = 4;
+    public static final int SOURCE_SEARCH = 5;
+
     public static String parseTrackingLink(String deeplink, String params, String link, int userId) {
+        return parseTrackingLink(deeplink, params, link, userId, 0, 0);
+    }
+
+    public static String parseTrackingLink(String deeplink, String params, String link, int userId, int source, int affiliate) {
         if(link == null)
             return null;
+
+        String userTag = userId > 0 ? "" + userId : "";
+        if(!TextUtils.isEmpty(userTag)) {
+            if(source > 0 || affiliate > 0) {
+                userTag += "_" + source;
+
+                if(affiliate > 0)
+                    userTag += "_" + affiliate;
+            }
+        }
 
         //parse the params and add into final link
         if(!TextUtils.isEmpty(params)) {
             if (params.contains("{user_id}"))
-                params = params.replaceAll("\\{user_id\\}", userId > 0 ? "" + userId : "");
+                params = params.replaceAll("\\{user_id\\}", userTag);
 
             try {
                 URI l = new URI(link);
@@ -248,7 +294,7 @@ public class TrackingUtils {
                         String[] lpsQuery = l.getQuery().split("&");
                         if(lpsQuery != null && lpsQuery.length > 0) {
                             for(String q:lpsQuery) {
-                                if(q!= null && q.contains("=")) {
+                                if(q!= null && q.contains("=") && q.split("=").length > 1) {
                                     lps.add(new NameValuePar(q.split("=")[0],q.split("=")[1]));
                                 }
                             }
@@ -258,7 +304,7 @@ public class TrackingUtils {
                     String[] ps = params.split("&");
                     if(ps != null && ps.length > 0) {
                         for(String p:ps) {
-                            if(p!= null && p.contains("=")) {
+                            if(p!= null && p.contains("=") && p.split("=").length > 1) {
                                 String pName = p.split("=")[0];
                                 String pValue = p.split("=")[1];
                                 boolean setted = false;
@@ -308,7 +354,7 @@ public class TrackingUtils {
                 }
             }
             if (deeplink.contains("{user_id}"))
-                deeplink = deeplink.replaceAll("\\{user_id\\}", userId > 0 ? "" + userId : "");
+                deeplink = deeplink.replaceAll("\\{user_id\\}", userTag);
 
             return deeplink;
         }
@@ -316,4 +362,93 @@ public class TrackingUtils {
         return link;
     }
 
+    public static void sendNavigOpen(int user, int advertiser){
+        new SendNavigOpen(user, advertiser).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private static class SendNavigOpen extends AsyncTask<Boolean> {
+
+        private int user;
+        private int advertiser;
+
+        public SendNavigOpen(int user, int advertiser){
+            this.user = user;
+            this.advertiser = advertiser;
+        }
+
+        @Override
+        protected Boolean doInBackground() {
+            return NavigationAPI.woenav(5, user, advertiser);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+        }
+    }
+
+    public static final int DEFAUL_APPROVAL_DAYS = 45;
+
+    public static String printCashbackValue(String resTo, CountryTO country, TrackingTO trk, double amount) {
+        String cashback = "";
+        if(trk.getCommissionAvg1() > 0) {
+            if(trk.getCommissionMin1() == trk.getCommissionMax1()) {
+                if(amount > 0)
+                    cashback = NumberUtils.realToString(country.getCurrency().getId(), country.getId(), country.getLanguage(), getCashbackValueCPA(trk, amount));
+                else
+                    cashback = NumberUtils.percentPrintToString(trk.getCommissionMin1());
+            }else {
+                cashback = resTo+" "+NumberUtils.percentPrintToString(trk.getCommissionMax1());
+            }
+        }
+
+        if(trk.getCommissionAvg2() > 0) {
+            if(!"".equals(cashback))
+                cashback += " + ";
+
+            if(trk.getCommissionMin2() != trk.getCommissionMax2())
+                cashback += resTo+" ";
+
+            cashback += NumberUtils.realToString(country.getCurrency().getId(), country.getId(), country.getLanguage(), getCashbackValueCPL(trk, trk.getCommissionMin2()));
+        }
+
+        if(!"".equals(cashback))
+            return cashback;
+        else
+            return "";
+    }
+
+    public static String printCashbackValueCPA(CountryTO country, TrackingTO trk, double amount) {
+        if(trk.getCommissionAvg1() > 0) {
+            if(amount > 0)
+                return NumberUtils.realToString(country.getCurrency().getId(), country.getId(), country.getLanguage(), getCashbackValueCPA(trk, amount));
+            else
+                return NumberUtils.percentPrintToString(trk.getCommissionMax1());
+        }
+
+        return null;
+    }
+
+    public static boolean getToCashbackValueCPA(TrackingTO trk) {
+        if(trk.getCommissionAvg1() > 0) {
+            if(trk.getCommissionMin1() == trk.getCommissionMax1()) {
+                return false;
+            }else {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static double getCashbackValueCPL(TrackingTO trk, double amount) {
+        return amount * trk.getPayout() / 100;
+    }
+
+    public static double getCashbackValueCPA(TrackingTO trk, double amount) {
+        double commissionWoe = amount * trk.getCommissionMax1() / 100;
+        if(commissionWoe <= 0)
+            return 0;
+
+        return commissionWoe * trk.getPayout() / 100;
+    }
 }

@@ -247,9 +247,6 @@ public class LoginStepVerifyView extends Fragment {
         if(token == null || TextUtils.isEmpty(token.getIdToken()) || TextUtils.isEmpty(token.getAccessToken())) {
             Toast.makeText(getContext(), R.string.woe_code_invalid,Toast.LENGTH_LONG).show();
         }else{
-            UserTO mUser = UserUtils.newInstance(getContext(), token.getUser());
-            UserUtils.saveUserData(getContext(),mUser,token);
-
             if(listener != null)
                 listener.onValidated();
         }

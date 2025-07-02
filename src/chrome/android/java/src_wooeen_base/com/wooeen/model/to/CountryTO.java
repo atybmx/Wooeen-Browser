@@ -1,16 +1,23 @@
 package com.wooeen.model.to;
 
-public class CountryTO {
+import java.io.Serializable;
+
+public class CountryTO implements Serializable {
+
+    private static final long serialVersionUID = -7421241539173001135L;
 
     private String id;
     private String name;
     private String language;
     private String imageUrl;
-    private String currency;
+    private CurrencyTO currency;
     private boolean loadPosts;
     private boolean loadOffers;
     private boolean loadCoupons;
     private boolean loadTasks;
+    private boolean loadGames;
+    private CategoryTO categoryB2b;
+    private String searchHint;
 
     public CountryTO(){
 
@@ -18,6 +25,10 @@ public class CountryTO {
 
     public CountryTO(String id){
         this.id = id;
+    }
+
+    public CountryTO(String id, String image){
+        this.id = id; this.imageUrl = image;
     }
 
     public String getId() {
@@ -71,10 +82,34 @@ public class CountryTO {
         this.loadTasks = loadTasks;
     }
 
-    public String getCurrency() {
+    public CurrencyTO getCurrency() {
         return currency;
     }
-    public void setCurrency(String currency) {
+    public void setCurrency(CurrencyTO currency) {
         this.currency = currency;
+    }
+
+    public boolean getLoadGames() {
+        return loadGames;
+    }
+
+    public void setLoadGames(boolean loadGames) {
+        this.loadGames = loadGames;
+    }
+
+    public CategoryTO getCategoryB2b() {
+        return categoryB2b;
+    }
+
+    public void setCategoryB2b(CategoryTO categoryB2b) {
+        this.categoryB2b = categoryB2b;
+    }
+
+    public String getSearchHint() {
+        return searchHint;
+    }
+
+    public void setSearchHint(String searchHint) {
+        this.searchHint = searchHint;
     }
 }

@@ -1,0 +1,14 @@
+Name: Apache Commons Logging
+Short Name: commons-logging
+URL: http://commons.apache.org/proper/commons-logging/
+Version: 1.2
+License: 
+License File: NOT_SHIPPED
+CPEPrefix: unknown
+Security Critical: no
+
+Description:
+Apache Commons Logging is a thin adapter allowing configurable bridging to other, well known logging systems.
+
+Local Modifications:
+No modifications.

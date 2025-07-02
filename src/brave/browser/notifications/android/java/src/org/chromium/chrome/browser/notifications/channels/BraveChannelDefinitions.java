@@ -7,6 +7,7 @@
 
 package org.chromium.chrome.browser.notifications.channels;
 
+import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 
 import org.chromium.chrome.browser.notifications.R;
@@ -25,8 +26,10 @@ public class BraveChannelDefinitions {
 
     public class ChannelGroupId {
         public static final String WOOEEN_ADS = "com.wooeen.browser.ads";
+        public static final String GENERAL = "general";
     }
 
+    @SuppressLint("NewApi")
     static protected void addBraveChannels(
             Map<String, PredefinedChannel> map, Set<String> startup) {
         //map.put(ChannelId.WOOEEN_ADS,
@@ -42,10 +45,11 @@ public class BraveChannelDefinitions {
         //startup.add(ChannelId.WOOEEN_ADS_BACKGROUND);
     }
 
+    @SuppressLint("NewApi")
     static protected void addBraveChannelGroups(
             Map<String, ChannelDefinitions.PredefinedChannelGroup> map) {
-        //map.put(ChannelGroupId.WOOEEN_ADS,
-        //        new ChannelDefinitions.PredefinedChannelGroup(
-        //                ChannelGroupId.WOOEEN_ADS, R.string.notification_category_group_brave_ads));
+        // map.put(ChannelGroupId.WOOEEN_ADS,
+        //         new ChannelDefinitions.PredefinedChannelGroup(
+        //                 ChannelGroupId.WOOEEN_ADS, R.string.brave_ads_text));
     }
 }

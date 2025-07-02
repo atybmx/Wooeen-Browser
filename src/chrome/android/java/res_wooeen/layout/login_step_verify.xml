@@ -16,7 +16,8 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/wooeen_logo"></ImageView>
+            android:src="@drawable/wooeen_logo"
+            android:contentDescription="@string/woe_wooeen_name"></ImageView>
 
     </LinearLayout>
 
@@ -30,6 +31,7 @@
         android:gravity="center">
 
         <TextView
+            android:labelFor="@id/txt_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -56,9 +58,11 @@
             android:id="@+id/txt_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
             android:ems="10"
             android:inputType="number"
+            android:autofillHints="none"
+            android:textColor="@color/woe_color_font"
+            android:textColorHint="@color/woe_color_font"
             android:gravity="center"
             android:maxLines="1"/>
 

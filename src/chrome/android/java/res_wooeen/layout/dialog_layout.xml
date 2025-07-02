@@ -37,7 +37,7 @@
         <com.wooeen.view.ui.WoeButton
             android:id="@+id/woe_dialog_panel_btn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:minHeight="60dp"
             android:layout_weight="0"
             android:text="@string/woe_close" />

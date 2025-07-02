@@ -1,0 +1,573 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="15dp"
+    android:layout_marginEnd="15dp"
+    android:layout_marginBottom="15dp"
+    android:layout_gravity="center"
+    android:id="@+id/woe_ntp_widget_layout"
+    >
+
+    <LinearLayout
+        android:id="@+id/woe_widget"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/woe_btn_main_div">
+
+        <TextView
+            android:id="@+id/woeWidgetBalanceBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="@string/woe_widget_balance_title"
+            android:textColor="@color/woe_widget_div_title"
+            android:fontFamily="@font/montserrat_bold"
+            android:textAllCaps="true"
+            android:textSize="12sp"
+            android:drawableStart="@drawable/woe_widgets_balance"
+            android:drawablePadding="15dp"
+            android:background="@drawable/woe_widget_unselected"></TextView>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/woeWidgetBalanceDiv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="5dp"
+            android:background="@drawable/woe_widget_div_bg"
+            android:padding="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="15dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/woe_widget_balance_desc"
+                        android:textColor="@color/woe_widget_div_text"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:textSize="14sp"></TextView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/woe_widget_balance_subtitle"
+                        android:textColor="@color/woe_widget_div_text"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:textSize="14sp"></TextView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="end"
+                    >
+                    <TextView
+                        android:id="@+id/txt_balance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/woe_widget_div_text"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:textSize="20sp"
+                        android:layout_marginBottom="5dp"
+                        ></TextView>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <com.wooeen.view.ui.WoeButton
+                android:id="@+id/btn_withdrawn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="60dp"
+                android:layout_weight="0"
+                android:layout_marginBottom="5dp"
+                android:textColor="@color/white"
+                android:text="@string/woe_widget_balance_btn_disabled"
+                android:enabled="false"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/woe_widget_balance_ps"
+                android:textColor="@color/woe_widget_div_text"
+                android:fontFamily="@font/montserrat_regular"
+                android:textSize="12sp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                ></TextView>
+
+        </LinearLayout><!-- END balance DIV -->
+
+        <TextView
+            android:id="@+id/woeWidgetCashbackBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="@string/woe_widget_cashback_title"
+            android:textColor="@color/woe_widget_div_title"
+            android:fontFamily="@font/montserrat_bold"
+            android:textAllCaps="true"
+            android:textSize="12sp"
+            android:drawableStart="@drawable/woe_widgets_cashback"
+            android:drawablePadding="15dp"
+            android:background="@drawable/woe_widget_unselected"></TextView>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/woeWidgetCashbackDiv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="5dp"
+            android:background="@drawable/woe_widget_div_bg">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="20dp"
+                android:paddingBottom="20dp"
+                android:gravity="center"
+                android:background="@drawable/woe_widget_item_row_bg">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="vertical"
+                    android:gravity="start"
+                    >
+                    <TextView
+                        android:id="@+id/txt_cashback_verified"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/woe_widget_div_text"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:textSize="20sp"
+                        android:layout_marginBottom="5dp"
+                        ></TextView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="end">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/woe_widget_cashback_desc1"
+                        android:textColor="@color/woe_widget_div_text"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:textSize="14sp"
+                        android:gravity="end"></TextView>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="20dp"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="vertical"
+                    android:gravity="start"
+                    >
+                    <TextView
+                        android:id="@+id/txt_cashback_pending"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/woe_widget_div_text"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:textSize="20sp"
+                        android:layout_marginBottom="5dp"
+                        ></TextView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="end">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/woe_widget_cashback_desc2"
+                        android:textColor="@color/woe_widget_div_text"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:textSize="14sp"
+                        android:gravity="end"></TextView>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <com.wooeen.view.ui.WoeButtonWidget
+                android:id="@+id/btn_cashback_report"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="60dp"
+                android:layout_weight="0"
+                android:textColor="@color/white"
+                android:text="@string/woe_widget_cashback_btn"
+                />
+
+        </LinearLayout><!-- END Cashback DIV -->
+
+        <TextView
+            android:id="@+id/woeWidgetRecommendationsBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="@string/woe_widget_recommendation_title"
+            android:textColor="@color/woe_widget_div_title"
+            android:fontFamily="@font/montserrat_bold"
+            android:textAllCaps="true"
+            android:textSize="12sp"
+            android:drawableStart="@drawable/woe_widgets_recommendations"
+            android:drawablePadding="15dp"
+            android:background="@drawable/woe_widget_unselected"></TextView>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/woeWidgetRecommendationsDiv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="5dp"
+            android:background="@drawable/woe_widget_div_bg">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="20dp"
+                android:paddingBottom="20dp"
+                android:gravity="center"
+                android:background="@drawable/woe_widget_item_row_bg">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="vertical"
+                    android:gravity="start"
+                    >
+                    <TextView
+                        android:id="@+id/txt_recommendations_quantity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/woe_widget_div_text"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:textSize="20sp"
+                        android:layout_marginBottom="5dp"
+                        ></TextView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="end">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/woe_widget_recommendation_desc1"
+                        android:textColor="@color/woe_widget_div_text"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:textSize="14sp"
+                        android:gravity="end"></TextView>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="20dp"
+                android:paddingBottom="20dp"
+                android:gravity="center"
+                android:background="@drawable/woe_widget_item_row_bg">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="vertical"
+                    android:gravity="start"
+                    >
+                    <TextView
+                        android:id="@+id/txt_recommendations_pending"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/woe_widget_div_text"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:textSize="20sp"
+                        android:layout_marginBottom="5dp"
+                        ></TextView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="end">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/woe_widget_recommendation_desc2"
+                        android:textColor="@color/woe_widget_div_text"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:textSize="14sp"
+                        android:gravity="end"></TextView>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="20dp"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="vertical"
+                    android:gravity="start"
+                    >
+                    <TextView
+                        android:id="@+id/txt_recommendations_approved"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="R$ 100,00"
+                        android:textColor="@color/woe_widget_div_text"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:textSize="20sp"
+                        android:layout_marginBottom="5dp"
+                        ></TextView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="end">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/woe_widget_recommendation_desc3"
+                        android:textColor="@color/woe_widget_div_text"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:textSize="14sp"
+                        android:gravity="end"></TextView>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <com.wooeen.view.ui.WoeButtonWidget
+                android:id="@+id/btn_recommendations_report"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="60dp"
+                android:layout_weight="0"
+                android:textColor="@color/white"
+                android:text="@string/woe_widget_cashback_btn"
+                />
+
+        </LinearLayout><!-- END recommendations DIV -->
+
+        <TextView
+            android:id="@+id/woeWidgetAffBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="@string/woe_widget_aff_title"
+            android:textColor="@color/woe_widget_div_title"
+            android:fontFamily="@font/montserrat_bold"
+            android:textAllCaps="true"
+            android:textSize="12sp"
+            android:drawableStart="@drawable/woe_widgets_aff"
+            android:drawablePadding="15dp"
+            android:background="@drawable/woe_widget_unselected"></TextView>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/woeWidgetAffDiv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="5dp"
+            android:background="@drawable/woe_widget_div_bg">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="20dp"
+                android:paddingBottom="20dp"
+                android:gravity="center"
+                android:background="@drawable/woe_widget_item_row_bg">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="start"
+                    >
+                    <TextView
+                        android:id="@+id/txt_aff_verified"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/woe_widget_div_text"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:textSize="20sp"
+                        android:layout_marginBottom="5dp"
+                        ></TextView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="end">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/woe_widget_aff_desc1"
+                        android:textColor="@color/woe_widget_div_text"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:textSize="14sp"
+                        android:gravity="end"></TextView>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="20dp"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="start"
+                    >
+                    <TextView
+                        android:id="@+id/txt_aff_pending"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/woe_widget_div_text"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:textSize="20sp"
+                        android:layout_marginBottom="5dp"
+                        ></TextView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="end">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/woe_widget_aff_desc2"
+                        android:textColor="@color/woe_widget_div_text"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:textSize="14sp"
+                        android:gravity="end"></TextView>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <com.wooeen.view.ui.WoeButtonWidget
+                android:id="@+id/btn_aff_report"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="60dp"
+                android:layout_weight="0"
+                android:textColor="@color/white"
+                android:text="@string/woe_widget_cashback_btn"
+                />
+
+        </LinearLayout><!-- END aff DIV -->
+
+    </LinearLayout>
+
+
+</FrameLayout>

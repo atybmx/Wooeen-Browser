@@ -1,0 +1,226 @@
+import("//build/config/android/rules.gni")
+
+# === Generated Code Start ===
+# This is generated, do not edit. Update BuildConfigGenerator.groovy instead.
+android_aar_prebuilt("com_singular_sdk_singular_sdk_java") {
+  aar_path = "libs/com_singular_sdk_singular_sdk/singular_sdk-12.5.5.aar"
+  info_path = "libs/com_singular_sdk_singular_sdk/com_singular_sdk_singular_sdk.info"
+  deps = [
+    "//brave/third_party/android_deps:com_android_installreferrer_java",
+    ":gson_java",
+    ":google_play_services_appset_java",
+  ]
+}
+
+android_java_prebuilt("singular_java") {
+  jar_path = "libs/com_singular_sdk_singular_sdk/singular_sdk-12.5.5.jar"
+   type = "java_library"
+}
+
+# This is generated, do not edit. Update BuildConfigGenerator.groovy instead.
+android_aar_prebuilt("google_play_services_appset_java") {
+  aar_path = "libs/com_google_android_gms_play_services_appset/play-services-appset-16.0.0.aar"
+  info_path = "libs/com_google_android_gms_play_services_appset/com_google_android_gms_play_services_appset.info"
+
+  # To remove visibility constraint, add this dependency to
+  # //third_party/wooeen/build.gradle.
+  visibility = [ ":*" ]
+  deps = [
+    "//third_party/android_deps:google_play_services_base_java",
+    "//third_party/android_deps:google_play_services_basement_java",
+    "//third_party/android_deps:google_play_services_tasks_java",
+  ]
+}
+
+# This is generated, do not edit. Update BuildConfigGenerator.groovy instead.
+android_aar_prebuilt("com_android_volley_volley_java") {
+  aar_path = "libs/com_android_volley_volley/volley-1.2.0.aar"
+  info_path = "libs/com_android_volley_volley/com_android_volley_volley.info"
+  deps = [
+        ":org_apache_httpcomponents_httpclient_java",
+        ":org_chromium_net_cronet_api_java",
+        "//third_party/androidx:androidx_annotation_annotation_java",
+  ]
+}
+
+# This is generated, do not edit. Update BuildConfigGenerator.groovy instead.
+android_aar_prebuilt("com_github_livechat_chat_window_android_java") {
+  aar_path = "libs/com_github_livechat_chat_window_android/chat-window-android-v2.2.1.aar"
+  info_path = "libs/com_github_livechat_chat_window_android/com_github_livechat_chat_window_android.info"
+  deps = [
+      ":com_android_volley_volley_java",
+      "//third_party/androidx:androidx_appcompat_appcompat_java",
+      "//third_party/wooeen:gson_java",
+    ]
+}
+
+android_java_prebuilt("aescrypt_java") {
+  jar_path = "libs/aescrypt/aescrypt-0.0.1.jar"
+   type = "java_library"
+}
+
+android_java_prebuilt("gson_java") {
+  jar_path = "libs/gson/gson-2.8.1.jar"
+   type = "java_library"
+}
+
+# This is generated, do not edit. Update BuildConfigGenerator.groovy instead.
+android_java_prebuilt("picasso_java") {
+  jar_path = "libs/picasso/picasso-2.5.2.jar"
+  type = "java_library"
+  deps = [
+  ]
+}
+
+# This is generated, do not edit. Update BuildConfigGenerator.groovy instead.
+java_prebuilt("com_squareup_okhttp_okhttp_java") {
+  jar_path = "libs/com_squareup_okhttp_okhttp/okhttp-2.7.5.jar"
+  output_name = "com_squareup_okhttp_okhttp"
+  enable_bytecode_checks = false
+  supports_android = true
+  deps = [ ":com_squareup_okio_okio_java" ]
+}
+
+# This is generated, do not edit. Update BuildConfigGenerator.groovy instead.
+android_aar_prebuilt("com_google_android_play_integrity_java") {
+  aar_path = "libs/com_google_android_play_integrity/integrity-1.1.0.aar"
+  info_path = "libs/com_google_android_play_integrity/com_google_android_play_integrity.info"
+
+  # To remove visibility constraint, add this dependency to
+  # //third_party/wooeen/build.gradle.
+  visibility = [ ":*" ]
+  deps = [
+    "//third_party/android_deps:google_play_services_basement_java",
+    "//third_party/android_deps:google_play_services_tasks_java",
+  ]
+}
+
+android_aar_prebuilt("io_adjoe_adjoe_protection_android_java") {
+  aar_path = "libs/io_adjoe_adjoe_protection_android/adjoe-protection-android-0.1.7.aar"
+  info_path = "libs/io_adjoe_adjoe_protection_android/io_adjoe_adjoe_protection_android_0.1.7.info"
+  extract_native_libraries = true
+
+  # ignore_proguard_configs = true
+  # proguard_configs = [ "libs/io_adjoe_adjoe_protection_android/proguard.txt" ]
+
+  deps = [
+      ":com_google_android_play_integrity_java",
+      "//third_party/android_deps:play_services_ads_identifier_java",
+      "//third_party/android_deps:google_play_services_auth_api_phone_java",
+      "//third_party/android_deps:google_play_services_auth_java",
+  ]
+}
+
+# This is generated, do not edit. Update BuildConfigGenerator.groovy instead.
+android_aar_prebuilt("google_play_services_safetynet_java") {
+  aar_path = "libs/com_google_android_gms_play_services_safetynet/play-services-safetynet-18.0.1.aar"
+  info_path = "libs/com_google_android_gms_play_services_safetynet/com_google_android_gms_play_services_safetynet.info"
+
+  # To remove visibility constraint, add this dependency to
+  # //third_party/wooeen/build.gradle.
+  visibility = [ ":*" ]
+  deps = [
+    "//third_party/android_deps:google_play_services_base_java",
+    "//third_party/android_deps:google_play_services_basement_java",
+    "//third_party/android_deps:google_play_services_tasks_java",
+  ]
+}
+
+# This is generated, do not edit. Update BuildConfigGenerator.groovy instead.
+android_aar_prebuilt("io_adjoe_adjoe_sdk_android_java") {
+  aar_path = "libs/io_adjoe_adjoe_sdk_android/adjoe-sdk-android-2.1.1.aar"
+  info_path = "libs/io_adjoe_adjoe_sdk_android/io_adjoe_adjoe_sdk_android.info"
+  ignore_proguard_configs = true
+  proguard_configs = [ "libs/io_adjoe_adjoe_sdk_android/proguard.txt" ]
+  deps = [
+      "//third_party/android_deps:play_services_ads_identifier_java",
+      ":io_adjoe_adjoe_protection_android_java",
+      "//third_party/android_deps:material_design_java",
+      ":androidx_work_work_multiprocess_java",
+      "//third_party/androidx:androidx_work_work_runtime_java",
+    ]
+}
+
+android_aar_prebuilt("androidx_work_work_multiprocess_java") {
+  aar_path = "libs/androidx_work_work_multiprocess_java/work-multiprocess-2.9.0.aar"
+  info_path = "libs/androidx_work_work_multiprocess_java/androidx_work_work_multiprocess_java.info"
+  resource_overlay = true
+  deps = [
+      "//third_party/androidx:androidx_work_work_runtime_java",
+      "//third_party/android_deps:com_google_guava_listenablefuture_java",
+      "//third_party/android_deps:org_jetbrains_kotlin_kotlin_stdlib_java",
+      "//third_party/android_deps:org_jetbrains_kotlinx_kotlinx_coroutines_android_java",
+    ]
+}
+
+# This is generated, do not edit. Update BuildConfigGenerator.groovy instead.
+java_prebuilt("org_apache_httpcomponents_httpclient_java") {
+  jar_path = "libs/org_apache_httpcomponents_httpclient/httpclient-4.5.14.jar"
+  output_name = "org_apache_httpcomponents_httpclient"
+  enable_bytecode_checks = false
+  supports_android = true
+  deps = [
+    ":commons_codec_commons_codec_java",
+    ":commons_logging_commons_logging_java",
+    ":org_apache_httpcomponents_httpcore_java",
+  ]
+}
+
+# This is generated, do not edit. Update BuildConfigGenerator.groovy instead.
+android_aar_prebuilt("org_chromium_net_cronet_api_java") {
+  aar_path = "libs/org_chromium_net_cronet_api/cronet-api-108.5359.79.aar"
+  info_path =
+      "libs/org_chromium_net_cronet_api/org_chromium_net_cronet_api.info"
+}
+
+# This is generated, do not edit. Update BuildConfigGenerator.groovy instead.
+java_prebuilt("com_squareup_okio_okio_java") {
+  jar_path = "libs/com_squareup_okio_okio/okio-1.6.0.jar"
+  output_name = "com_squareup_okio_okio"
+  enable_bytecode_checks = false
+  supports_android = true
+
+  # To remove visibility constraint, add this dependency to
+  # //third_party/wooeen/build.gradle.
+  visibility = [ ":*" ]
+}
+
+# This is generated, do not edit. Update BuildConfigGenerator.groovy instead.
+java_prebuilt("commons_codec_commons_codec_java") {
+  jar_path = "libs/commons_codec_commons_codec/commons-codec-1.11.jar"
+  output_name = "commons_codec_commons_codec"
+  enable_bytecode_checks = false
+  supports_android = true
+
+  # To remove visibility constraint, add this dependency to
+  # //third_party/wooeen/build.gradle.
+  visibility = [ ":*" ]
+}
+
+# This is generated, do not edit. Update BuildConfigGenerator.groovy instead.
+java_prebuilt("commons_logging_commons_logging_java") {
+  jar_path = "libs/commons_logging_commons_logging/commons-logging-1.2.jar"
+  output_name = "commons_logging_commons_logging"
+  enable_bytecode_checks = false
+  supports_android = true
+
+  # To remove visibility constraint, add this dependency to
+  # //third_party/wooeen/build.gradle.
+  visibility = [ ":*" ]
+}
+
+# This is generated, do not edit. Update BuildConfigGenerator.groovy instead.
+java_prebuilt("org_apache_httpcomponents_httpcore_java") {
+  jar_path = "libs/org_apache_httpcomponents_httpcore/httpcore-4.4.16.jar"
+  output_name = "org_apache_httpcomponents_httpcore"
+  enable_bytecode_checks = false
+  supports_android = true
+
+  # To remove visibility constraint, add this dependency to
+  # //third_party/wooeen/build.gradle.
+  visibility = [ ":*" ]
+}
+
+if (!limit_android_deps) {
+}
+# === Generated Code End ===

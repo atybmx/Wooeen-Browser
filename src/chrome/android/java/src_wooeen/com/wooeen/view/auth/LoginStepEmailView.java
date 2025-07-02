@@ -50,7 +50,7 @@ public class LoginStepEmailView extends Fragment implements LoaderManager.Loader
     public interface OnItemSelectedListener {
         public void onNextPass(String email);
 
-        public void onRegister();
+        public void onRegister(String email);
     }
 
     public LoginStepEmailView() {
@@ -124,7 +124,7 @@ public class LoginStepEmailView extends Fragment implements LoaderManager.Loader
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(listener != null) listener.onRegister();
+                if(listener != null) listener.onRegister(null);
             }
         });
 
@@ -265,7 +265,7 @@ public class LoginStepEmailView extends Fragment implements LoaderManager.Loader
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                if (listener != null) listener.onRegister();
+                                if (listener != null) listener.onRegister(mEmail);
                             }
                         });
                 builder.setNegativeButton(getString(R.string.woe_no), null);

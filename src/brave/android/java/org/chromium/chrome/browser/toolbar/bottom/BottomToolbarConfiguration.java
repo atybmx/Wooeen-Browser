@@ -11,9 +11,9 @@ import android.graphics.Point;
 import android.view.Display;
 
 import org.chromium.base.ApplicationStatus;
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.app.ChromeActivity;
-import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.tasks.tab_management.TabUiFeatureUtilities;
 import org.chromium.ui.base.DeviceFormFactor;
@@ -23,29 +23,27 @@ public class BottomToolbarConfiguration {
     private static final int SMALL_SCREEN_HEIGHT = 640;
 
     public static boolean isBottomToolbarEnabled() {
-        return false;
-        //
-        // if (DeviceFormFactor.isNonMultiDisplayContextOnTablet(
-        //             ContextUtils.getApplicationContext())) {
-        //     return false;
-        // }
-        // SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-        // if (sharedPreferences.getBoolean(
-        //             BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_SET_KEY, false)) {
-        //     return sharedPreferences.getBoolean(
-        //             BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, true);
-        // } else {
-        //     SharedPreferencesManager.getInstance().writeBoolean(
-        //             BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_SET_KEY, true);
-        //     boolean enable = true;
-        //     if (isSmallScreen()) {
-        //         enable = false;
-        //     }
-        //     SharedPreferencesManager.getInstance().writeBoolean(
-        //             BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, enable);
-        //
-        //     return enable;
-        // }
+        if (DeviceFormFactor.isNonMultiDisplayContextOnTablet(
+                    ContextUtils.getApplicationContext())) {
+            return false;
+        }
+        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+        if (sharedPreferences.getBoolean(
+                    BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_SET_KEY, false)) {
+            return sharedPreferences.getBoolean(
+                    BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, true);
+        } else {
+            SharedPreferencesManager.getInstance().writeBoolean(
+                    BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_SET_KEY, true);
+            boolean enable = true;
+            if (isSmallScreen()) {
+                enable = false;
+            }
+            SharedPreferencesManager.getInstance().writeBoolean(
+                    BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, enable);
+
+            return enable;
+        }
     }
 
     private static boolean isSmallScreen() {

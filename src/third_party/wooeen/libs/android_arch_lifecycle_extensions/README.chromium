@@ -1,0 +1,14 @@
+Name: Android Lifecycle Extensions
+Short Name: extensions
+URL: https://developer.android.com/topic/libraries/architecture/index.html
+Version: 1.1.0
+License: 
+License File: NOT_SHIPPED
+CPEPrefix: unknown
+Security Critical: no
+
+Description:
+Android Lifecycle Extensions
+
+Local Modifications:
+No modifications.

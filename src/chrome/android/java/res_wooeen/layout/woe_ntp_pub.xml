@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/woe_pub_item_bg_normal"
+    android:paddingTop="20dp"
+    android:paddingBottom="10dp"
+    android:clipToPadding="false"
+    android:clipChildren="false"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:orientation="horizontal"
+        android:gravity="end|center_vertical"
+        android:clipToPadding="false"
+        android:clipChildren="false">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:gravity="center_vertical"
+            android:clipToPadding="false"
+            android:clipChildren="false"
+            android:background="@drawable/woe_pub_head">
+
+
+            <ImageView
+                android:id="@+id/woe_pub_user_image"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/woe_rounded_border"
+                android:layout_centerInParent="true"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:elevation="10dp"
+                android:src="@drawable/woe_no_image_person"
+                ></ImageView>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/woe_pub_user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:gravity="center_vertical|start"
+                    android:lineHeight="20dp"
+                    android:singleLine="true"
+                    android:textColor="@color/woe_pub_item_text"
+                    android:textFontWeight="400"
+                    android:textSize="14sp"
+                    android:ellipsize="end"
+                    android:text=""></TextView>
+
+                <FrameLayout
+                    android:layout_width="1dp"
+                    android:layout_height="15dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@color/woe_pub_item_text"></FrameLayout>
+
+                <TextView
+                    android:id="@+id/woe_pub_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="center_vertical|start"
+                    android:lineHeight="20dp"
+                    android:singleLine="true"
+                    android:textColor="@color/woe_pub_item_date"
+                    android:textFontWeight="400"
+                    android:textSize="14sp"
+                    android:ellipsize="end"></TextView>
+
+            </LinearLayout>
+
+            <com.wooeen.view.ui.WoeButtonTransparent
+                android:id="@+id/woe_pub_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:drawableStart="@drawable/woe_pub_more"
+                android:padding="10dp"
+                android:elevation="10dp"
+                ></com.wooeen.view.ui.WoeButtonTransparent>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/woe_pub_text"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="10dp"
+        android:padding="10dp"
+        android:gravity="center_vertical|start"
+        android:textColor="@color/woe_pub_item_text"
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="13sp"
+        android:textFontWeight="400"
+        android:singleLine="false"
+        android:lineHeight="20dp"
+        android:background="@drawable/woe_pub_offer_image_bg"></TextView>
+
+    <LinearLayout
+        android:id="@+id/woe_pub_link"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/woe_pub_link_bg"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="10dp"
+        android:paddingBottom="5dp"
+        android:orientation="vertical"
+        android:elevation="10dp">
+
+        <RelativeLayout
+            android:id="@+id/woe_pub_link_image"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginBottom="5dp"
+            android:elevation="10dp"
+            >
+
+            <ImageView
+                android:id="@+id/woe_pub_link_image_media"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:background="@drawable/woe_pub_offer_image_bg"
+                ></ImageView>
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/woe_pub_link_title"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical|start"
+            android:textColor="@color/woe_pub_item_link_title"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="16sp"
+            android:textFontWeight="700"
+            android:singleLine="false"
+            android:lineHeight="20dp"
+            android:maxLines="3"
+            android:ellipsize="end"></TextView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/woe_pub_link_desc"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="center_vertical|start"
+            android:textColor="@color/woe_pub_item_link_desc"
+            android:fontFamily="@font/poppins_regular"
+            android:textSize="14sp"
+            android:textFontWeight="400"
+            android:singleLine="false"
+            android:lineHeight="20dp"
+            android:maxLines="4"
+            android:ellipsize="end"></TextView>
+
+    </LinearLayout><!--END LINK-->
+
+    <LinearLayout
+        android:id="@+id/woe_pub_offer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="10dp"
+        android:paddingBottom="5dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/woe_pub_offer_image"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginBottom="5dp"
+            android:elevation="10dp"
+            >
+
+            <ImageView
+                android:id="@+id/woe_pub_offer_image_media"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:clipToOutline="true"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:background="@drawable/woe_pub_offer_image_bg"></ImageView>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:orientation="horizontal"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:id="@+id/woe_pub_offer_cashback"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
+                    android:orientation="horizontal"
+                    android:paddingBottom="0dp"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="10dp"
+                    android:paddingTop="0dp"
+                    android:gravity="center"
+                    android:background="@drawable/woe_cashback_bg">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="3dp"
+                        android:src="@drawable/woe_pub_offer_cashback"></ImageView>
+
+                    <TextView
+                        android:id="@+id/woe_pub_offer_cashback_to"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="3dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textColor="@color/woe_pub_item_offer_cashback_label"
+                        android:textFontWeight="700"
+                        android:textSize="14sp"
+                        android:text="@string/woe_to"
+                        android:textAllCaps="true"
+                        ></TextView>
+
+                    <TextView
+                        android:id="@+id/woe_pub_offer_cashback_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="3dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textColor="@color/woe_pub_item_offer_cashback_text"
+                        android:textFontWeight="700"
+                        android:textSize="14sp"
+                        android:textAllCaps="true"
+                        ></TextView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textColor="@color/woe_pub_item_offer_cashback_label"
+                        android:textFontWeight="700"
+                        android:textSize="14sp"
+                        android:text="@string/woe_ntp_cashback"
+                        android:textAllCaps="true"
+                        ></TextView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/woe_pub_offer_social"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
+                    android:orientation="horizontal"
+                    android:paddingBottom="0dp"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="10dp"
+                    android:paddingTop="0dp"
+                    android:gravity="center"
+                    android:background="@drawable/woe_social_bg">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="3dp"
+                        android:src="@drawable/woe_pub_offer_social"></ImageView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textColor="@color/woe_pub_item_offer_social_text"
+                        android:textFontWeight="700"
+                        android:textSize="14sp"
+                        android:text="@string/woe_ntp_social"
+                        android:textAllCaps="true"
+                        ></TextView>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/woe_pub_offer_discount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/woe_discount_bg"
+                    android:fontFamily="@font/poppins_bold"
+                    android:paddingBottom="0dp"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="10dp"
+                    android:paddingTop="0dp"
+                    android:textColor="@color/woe_pub_item_offer_discount_text"
+                    android:textFontWeight="700"
+                    android:textSize="16sp"
+                    android:gravity="center"></TextView>
+
+            </LinearLayout>
+
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/woe_pub_offer_title"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical|start"
+            android:textColor="@color/woe_pub_item_offer_title"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="16sp"
+            android:textFontWeight="700"
+            android:singleLine="false"
+            android:lineHeight="20dp"
+            android:maxLines="3"
+            android:ellipsize="end"></TextView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/woe_pub_offer_desc"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="center_vertical|start"
+            android:textColor="@color/woe_pub_item_offer_desc"
+            android:fontFamily="@font/poppins_regular"
+            android:textSize="14sp"
+            android:textFontWeight="400"
+            android:singleLine="false"
+            android:lineHeight="20dp"
+            android:maxLines="4"
+            android:ellipsize="end"></TextView>
+
+        <LinearLayout
+            android:id="@+id/woe_pub_offer_plus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <RatingBar
+                android:id="@+id/woe_pub_offer_stars"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/WoeRatingBar"
+                style="@style/WoeRatingBar"
+                android:numStars="5"
+                android:progressDrawable="@drawable/woe_stars"
+                android:indeterminateDrawable="@drawable/woe_stars"
+                android:minHeight="31dip"
+                android:maxHeight="31dip"
+                android:minWidth="31dip"
+                android:maxWidth="31dip"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/woe_pub_offer_price_old"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|start"
+                android:layout_marginEnd="10dp"
+                android:text=""
+                android:background="@drawable/woe_line_strike"
+                android:textColor="@color/woe_pub_item_offer_price_old"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="15sp"
+                android:textFontWeight="700"
+                android:letterSpacing="-0.08"/>
+
+            <TextView
+                android:id="@+id/woe_pub_offer_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="bottom|start"
+                android:text=""
+                android:textColor="@color/woe_pub_item_offer_price"
+                android:fontFamily="@font/poppins_bold"
+                android:textSize="35sp"
+                android:textFontWeight="700"
+                android:letterSpacing="-0.08" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/woe_pub_coupons_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center_vertical|start"
+            android:lineHeight="20dp"
+            android:singleLine="false"
+            android:text="@string/woe_ntp_add_coupon"
+            android:textColor="@color/woe_pub_item_text"
+            android:textFontWeight="700"
+            android:textSize="18sp"></TextView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/woe_pub_coupons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:orientation="horizontal"
+        android:gravity="end|center_vertical">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:gravity="center_vertical">
+
+            <RelativeLayout
+                android:id="@+id/woe_pub_favicon_box"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/woe_pub_ad_bg"
+                android:elevation="10dp"
+                android:layout_marginEnd="5dp"
+                >
+
+                <ImageView
+                    android:id="@+id/woe_pub_favicon_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/woe_ntp_advertisers_title"></ImageView>
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/woe_pub_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:fontFamily="@font/poppins_regular"
+                android:gravity="center_vertical|start"
+                android:lineHeight="20dp"
+                android:singleLine="true"
+                android:textColor="@color/woe_pub_item_text"
+                android:textFontWeight="400"
+                android:textSize="13sp"
+                android:ellipsize="end"></TextView>
+
+        </LinearLayout>
+
+        <com.wooeen.view.ui.WoeButtonSocial
+            android:id="@+id/woe_pub_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:background="@drawable/woe_btn_social"
+            android:drawableStart="@drawable/woe_pub_like"
+            android:contentDescription="@string/woe_ntp_share_title"
+            android:padding="10dp"
+            android:elevation="10dp"
+            ></com.wooeen.view.ui.WoeButtonSocial>
+
+        <com.wooeen.view.ui.WoeButtonSocial
+            android:id="@+id/woe_pub_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:background="@drawable/woe_btn_social"
+            android:drawableStart="@drawable/woe_pub_comment"
+            android:contentDescription="@string/woe_ntp_share_title"
+            android:padding="10dp"
+            android:elevation="10dp"
+            android:visibility="gone"
+            ></com.wooeen.view.ui.WoeButtonSocial>
+
+        <com.wooeen.view.ui.WoeButtonSocial
+            android:id="@+id/woe_pub_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:background="@drawable/woe_btn_social"
+            android:drawableStart="@drawable/woe_pub_share"
+            android:contentDescription="@string/woe_ntp_share_title"
+            android:padding="10dp"
+            android:elevation="10dp"
+            ></com.wooeen.view.ui.WoeButtonSocial>
+
+    </LinearLayout>
+
+</LinearLayout>

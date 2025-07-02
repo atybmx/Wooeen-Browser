@@ -6,9 +6,13 @@ public class PostTO {
 
     private int id;
     private String title;
+    private String excerpt;
     private String image;
     private String link;
     private Date date;
+    private String authorId;
+    private String authorName;
+    private String authorPhoto;
 
     public Date getDate() {
         return date;
@@ -48,5 +52,30 @@ public class PostTO {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getExcerpt() {
+        return excerpt;
+    }
+    public void setExcerpt(String excerpt) {
+        this.excerpt = excerpt;
+    }
+    public String getAuthorId() {
+        return authorId;
+    }
+    public void setAuthorId(String authorId) {
+        this.authorId = authorId;
+    }
+    public String getAuthorName() {
+        return authorName;
+    }
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
+    }
+    public String getAuthorPhoto() {
+        return authorPhoto;
+    }
+    public void setAuthorPhoto(String authorPhoto) {
+        this.authorPhoto = authorPhoto;
     }
 }

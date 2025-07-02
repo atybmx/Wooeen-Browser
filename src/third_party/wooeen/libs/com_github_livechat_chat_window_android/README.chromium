@@ -1,0 +1,14 @@
+Name: livechat/chat-window-android
+Short Name: chat-window-android
+URL: https://developers.livechatinc.com/mobile/android/
+Version: v2.2.1
+License: 
+License File: NOT_SHIPPED
+CPEPrefix: unknown
+Security Critical: no
+
+Description:
+LiveChat mobile chat window for Android
+
+Local Modifications:
+No modifications.

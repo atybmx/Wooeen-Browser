@@ -278,9 +278,6 @@ public class LoginStepPassView extends Fragment implements LoaderManager.LoaderC
         if(token == null || TextUtils.isEmpty(token.getIdToken()) || TextUtils.isEmpty(token.getAccessToken())) {
             Toast.makeText(getContext(), R.string.woe_login_denied,Toast.LENGTH_LONG).show();
         }else{
-            UserTO mUser = UserUtils.newInstance(getContext(), token.getUser());
-            UserUtils.saveUserData(getContext(),mUser,token);
-
             if(listener != null)
                 listener.onEnter();
         }
@@ -341,7 +338,7 @@ public class LoginStepPassView extends Fragment implements LoaderManager.LoaderC
     public void onLoadFinished(@NonNull Loader<Integer> loader, Integer result) {
         if (loader.getId() == LOADER_ID_NEXT_PIN) {
             //check if the result
-            if (result <= 0) {
+            if (result ==null || result <= 0) {
                 processing = false;
                 mProgressBar.setVisibility(View.INVISIBLE);
                 btnEnter.setEnabled(true);

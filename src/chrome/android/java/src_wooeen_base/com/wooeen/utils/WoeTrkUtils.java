@@ -19,6 +19,9 @@ public class WoeTrkUtils {
             if (!TextUtils.isEmpty(click.getSource())) userEditor.putInt("source",click.getSource());
             if (!TextUtils.isEmpty(click.getLink())) userEditor.putInt("link",click.getLink());
             if (!TextUtils.isEmpty(click.getDateClick())) userEditor.putString("date_click",click.getDateClick());
+            if (!TextUtils.isEmpty(click.getCountry())) userEditor.putString("country",click.getCountry());
+            if (!TextUtils.isEmpty(click.getAdvertiser())) userEditor.putInt("advertiser",click.getAdvertiser());
+            if (!TextUtils.isEmpty(click.getTask())) userEditor.putInt("task",click.getTask());            
             userEditor.apply();
         }
     }
@@ -38,7 +41,10 @@ public class WoeTrkUtils {
             click.setSource(clickPreferences.getInt("source", 0));
             click.setLink(clickPreferences.getInt("link", 0));
             click.setDateClick(clickPreferences.getString("date_click", null));
-
+            click.setCountry(clickPreferences.getString("country", null));
+            click.setAdvertiser(clickPreferences.getInt("advertiser", 0));
+            click.setTask(clickPreferences.getInt("task", 0));            
+            
             return click;
         }
     }

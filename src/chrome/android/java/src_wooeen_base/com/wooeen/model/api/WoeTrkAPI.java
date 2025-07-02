@@ -10,7 +10,7 @@ public class WoeTrkAPI {
     private final static String SCHEMA = "https";
     private final static String AUTHORITY = "tracking.wooeen.com";
 
-    public static boolean event(int event,int user,int source,int link,String dateClick) {
+    public static boolean eventOLD(int event,int user,int source,int link,String dateClick) {
         if(event == 0)
             return false;
 

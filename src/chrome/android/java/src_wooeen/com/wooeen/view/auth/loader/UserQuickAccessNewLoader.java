@@ -85,7 +85,7 @@ public class UserQuickAccessNewLoader implements LoaderManager.LoaderCallbacks<U
 
         @Override
         public UserQuickAccessTO loadInBackground() {
-            UserAPI apiDAO = new UserAPI(UserUtils.getToken(getContext()));
+            UserAPI apiDAO = new UserAPI(UserUtils.getLoggedToken(getContext()));
             return apiDAO.quickAccessNew();
         }
     }

@@ -5,6 +5,8 @@ public class VersionTO {
     private int checkout;
     private int product;
     private int query;
+    private int pub;
+    private String android;
 
     public int getQuery() {
         return query;
@@ -28,5 +30,21 @@ public class VersionTO {
 
     public void setCheckout(int checkout) {
         this.checkout = checkout;
+    }
+
+    public int getPub() {
+        return pub;
+    }
+
+    public void setPub(int pub) {
+        this.pub = pub;
+    }
+
+    public String getAndroid(){
+        return android;
+    }
+
+    public void setAndroid(String android){
+        this.android = android;
     }
 }

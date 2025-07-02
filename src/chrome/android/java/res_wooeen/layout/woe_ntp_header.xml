@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginStart="15dp"
+    android:layout_marginEnd="15dp"
+    android:id="@+id/woe_ntp_logo_layout"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/woe_btn_main_div"
+        android:elevation="1dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="20dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:gravity="center_vertical">
+
+        <com.wooeen.view.ui.WoeButtonTransparent
+            android:id="@+id/woe_header_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:drawableStart="@drawable/woe_menu"
+            android:padding="10dp"
+            android:elevation="10dp"
+            ></com.wooeen.view.ui.WoeButtonTransparent>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_vertical|end"
+            android:clickable="true">
+
+            <LinearLayout
+                android:id="@+id/panel_balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="bottom|end"
+                android:layout_marginBottom="0dp">
+
+                <TextView
+                    android:id="@+id/txt_balance_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:textColor="@color/woe_div_title"
+                    android:textSize="28sp"
+                    android:padding="0dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:letterSpacing="-0.05"
+                    ></TextView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/panel_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+            <ProgressBar
+                android:id="@+id/woe_cbd_progress"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center_vertical"
+                android:visibility="invisible" />
+
+            <com.wooeen.view.ui.WoeButtonHead
+                android:id="@+id/btn_cashback_header"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:text="@string/woe_header_balance"
+                android:fontFamily="@font/poppins_semibold"
+                android:textSize="10sp"
+                android:textColor="@color/woe_ntp_logo_btn_text"
+                android:textAllCaps="true"
+                android:background="@drawable/woe_btn_header"
+                ></com.wooeen.view.ui.WoeButtonHead>
+
+            </LinearLayout>
+
+            <com.wooeen.view.ui.WoeButtonOrange
+                android:id="@+id/btn_activate_cashback"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:minHeight="60dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textSize="10sp"
+                android:text="@string/woe_enable_cashback"/>
+
+        </LinearLayout>
+
+    </LinearLayout><!-- END logo -->
+
+
+</LinearLayout>

@@ -23,6 +23,11 @@ public class WoeDBContract {
         public static final String _ID = "id";
 
         /**
+         * The type column.
+         * <p>TYPE: INTEGER</p>
+         */
+        public static final String TYPE = "type";
+        /**
          * The name column.
          * <p>TYPE: TEXT</p>
          */
@@ -150,6 +155,12 @@ public class WoeDBContract {
         public static final String DOMAIN = "domain";
 
         /**
+         * The type column.
+         * <p>advertiser_type: INTEGER</p>
+         */
+        public static final String ADVERTISER_TYPE = "advertiser_type";
+
+        /**
          * The platform column.
          * <p>TYPE: INTEGER</p>
          */
@@ -160,6 +171,66 @@ public class WoeDBContract {
          * <p>TYPE: INTEGER</p>
          */
         public static final String ADVERTISER = "id_advertiser";
+
+        /**
+         * The priority column.
+         * <p>TYPE: INTEGER</p>
+         */
+        public static final String PRIORITY = "priority";
+
+        /**
+         * The payou column.
+         * <p>TYPE: DOUBLE</p>
+         */
+        public static final String PAYOUT = "payout";
+
+        /**
+         * The commission_type column.
+         * <p>TYPE: TEXT</p>
+         */
+        public static final String COMMISSION_TYPE = "commission_type";
+
+        /**
+         * The commission_avg_1 column.
+         * <p>TYPE: DOUBLE</p>
+         */
+        public static final String COMMISSION_AVG_1 = "commission_avg_1";
+
+        /**
+         * The commission_min_1 column.
+         * <p>TYPE: DOUBLE</p>
+         */
+        public static final String COMMISSION_MIN_1 = "commission_min_1";
+
+        /**
+         * The commission_max_1 column.
+         * <p>TYPE: DOUBLE</p>
+         */
+        public static final String COMMISSION_MAX_1 = "commission_max_1";
+
+        /**
+         * The commission_avg_2 column.
+         * <p>TYPE: DOUBLE</p>
+         */
+        public static final String COMMISSION_AVG_2 = "commission_avg_2";
+
+        /**
+         * The commission_min_2 column.
+         * <p>TYPE: DOUBLE</p>
+         */
+        public static final String COMMISSION_MIN_2 = "commission_min_2";
+
+        /**
+         * The commission_max_2 column.
+         * <p>TYPE: DOUBLE</p>
+         */
+        public static final String COMMISSION_MAX_2 = "commission_max_2";
+
+        /**
+         * The approval_days column.
+         * <p>TYPE: INTEGER</p>
+         */
+        public static final String APPROVAL_DAYS = "approval_days";
 
 
         /**
@@ -215,6 +286,30 @@ public class WoeDBContract {
          * <p>TYPE: DATE</p>
          */
         public static final String DATE = "date";
+
+        /**
+         * The excerpt column.
+         * <p>TYPE: TEXT</p>
+         */
+        public static final String EXCERPT = "excerpt";
+
+        /**
+         * The author id column.
+         * <p>TYPE: TEXT</p>
+         */
+        public static final String AUTHOR_ID = "author_id";
+
+        /**
+         * The author name column.
+         * <p>TYPE: TEXT</p>
+         */
+        public static final String AUTHOR_NAME = "author_name";
+
+        /**
+         * The author photo column.
+         * <p>TYPE: TEXT</p>
+         */
+        public static final String AUTHOR_PHOTO = "author_photo";
 
 
         /**

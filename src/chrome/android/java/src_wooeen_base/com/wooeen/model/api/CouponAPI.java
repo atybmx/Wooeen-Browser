@@ -30,6 +30,10 @@ public class CouponAPI {
     }
 
     public List<CouponTO> get(int pg,int qtdPerPage,String q){
+        return get(pg, qtdPerPage, 0, q);
+    }
+
+    public List<CouponTO> get(int pg,int qtdPerPage,int advertiser,String q){
         try {
             //configura a url e os parametros
             Uri.Builder builder = new Uri.Builder();
@@ -42,6 +46,9 @@ public class CouponAPI {
                     .appendQueryParameter("st","1")
                     .appendQueryParameter("pg",""+pg)
                     .appendQueryParameter("qpp",""+qtdPerPage);
+
+            if(!TextUtils.isEmpty(advertiser))
+                builder.appendQueryParameter("ad",""+advertiser);
 
             if(!TextUtils.isEmpty(q))
                 builder.appendQueryParameter("q",q);

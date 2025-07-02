@@ -1,5 +1,6 @@
 package com.wooeen.view.auth;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -11,8 +12,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.wooeen.model.to.UserTO;
 import com.wooeen.model.to.UserTokenTO;
+import com.wooeen.utils.TextUtils;
 import com.wooeen.utils.UserUtils;
 
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.R;
 
@@ -25,11 +28,14 @@ public class RegisterView extends AppCompatActivity
         RegisterStep3View.OnItemSelectedListener,
         RegisterStep4View.OnItemSelectedListener,
         RegisterStepPassView.OnItemSelectedListener,
+        RegisterStepCrView.OnItemSelectedListener,
         RegisterStep8View.OnItemSelectedListener{
 
     private Fragment mCurFragment;
 
     public static final String USER = "RegisterView.user";
+
+    private String mEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +43,10 @@ public class RegisterView extends AppCompatActivity
 
         if(savedInstanceState != null) {
             mCurFragment = getSupportFragmentManager().getFragment(savedInstanceState, "RegisterView.curFragment");
+        }
+
+        if(getIntent() != null && getIntent().getExtras() != null){
+            mEmail = getIntent().getStringExtra("email");
         }
 
         //hide toolbar
@@ -62,17 +72,31 @@ public class RegisterView extends AppCompatActivity
         super.onResume();
 
         //close the activity if the user is logged
-        int userId = UserUtils.getUserId(this);
-        if(userId > 0)
-            finish();
+//        int userId = UserUtils.getUserId(this);
+//        if(userId > 0)
+//            finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_content);
+        if(f != null && f.isResumed()){
+            FragmentManager fm = getSupportFragmentManager();
+            fm.beginTransaction().remove(f).commit();
+        }
+
+        super.onDestroy();
     }
 
     @Override
     protected void onSaveInstanceState (Bundle outState) {
-        //Save the fragment's instance
-        getSupportFragmentManager().putFragment(outState, "RegisterView.curFragment", mCurFragment);
+        super.onSaveInstanceState(outState);
 
-        super.onSaveInstanceState(outState);        
+        //Save the fragment's instance
+        if (mCurFragment.isAdded()) {
+            getSupportFragmentManager().putFragment(outState, "RegisterView.curFragment",
+                    mCurFragment);
+        }
     }
 
     private void nextFragment(){
@@ -114,13 +138,28 @@ public class RegisterView extends AppCompatActivity
 
     @Override
     public void onStep3Next(UserTO user) {
-        mCurFragment = RegisterStep4View.newInstance(user);
+        mCurFragment = RegisterStepCrView.newInstance(user);
         nextFragment();
     }
 
     @Override
     public void onStep3Back() {
 //        mCurFragment = RegisterStep2View.newInstance();
+        backFragment();
+    }
+
+    @Override
+    public void onStepCrNext(UserTO user) {
+        if(user != null && TextUtils.isEmpty(user.getEmail()) && !TextUtils.isEmpty(mEmail))
+            user.setEmail(mEmail);
+
+        mCurFragment = RegisterStep4View.newInstance(user);
+        nextFragment();
+    }
+
+    @Override
+    public void onStepCrBack(UserTO user) {
+//        mCurFragment = RegisterStep3View.newInstance(user);
         backFragment();
     }
 
@@ -144,7 +183,7 @@ public class RegisterView extends AppCompatActivity
 
     @Override
     public void onStep4Back(UserTO user) {
-//        mCurFragment = RegisterStep3View.newInstance(user);
+//        mCurFragment = RegisterStepCrView.newInstance(user);
         backFragment();
     }
 
@@ -162,8 +201,13 @@ public class RegisterView extends AppCompatActivity
 
     @Override
     public void onStep8Next() {
+        BraveActivity.addEvent(this, "register_success");
+
         //notify browser current tab
-        TabUtils.refreshCashbackData();
+        TabUtils.refreshCashbackData(getBaseContext());
+
+//        Intent resultIntent = new Intent();
+//        setResult(Activity.RESULT_OK, resultIntent);
 
         finish();
     }

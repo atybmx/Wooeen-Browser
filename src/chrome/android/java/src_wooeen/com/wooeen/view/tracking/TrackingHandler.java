@@ -26,6 +26,7 @@ public class TrackingHandler {
         }
         public boolean mTracking;
         public String mDomain;
+        public int mId;
         public int mPlatform;
         public int mAdvertiser;
         public String checkoutEndpoint;
@@ -34,6 +35,8 @@ public class TrackingHandler {
         public String productData;
         public String queryEndpoint;
         public String queryData;
+        public boolean alreadyTracked;
+        public String mUrlLogged;
     }
 
     private final Context mContext;
@@ -56,13 +59,13 @@ public class TrackingHandler {
         return cont;
     }
 
-    public void addTracking(int tabId, String domain, int platform, int advertiser, String checkoutEndpoint, String checkoutData, String productEndpoint, String productData, String queryEndpoint, String queryData) {
+    public void addTracking(int tabId, String domain, int id, int platform, int advertiser, String checkoutEndpoint, String checkoutData, String productEndpoint, String productData, String queryEndpoint, String queryData) {
         if (!mTabsStat.containsKey(tabId)) {
             mTabsStat.put(tabId, new TrackingInfo());
         }
         TrackingInfo trackingInfo = mTabsStat.get(tabId);
-        trackingInfo.mTracking = true;
         trackingInfo.mDomain = domain;
+        trackingInfo.mId = id;
         trackingInfo.mPlatform = platform;
         trackingInfo.mAdvertiser = advertiser;
         trackingInfo.checkoutEndpoint = checkoutEndpoint;
@@ -71,6 +74,36 @@ public class TrackingHandler {
         trackingInfo.productData = productData;
         trackingInfo.queryEndpoint = queryEndpoint;
         trackingInfo.queryData = queryData;
+
+        if(!trackingInfo.alreadyTracked) {
+            trackingInfo.mTracking = true;
+        }
+
+        trackingInfo.alreadyTracked = false;
+    }
+
+    public void addUrlLogged(int tabId, String mUrlLogged){
+        if (!mTabsStat.containsKey(tabId)) {
+            mTabsStat.put(tabId, new TrackingInfo());
+        }
+        TrackingInfo trackingInfo = mTabsStat.get(tabId);
+        trackingInfo.mUrlLogged = mUrlLogged;
+    }
+
+    public String getUrlLogged(int tabId){
+        if (!mTabsStat.containsKey(tabId)) {
+            mTabsStat.put(tabId, new TrackingInfo());
+        }
+        TrackingInfo trackingInfo = mTabsStat.get(tabId);
+        return trackingInfo.mUrlLogged;
+    }
+
+    public void addPreTracking(int tabId){
+        if (!mTabsStat.containsKey(tabId)) {
+            mTabsStat.put(tabId, new TrackingInfo());
+        }
+        TrackingInfo trackingInfo = mTabsStat.get(tabId);
+        trackingInfo.alreadyTracked = true;
     }
 
     public boolean isTracking(int tabId) {
@@ -141,6 +174,13 @@ public class TrackingHandler {
             return 0;
         }
         return mTabsStat.get(tabId).mAdvertiser;
+    }
+
+    public int getTracking(int tabId) {
+        if (!mTabsStat.containsKey(tabId)) {
+            return 0;
+        }
+        return mTabsStat.get(tabId).mId;
     }
 
     public void tracked(int tabId) {

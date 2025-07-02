@@ -1,4 +1,4 @@
-// Copyright 2015 The Chromium Authors. All rights reserved.
+// Copyright 2015 The Chromium Authors
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -16,25 +16,24 @@ import android.text.TextUtils;
 
 import androidx.core.app.NotificationCompat;
 
-// import com.appsflyer.AppsFlyerLib;
+// import com.singular.sdk.Singular;
 
 import com.wooeen.model.api.WoePushAPI;
+import com.wooeen.model.sync.WoeSyncAdapter;
 import com.wooeen.utils.NumberUtils;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import com.wooeen.utils.UserUtils;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
+import org.chromium.base.task.AsyncTask;
 import org.chromium.base.task.PostTask;
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.device.DeviceConditions;
 import org.chromium.chrome.browser.init.ChromeBrowserInitializer;
 import org.chromium.chrome.browser.init.ProcessInitializationHandler;
-import org.chromium.chrome.R;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.background_task_scheduler.BackgroundTaskSchedulerFactory;
 import org.chromium.components.background_task_scheduler.TaskIds;
 import org.chromium.components.background_task_scheduler.TaskInfo;
@@ -45,14 +44,20 @@ import org.chromium.components.gcm_driver.LazySubscriptionsManager;
 import org.chromium.components.gcm_driver.SubscriptionFlagManager;
 import org.chromium.content_public.browser.UiThreadTaskTraits;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.OutOfMemoryError;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 /**
  * Receives Downstream messages and status of upstream messages from GCM.
  */
 public class ChromeGcmListenerServiceImpl extends ChromeGcmListenerService.Impl {
-    private static final String TAG = "ChromeGcmListener";
-
     public static final String CHANNEL_ID = "com.wooeen.browser";
     public static final int NOTIFICATION_ID = 10;
+
+    private static final String TAG = "ChromeGcmListener";
 
     @Override
     public void onCreate() {
@@ -62,72 +67,97 @@ public class ChromeGcmListenerServiceImpl extends ChromeGcmListenerService.Impl 
 
     @Override
     public void onMessageReceived(final String from, final Bundle data) {
-        //WOE push urls
-        if(data != null){
-            //WOE af "uinstall" is not a typo
-            // if(data.containsKey("af-uinstall-tracking")){
-            if(data.containsKey("woe-islive")){
+        // WOE push urls
+        if (data != null) {
+            // WOE af "uinstall" is not a typo
+            //  if(data.containsKey("af-uinstall-tracking")){
+            if (data.containsKey("woe-islive")) {
+                return;
+            }
+
+            if (data.containsKey("woe-conversion")) {
+              //send an event revenue Singular
+              // Singular.revenue(
+              //   data.getString("currency"),
+              //   NumberUtils.getDouble(data.getString("commission")),
+              //   data.getString("id"),
+              //   data.getString("advertiserName"),
+              //   data.getString("advertiserId"),
+              //   1,
+              //   NumberUtils.getDouble(data.getString("commission")));
+
+                return;
+            }
+
+            if(data.containsKey("woe-balance")){
+              Context context = ContextUtils.getApplicationContext();
+              new UserSyncData(context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
               return;
             }
 
             String urlAction = data.getString("url_action");
-            if(TextUtils.isEmpty(urlAction))
-                urlAction = data.getString("woe-link");
-            if(!TextUtils.isEmpty(urlAction)){
+            if (TextUtils.isEmpty(urlAction)) urlAction = data.getString("woe-link");
+            if (!TextUtils.isEmpty(urlAction)) {
                 String title = data.getString("gcm.notification.title");
                 String body = data.getString("gcm.notification.body");
                 String image = data.getString("gcm.notification.image");
-                if(TextUtils.isEmpty(title) || TextUtils.isEmpty(body)){
-                  title = data.getString("woe-title");
-                  body = data.getString("woe-body");
-                  image = data.getString("woe-image");
+                if (TextUtils.isEmpty(title) || TextUtils.isEmpty(body)) {
+                    title = data.getString("woe-title");
+                    body = data.getString("woe-body");
+                    image = data.getString("woe-image");
                 }
-                if(!TextUtils.isEmpty(title) && !TextUtils.isEmpty(body)){
-                  Context context = ContextUtils.getApplicationContext();
-                  Bitmap largeImage = null;
-                  if(!TextUtils.isEmpty(title))
-                      largeImage = getBitmapFromURL(image);
+                if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(body)) {
+                    Context context = ContextUtils.getApplicationContext();
+                    Bitmap largeImage = null;
+                    if (!TextUtils.isEmpty(image)) largeImage = getBitmapFromURL(image);
 
-                  NotificationCompat.Builder b = new NotificationCompat.Builder(context, CHANNEL_ID);
+                    NotificationCompat.Builder b =
+                            new NotificationCompat.Builder(context, CHANNEL_ID);
 
-                  b.setSmallIcon(R.drawable.ic_wooeen_push)
-                          .setAutoCancel(true)
-                          .setContentTitle(title)
-                          .setContentText(body)
-                          .setPriority(NotificationCompat.PRIORITY_HIGH)
-                          .setCategory(NotificationCompat.CATEGORY_MESSAGE);
+                    b.setSmallIcon(R.drawable.ic_wooeen_push)
+                            .setAutoCancel(true)
+                            .setContentTitle(title)
+                            .setContentText(body)
+                            .setPriority(NotificationCompat.PRIORITY_HIGH)
+                            .setCategory(NotificationCompat.CATEGORY_MESSAGE);
 
-                  Intent intent = new Intent(context, ChromeTabbedActivity.class);
-                  intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                  intent.putExtras(data);
-                  PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-                  b.setContentIntent(contentIntent);
+                    Intent intent = new Intent(context, ChromeTabbedActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtras(data);
 
-                  if(largeImage != null){
-                      NotificationCompat.BigPictureStyle s = new NotificationCompat.BigPictureStyle().bigPicture(largeImage);
-                      s.setBigContentTitle(title);
-                      s.setSummaryText(body);
-                      b.setStyle(s);
-                  }else{
-                      b.setStyle(new NotificationCompat.BigTextStyle().bigText(body));
-                  }
+                    PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent,
+                            PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
 
-                  NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                  notificationManager.notify(NOTIFICATION_ID, b.build());
+                    b.setContentIntent(contentIntent);
+
+                    if (largeImage != null) {
+                        NotificationCompat.BigPictureStyle s =
+                                new NotificationCompat.BigPictureStyle().bigPicture(largeImage);
+                        s.setBigContentTitle(title);
+                        s.setSummaryText(body);
+                        b.setStyle(s);
+                    } else {
+                        b.setStyle(new NotificationCompat.BigTextStyle().bigText(body));
+                    }
+
+                    NotificationManager notificationManager =
+                            (NotificationManager) context.getSystemService(
+                                    Context.NOTIFICATION_SERVICE);
+                    notificationManager.notify(NOTIFICATION_ID, b.build());
                 }
             }
 
-            //send conversion readed
-            if(data.containsKey("woe-notification")){
-              int notification = NumberUtils.getInteger(data.getString("woe-notification"));
-              int push = NumberUtils.getInteger(data.getString("woe-push"));
-              int user = NumberUtils.getInteger(data.getString("woe-user"));
-              int advertiser = 0;
-              if(data.containsKey("woe-ad"))
-                advertiser = NumberUtils.getInteger(data.getString("woe-ad"));
-              if(notification > 0 && push > 0 && user > 0){
-                  WoePushAPI.event(2, notification, push, user, advertiser);
-              }
+            // send conversion readed
+            if (data.containsKey("woe-push")) {
+                int notification = NumberUtils.getInteger(data.getString("woe-notification"));
+                int push = NumberUtils.getInteger(data.getString("woe-push"));
+                int user = NumberUtils.getInteger(data.getString("woe-user"));
+                int advertiser = 0;
+                if (data.containsKey("woe-ad"))
+                    advertiser = NumberUtils.getInteger(data.getString("woe-ad"));
+                if (push > 0) {
+                    WoePushAPI.event(2, notification, push, user, advertiser);
+                }
             }
         }
 
@@ -157,24 +187,41 @@ public class ChromeGcmListenerServiceImpl extends ChromeGcmListenerService.Impl 
             InputStream input = connection.getInputStream();
             Bitmap myBitmap = BitmapFactory.decodeStream(input);
             return myBitmap;
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException | OutOfMemoryError e) {
+            // e.printStackTrace();
             return null;
+        }
+    }
+
+    private static class UserSyncData extends AsyncTask<Boolean> {
+
+        private Context context;
+
+        public UserSyncData(Context context){
+            this.context = context;
+        }
+
+        @Override
+        protected Boolean doInBackground() {
+            return WoeSyncAdapter.syncUser(context);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if(result){
+                TabUtils.refreshCashbackData(context);
+            }
         }
     }
 
     @Override
     public void onMessageSent(String msgId) {
         Log.d(TAG, "Message sent successfully. Message id: %s", msgId);
-        GcmUma.recordGcmUpstreamHistogram(
-                ContextUtils.getApplicationContext(), GcmUma.UMA_UPSTREAM_SUCCESS);
     }
 
     @Override
     public void onSendError(String msgId, Exception error) {
         Log.w(TAG, "Error in sending message. Message id: %s", msgId, error);
-        GcmUma.recordGcmUpstreamHistogram(
-                ContextUtils.getApplicationContext(), GcmUma.UMA_UPSTREAM_SEND_FAILED);
     }
 
     @Override
@@ -187,23 +234,31 @@ public class ChromeGcmListenerServiceImpl extends ChromeGcmListenerService.Impl 
     }
 
     @Override
-    public void onNewToken(String token) {
+    public void onNewToken(String fcmToken) {
         // TODO(crbug.com/1138706): Figure out if we can use this method or if
         // we need another mechanism that supports multiple FirebaseApp
         // instances.
-        Log.d(TAG, "New FCM Token: %s", token);
+        Log.d(TAG, "New FCM Token: %s", fcmToken);
 
-        //WOE appsflyer uninstall
-        // AppsFlyerLib.getInstance().updateServerUninstallToken(ContextUtils.getApplicationContext(), token);
+        final int userId = UserUtils.getUserId(ContextUtils.getApplicationContext());
+        if (userId > 0) {
+            String userToken = UserUtils.getUserFcmToken(ContextUtils.getApplicationContext());
+            if (userToken == null || !userToken.equals(fcmToken)) {
+                // save user token
+                UserUtils.saveUserFcmToken(
+                        ContextUtils.getApplicationContext(), fcmToken, userToken);
+            }
+            // System.out.println("WOE FCM "+userToken+" "+token);
+        }
     }
 
     /**
      * Returns if we deliver the GCMMessage with a background service by calling
-     * Context#startService. This will only work if Android has put us in a whitelist to allow
+     * Context#startService. This will only work if Android has put us in an allowlist to allow
      * background services to be started.
      */
     private static boolean maybeBypassScheduler(GCMMessage message) {
-        // Android only puts us on a whitelist for high priority messages.
+        // Android only puts us on an allowlist for high priority messages.
         if (message.getOriginalPriority() != GCMMessage.Priority.HIGH) {
             return false;
         }
@@ -221,9 +276,8 @@ public class ChromeGcmListenerServiceImpl extends ChromeGcmListenerService.Impl 
             context.startService(intent);
             return true;
         } catch (IllegalStateException e) {
-            // Failed to start service, maybe we're not whitelisted? Fallback to using
+            // Failed to start service, maybe we're not allowed? Fallback to using
             // BackgroundTaskScheduler to start Chrome.
-            // TODO(knollr): Add metrics for this.
             Log.e(TAG, "Could not start background service", e);
             return false;
         }
@@ -303,12 +357,6 @@ public class ChromeGcmListenerServiceImpl extends ChromeGcmListenerService.Impl 
 
         // Check if we should only persist the message for now.
         if (maybePersistLazyMessage(message)) {
-            return;
-        }
-
-        // Dispatch message immediately on pre N versions of Android.
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            dispatchMessageToDriver(message);
             return;
         }
 

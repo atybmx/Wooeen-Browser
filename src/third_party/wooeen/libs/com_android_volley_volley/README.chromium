@@ -1,0 +1,14 @@
+Name: Volley
+Short Name: volley
+URL: https://github.com/google/volley
+Version: 1.2.0
+License: 
+License File: NOT_SHIPPED
+CPEPrefix: unknown
+Security Critical: no
+
+Description:
+An HTTP library that makes networking for Android apps easier and, most importantly, faster.
+
+Local Modifications:
+No modifications.

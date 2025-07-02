@@ -1,0 +1,14 @@
+Name: firebase-components
+Short Name: firebase-components
+URL: https://firebase.google.com
+Version: 17.0.1
+License: 
+License File: NOT_SHIPPED
+CPEPrefix: unknown
+Security Critical: no
+
+Description:
+Provides dependency management for Firebase SDKs.
+
+Local Modifications:
+No modifications.

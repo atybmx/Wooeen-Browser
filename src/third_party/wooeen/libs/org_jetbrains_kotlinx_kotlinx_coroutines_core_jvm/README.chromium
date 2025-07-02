@@ -1,0 +1,14 @@
+Name: kotlinx-coroutines-core
+Short Name: kotlinx-coroutines-core-jvm
+URL: https://github.com/Kotlin/kotlinx.coroutines
+Version: 1.5.0
+License: 
+License File: NOT_SHIPPED
+CPEPrefix: unknown
+Security Critical: no
+
+Description:
+Coroutines support libraries for Kotlin
+
+Local Modifications:
+No modifications.

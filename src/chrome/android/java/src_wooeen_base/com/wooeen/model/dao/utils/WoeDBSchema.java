@@ -16,7 +16,7 @@ public class WoeDBSchema extends SQLiteOpenHelper {
     public static final String TABLE_NAME_COUPON = "coupon";
     public static final String TABLE_NAME_OFFER = "offer";
 
-    public static final int DATABASE_VERSION = 9; // This is the current version of the database
+    public static final int DATABASE_VERSION = 14; // This is the current version of the database
 
     private static final String CREATE_TABLE_ADVERTISER;
     private static final String CREATE_TABLE_TRACKING;
@@ -28,6 +28,7 @@ public class WoeDBSchema extends SQLiteOpenHelper {
     static {
         CREATE_TABLE_ADVERTISER = "CREATE TABLE "+ TABLE_NAME_ADVERTISER +
                 " ( id INTEGER PRIMARY KEY, "+
+                " type INTEGER,"+
                 " name TEXT NOT NULL,"+
                 " color TEXT," +
                 " url TEXT," +
@@ -49,16 +50,31 @@ public class WoeDBSchema extends SQLiteOpenHelper {
                 " ( id INTEGER PRIMARY KEY, " +
                 " id_platform INTEGER," +
                 " id_advertiser INTEGER," +
+                " advertiser_type INTEGER,"+
+                " priority INTEGER," +
                 " deeplink TEXT," +
                 " params TEXT," +
-                " domain TEXT NOT NULL);" +
+                " domain TEXT NOT NULL," +
+                " payout DOUBLE," +
+                " commission_type TEXT,"+
+                " commission_avg_1 DOUBLE, "+
+                " commission_min_1 DOUBLE, "+
+                " commission_max_1 DOUBLE, "+
+                " commission_avg_2 DOUBLE, "+
+                " commission_min_2 DOUBLE, "+
+                " commission_max_2 DOUBLE, "+
+                " approval_days INTEGER);" +
                 "CREATE INDEX idx_tracking_domain ON " + TABLE_NAME_TRACKING + "(domain);";
 
         CREATE_TABLE_POST = "CREATE TABLE "+ TABLE_NAME_POST +
                 " ( id INTEGER PRIMARY KEY, "+
                 " title TEXT NOT NULL,"+
+                " excerpt TEXT NOT NULL,"+
                 " image TEXT," +
                 " link TEXT," +
+                " author_id TEXT NOT NULL,"+
+                " author_name TEXT NOT NULL,"+
+                " author_photo TEXT NOT NULL,"+
                 " date DATETIME);"+
                 "CREATE INDEX idx_post_title ON " + TABLE_NAME_POST + "(title);"+
                 "CREATE INDEX idx_post_date ON " + TABLE_NAME_POST + "(date);";
@@ -168,6 +184,39 @@ public class WoeDBSchema extends SQLiteOpenHelper {
 
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_COUPON);
             db.execSQL(CREATE_TABLE_COUPON);
+        }
+
+        if(oldVersion < 10){
+            db.execSQL("ALTER TABLE "+ TABLE_NAME_TRACKING +" ADD COLUMN priority INTEGER;");
+        }
+
+        if(oldVersion < 11){
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_POST);
+            db.execSQL(CREATE_TABLE_POST);
+        }
+
+        if(oldVersion < 12){
+            db.execSQL("ALTER TABLE "+ TABLE_NAME_TRACKING +" ADD COLUMN payout DOUBLE;");
+            db.execSQL("ALTER TABLE "+ TABLE_NAME_TRACKING +" ADD COLUMN commission_type TEXT;");
+            db.execSQL("ALTER TABLE "+ TABLE_NAME_TRACKING +" ADD COLUMN commission_avg_1 DOUBLE;");
+            db.execSQL("ALTER TABLE "+ TABLE_NAME_TRACKING +" ADD COLUMN commission_min_1 DOUBLE;");
+            db.execSQL("ALTER TABLE "+ TABLE_NAME_TRACKING +" ADD COLUMN commission_max_1 DOUBLE;");
+            db.execSQL("ALTER TABLE "+ TABLE_NAME_TRACKING +" ADD COLUMN commission_avg_2 DOUBLE;");
+            db.execSQL("ALTER TABLE "+ TABLE_NAME_TRACKING +" ADD COLUMN commission_min_2 DOUBLE;");
+            db.execSQL("ALTER TABLE "+ TABLE_NAME_TRACKING +" ADD COLUMN commission_max_2 DOUBLE;");
+            db.execSQL("ALTER TABLE "+ TABLE_NAME_TRACKING +" ADD COLUMN approval_days INTEGER;");
+        }
+
+        if(oldVersion < 13){
+            db.execSQL("ALTER TABLE "+ TABLE_NAME_POST +" ADD COLUMN excerpt TEXT;");
+            db.execSQL("ALTER TABLE "+ TABLE_NAME_POST +" ADD COLUMN author_id TEXT;");
+            db.execSQL("ALTER TABLE "+ TABLE_NAME_POST +" ADD COLUMN author_name TEXT;");
+            db.execSQL("ALTER TABLE "+ TABLE_NAME_POST +" ADD COLUMN author_photo TEXT;");
+        }
+
+        if(oldVersion < 14){
+            db.execSQL("ALTER TABLE "+ TABLE_NAME_ADVERTISER +" ADD COLUMN type INTEGER;");
+            db.execSQL("ALTER TABLE "+ TABLE_NAME_TRACKING +" ADD COLUMN advertiser_type INTEGER;");
         }
 
 //        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_ADVERTISER);

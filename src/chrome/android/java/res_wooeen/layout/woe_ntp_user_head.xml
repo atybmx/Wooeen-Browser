@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:padding="30dp"
+    android:background="@color/woe_ntp_user_head_bg"
+    android:id="@+id/woe_ntp_user_head_layout"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:elevation="1dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/woe_user_image"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/woe_rounded_border"
+            android:layout_centerInParent="true"
+            android:adjustViewBounds="true"
+            android:scaleType="center"
+            android:src="@drawable/woe_ic_head_user"
+            ></ImageView>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_vertical|start"
+            android:clickable="true">
+
+            <TextView
+                android:id="@+id/txt_name"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:textColor="@color/woe_ntp_user_head_title"
+                android:textSize="14sp"
+                android:padding="0dp"
+                android:fontFamily="@font/poppins_semibold"
+                ></TextView>
+
+            <TextView
+                android:id="@+id/txt_email"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:textColor="@color/woe_ntp_user_head_text"
+                android:textSize="14sp"
+                android:padding="0dp"
+                android:fontFamily="@font/poppins_regular"
+                ></TextView>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:textColor="@color/woe_ntp_user_head_text"
+                    android:textSize="14sp"
+                    android:padding="0dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/woe_type_account"
+                    android:textAllCaps="true"
+                    android:layout_marginEnd="5dp"
+                    ></TextView>
+
+                <TextView
+                    android:id="@+id/txt_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:textColor="@color/woe_ntp_user_head_text"
+                    android:textSize="14sp"
+                    android:padding="0dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textAllCaps="true"
+                    ></TextView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:textColor="@color/woe_ntp_user_head_text"
+                    android:textSize="14sp"
+                    android:padding="0dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/woe_your_id"
+                    android:textAllCaps="true"
+                    android:layout_marginEnd="5dp"
+                    ></TextView>
+
+                <TextView
+                    android:id="@+id/txt_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:textColor="@color/woe_ntp_user_head_text"
+                    android:textSize="14sp"
+                    android:padding="0dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textAllCaps="true"
+                    ></TextView>
+
+                <com.wooeen.view.ui.WoeButtonTransparent
+                    android:id="@+id/woe_id_copy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="5dp"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:drawableStart="@drawable/woe_copy"
+                    android:padding="5dp"
+                    android:elevation="10dp"
+                    ></com.wooeen.view.ui.WoeButtonTransparent>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout><!-- END infos -->
+
+    <com.wooeen.view.ui.WoeButton
+        android:id="@+id/woe_company_create"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:minHeight="60dp"
+        android:layout_weight="0"
+        android:text="@string/woe_create_pj_account" />
+
+</LinearLayout>

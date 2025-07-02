@@ -447,6 +447,28 @@ public abstract class DatetimeUtils {
  		
  		return stringToDate(range.substring(0, range.indexOf("-")));
  	}
+
+	public static String getRelativeTimeFormat(Date d,String daysS, String hoursS, String minutesS, String ago) {
+		if(d==null)
+			return "";
+
+		Calendar cur = Calendar.getInstance();
+		Calendar date = Calendar.getInstance();
+		date.setTime(d);
+
+		int days = dataDiff(date.getTime(), cur.getTime());
+		int hours = cur.get(Calendar.HOUR_OF_DAY) - date.get(Calendar.HOUR_OF_DAY);
+		int minutes = cur.get(Calendar.MINUTE) - date.get(Calendar.MINUTE);
+
+		if(days < 0)
+			return "";
+		else if(days > 0)
+			return days+" "+daysS+" "+ago;
+		else if(hours > 0)
+			return hours+" "+hoursS+" "+ago;
+		else
+			return minutes+" "+minutesS+" "+ago;
+	}
  	
  	public static Date getRangeDateLast(String range) {
  		if(range == null || "".equals(range) || range.indexOf("-") < 0 || range.indexOf("-") >= range.length() - 1)

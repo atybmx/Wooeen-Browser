@@ -1,0 +1,51 @@
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+apply plugin: ChromiumPlugin
+
+buildscript {
+    repositories {
+    	maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
+    }
+    dependencies {
+        classpath 'org.owasp:dependency-check-gradle:6+'
+    }
+}
+
+apply plugin: 'org.owasp.dependencycheck'
+
+repositories {
+    google()
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+    maven { url "https://releases.adjoe.io/maven" }
+}
+
+dependencyCheck {
+    // Any known vulnerability of any severity will cause the build to fail.
+    failBuildOnCVSS = 0
+    // Libraries used in these configurations aren't shipped in Chrome.
+    // They are only used to aid in compiling or testing.
+    skipConfigurations = [
+        'buildCompile',
+        'buildCompileNoDeps',
+        'androidTestCompile',
+        'testCompile'
+    ]
+}
+
+dependencies {    
+    buildCompile 'io.adjoe:adjoe-sdk-android:2.1.1'
+}
+
+task setUpRepository(type: BuildConfigGenerator) {
+    // Paths are relative to the chromium source root.
+    repositoryPath 'third_party/wooeen'
+    
+    chromiumSourceRoot '../..'
+    cipdBucket 'chromium'
+    internalTargetVisibility = [ ':*' ]
+}

@@ -14,6 +14,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:labelFor="@id/txt_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/woe_whats_your_name"
@@ -43,12 +44,12 @@
             android:id="@+id/txt_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
             android:padding="10dp"
             android:background="@drawable/woe_edit"
             android:layout_marginTop="20dp"
             android:ems="10"
             android:inputType="textPersonName"
+            android:autofillHints="name"
             android:maxLines="1"
             android:maxLength="90"
             android:textColor="@color/white"

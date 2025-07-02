@@ -1,0 +1,10 @@
+# Copyright 2018 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# To create CIPD package run the following command.
+# cipd create --pkg-def cipd.yaml -tag version:2@0.1.6.cr1
+package: chromium/third_party/wooeen/libs/io_adjoe_adjoe_protection_android_standard
+description: "adjoe-protection-android-standard"
+data:
+- file: adjoe-protection-android-standard-0.1.6.aar

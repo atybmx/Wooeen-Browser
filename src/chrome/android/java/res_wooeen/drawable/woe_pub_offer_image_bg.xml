@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:bottomLeftRadius="25dp" android:bottomRightRadius="25dp"/>
+            <padding android:bottom="5dp"/>
+            <stroke android:width="0dp" android:color="@color/woe_pub_item_border" />
+            <solid android:color="@color/woe_pub_item_border" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:bottomLeftRadius="25dp" android:bottomRightRadius="25dp"/>
+            <padding
+                android:top="1dp"
+                android:bottom="1dp"
+                android:left="1dp"
+                android:right="1dp"
+                />
+            <solid android:color="@color/woe_pub_item_head_bg" />
+        </shape>
+    </item>
+</layer-list>

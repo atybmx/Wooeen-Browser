@@ -15,7 +15,8 @@
             android:id="@android:id/icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:scaleType="centerInside" />
+            android:scaleType="centerInside"
+            android:contentDescription="@string/woe_attention" />
 
         <TextView
             android:id="@android:id/text1"

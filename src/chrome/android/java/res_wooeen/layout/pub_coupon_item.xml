@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coupon_content"
+    android:orientation="horizontal"
+    android:layout_width="300dp"
+    android:layout_height="300dp"
+    android:background="@drawable/woe_offer_item_bg"
+    android:clickable="true"
+    android:focusable="true"
+    android:baselineAligned="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:padding="20dp"
+        android:background="@drawable/woe_list_layout_coupon_full"
+        android:elevation="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        >
+
+        <com.wooeen.view.ui.WoeButtonBorded
+            android:id="@+id/coupon_rules"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/woe_coupon_see_rules"
+            android:textFontWeight="700"
+            android:textSize="13sp"
+            android:textAllCaps="true"
+            ></com.wooeen.view.ui.WoeButtonBorded>
+
+        <TextView
+            android:id="@+id/coupon_title"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical|start"
+            android:textColor="@color/woe_coupon_item_title"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="16sp"
+            android:textFontWeight="500"
+            android:singleLine="false"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/woe_coupon_voucher_bg"
+            >
+
+            <TextView
+                android:id="@+id/coupon_voucher"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical|start"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:text=""
+                android:textColor="@color/woe_coupon_item_voucher"
+                android:fontFamily="@font/poppins_bold"
+                android:padding="10dp"
+                android:textSize="13sp"
+                android:textFontWeight="700"
+                android:textAllCaps="true"/>
+
+            <ImageButton
+                android:id="@+id/coupon_action"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppins_bold"
+                android:background="@drawable/woe_btn_primary"
+                android:src="@drawable/woe_arrow_right_long_white"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:contentDescription="@string/woe_feed_coupons"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/coupon_stopwatch_container"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:src="@drawable/woe_stopwatch_blue"
+                android:contentDescription="@string/woe_coupon_expiration_in"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical|start"
+                android:layout_marginEnd="5dp"
+                android:text="@string/woe_coupon_expiration_in"
+                android:textColor="@color/woe_coupon_item_expire"
+                android:fontFamily="@font/poppins_bold"
+                android:textSize="11sp"
+                android:textFontWeight="700"
+                android:textAllCaps="true"/>
+
+            <TextView
+                android:id="@+id/coupon_stopwatch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical|start"
+                android:background="@color/woe_coupon_item_expire_stopwatch_bg"
+                android:textColor="@color/woe_coupon_item_expire_stopwatch"
+                android:fontFamily="@font/poppins_bold"
+                android:padding="5dp"
+                android:textSize="11sp"
+                android:textFontWeight="700"
+                android:textAllCaps="true"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

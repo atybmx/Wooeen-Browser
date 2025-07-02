@@ -126,9 +126,6 @@ public class TaskDAO {
     }
 
     public void deleteFrom(int id){
-        if(id <= 0)
-            return;
-
         try {
             int result = provider.delete(
                     WoeDBContract.Task.CONTENT_URI, // the content URI

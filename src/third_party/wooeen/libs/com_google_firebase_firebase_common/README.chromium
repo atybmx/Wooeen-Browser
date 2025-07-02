@@ -1,0 +1,14 @@
+Name: firebase-common
+Short Name: firebase-common
+URL: https://firebase.google.com
+Version: 20.2.0
+License: 
+License File: NOT_SHIPPED
+CPEPrefix: unknown
+Security Critical: no
+
+Description:
+Common classes for Firebase SDKs.
+
+Local Modifications:
+No modifications.

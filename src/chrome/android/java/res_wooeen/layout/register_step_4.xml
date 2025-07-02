@@ -14,6 +14,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:labelFor="@id/txt_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/woe_whats_your_email"
@@ -43,11 +44,11 @@
             android:id="@+id/txt_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
             android:layout_marginTop="20dp"
             android:ems="10"
             android:maxLength="320"
             android:inputType="textEmailAddress"
+            android:autofillHints="emailAddress"
             android:maxLines="1"
             android:textColor="@color/white"
             android:backgroundTint="@color/white"/>

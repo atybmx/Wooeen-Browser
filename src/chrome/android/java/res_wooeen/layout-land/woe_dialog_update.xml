@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/woe_pub_item_bg_normal"
+    android:paddingBottom="10dp"
+    android:layout_gravity="center"
+    android:id="@+id/woe_ntp_update_layout"
+    >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/woe_feed_posts"
+        android:src="@drawable/bg_ntp_update"
+        ></ImageView>
+
+    <ImageButton
+        android:id="@+id/modal_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/woe_btn_secondary"
+        android:contentDescription="@null"
+        android:layout_alignParentEnd="true"
+        android:padding="16dp"
+        android:src="@drawable/woe_close_gray"/>
+
+    <View android:id="@+id/strut"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_alignRight="@id/strut"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:gravity="center"
+            android:fontFamily="@font/montserrat_bold"
+            android:textSize="20sp"
+            android:textFontWeight="700"
+            android:singleLine="false"
+            android:lineHeight="20dp"
+            android:maxLines="10"
+            android:ellipsize="end"
+            android:textColor="#f5d944"
+            android:textAllCaps="true"
+            android:elevation="10dp"
+            android:text="@string/woe_update_title"></TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:gravity="center"
+            android:fontFamily="@font/montserrat_semibold"
+            android:textSize="12sp"
+            android:textFontWeight="500"
+            android:singleLine="false"
+            android:lineHeight="15dp"
+            android:maxLines="10"
+            android:ellipsize="end"
+            android:textColor="#ffffff"
+            android:text="@string/woe_update_desc"
+            android:elevation="5dp"
+            android:textAllCaps="true"></TextView>
+
+        <com.wooeen.view.ui.WoeButtonOrange
+            android:id="@+id/btn_update"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/woe_update_btn">
+
+        </com.wooeen.view.ui.WoeButtonOrange>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

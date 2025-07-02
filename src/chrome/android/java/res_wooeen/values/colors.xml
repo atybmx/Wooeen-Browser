@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="woe_color_primary">#cf2f29</color>
+    <color name="woe_color_primary">#3f40e6</color>
     <color name="woe_color_purple">#3e40e6</color>
-    <color name="woe_color_red">#cf2f29</color>
+    <color name="woe_color_red">#3f40e6</color>
     <color name="woe_color_yellow">#f5d943</color>
     <color name="woe_color_font">#000000</color>
     <color name="woe_bg_1">#f2f3f5</color>
@@ -13,16 +13,35 @@
     <color name="woe_white">#FFFFFF</color>
     <color name="woe_color_icon_bg">#3f40e6</color>
 
+    <color name="woe_dialog_panel_bg">#ffffff</color>
+    <color name="woe_dialog_bg">#E63e40e6</color>
+
+    <color name="woe_ntp_user_head_bg">#f2f3f5</color>
+    <color name="woe_ntp_user_head_title">@color/woe_color_purple</color>
+    <color name="woe_ntp_user_head_text">#3e3f41</color>
+
+    <color name="woe_rounded_border_bg">#ffffff</color>
+    <color name="woe_rounded_border_border">#e7e7e7</color>
+
     <color name="woe_style_h1">@color/woe_color_purple</color>
     <color name="woe_style_h2">@color/woe_color_purple</color>
     <color name="woe_style_h3">@color/woe_color_purple</color>
     <color name="woe_edit_normal_border">#666666</color>
     <color name="woe_edit_clicked_border">@color/woe_color_purple</color>
 
-    <color name="woe_bg">#ffffff</color>
+    <color name="woe_bg">#f2f3f5</color>
     <color name="woe_main_secondary_border">@color/woe_color_purple</color>
     <color name="woe_main_secondary_text">@color/woe_color_purple</color>
 
+    <color name="woe_ntp_logo_divider">#f2f3f5</color>
+    <color name="woe_ntp_logo_id_text">#3e3f41</color>
+    <color name="woe_ntp_logo_user_bg">#f2f3f5</color>
+    <color name="woe_ntp_logo_user_border">#f2f3f5</color>
+    <color name="woe_ntp_logo_btn_text">@color/woe_color_purple</color>
+    <color name="woe_ntp_logo_btn_bg">#f2f3f5</color>
+    <color name="woe_ntp_logo_btn_selected_bg">#aaabad</color>
+
+    <color name="woe_tab_bg">#f2f3f5</color>
     <color name="woe_tab_item_bg">#fdfdfd</color>
     <color name="woe_tab_item_border">#e8e8e8</color>
     <color name="woe_tab_item_selected_bg">#ffffff</color>
@@ -30,6 +49,14 @@
     <color name="woe_tab_item_click_bg">#e8e8e8</color>
     <color name="woe_tab_item_click_border">#e8e8e8</color>
     <color name="woe_tab_item_font">@color/woe_color_purple</color>
+
+    <color name="woe_menu_item_bg">#ffffff</color>
+    <color name="woe_menu_item_border">#f2f3f5</color>
+    <color name="woe_menu_item_selected_bg">#fdfdfd</color>
+    <color name="woe_menu_item_selected_border">#f2f3f5</color>
+    <color name="woe_menu_item_click_bg">#e8e8e8</color>
+    <color name="woe_menu_item_click_border">#f2f3f5</color>
+    <color name="woe_menu_item_font">#3e3f41</color>
 
     <color name="woe_post_item_bg">#ebebeb</color>
     <color name="woe_post_item_border">#ebebeb</color>
@@ -52,18 +79,61 @@
     <color name="woe_coupon_item_info_bg">#ffffff</color>
     <color name="woe_coupon_item_info_border">#e7e7e7</color>
     <color name="woe_coupon_item_img_bg">#ffffff</color>
+    <color name="woe_coupon_item_rules">#555555</color>
     <color name="woe_coupon_item_title">#5f5f5f</color>
     <color name="woe_coupon_item_voucher">@color/woe_color_purple</color>
     <color name="woe_coupon_item_expire">@color/woe_color_purple</color>
     <color name="woe_coupon_item_expire_stopwatch">#ffffff</color>
     <color name="woe_coupon_item_expire_stopwatch_bg">@color/woe_color_purple</color>
 
+    <color name="woe_pub_item_bg">#f2f3f5</color>
+    <color name="woe_pub_item_border">#ebebeb</color>
+    <color name="woe_pub_item_head_bg">#ffffff</color>
+    <color name="woe_pub_item_text">#000000</color>
+    <color name="woe_pub_item_date">#5f5f5f</color>
+    <color name="woe_pub_item_link_title">#000000</color>
+    <color name="woe_pub_item_link_desc">#5f5f5f</color>
+    <color name="woe_pub_item_offer_title">#000000</color>
+    <color name="woe_pub_item_offer_desc">#5f5f5f</color>
+    <color name="woe_pub_item_offer_price">@color/woe_color_purple</color>
+    <color name="woe_pub_item_offer_price_old">#a3a3a3</color>
+    <color name="woe_pub_item_offer_discount_bg">#ff1f00</color>
+    <color name="woe_pub_item_offer_discount_text">#ffe501</color>
+    <color name="woe_pub_item_offer_cashback_bg">#3a3ce4</color>
+    <color name="woe_pub_item_offer_cashback_border">#3a3ce4</color>
+    <color name="woe_pub_item_offer_cashback_label">#ffffff</color>
+    <color name="woe_pub_item_offer_cashback_text">#ffffff</color>
+    <color name="woe_pub_item_offer_social_bg">#fc5411</color>
+    <color name="woe_pub_item_offer_social_border">#fc5411</color>
+    <color name="woe_pub_item_offer_social_text">#ffffff</color>
+
+    <color name="woe_btn_social_bg">#ffffff</color>
+    <color name="woe_btn_social_border">#e7e7e7</color>
+    <color name="woe_btn_social_bg_clicked">#e7e7e7</color>
+    <color name="woe_btn_social_text">#000000</color>
+
+    <color name="woe_line_color">#999999</color>
+    <color name="woe_area_bg">#f2f3f5</color>
+    <color name="woe_area_head_text">#000000</color>
+    <color name="woe_area_head_value">@color/woe_color_purple</color>
+    <color name="woe_star_fill">#e57c26</color>
+
     <color name="woe_tag_bg">#f2f3f5</color>
     <color name="woe_tag_text">#555555</color>
 
     <color name="default_bg_color_dark">#333c41</color>
 
+    <color name="woe_search_bg">#ffffff</color>
     <color name="woe_search_color">#805f5f5f</color>
+
+    <color name="woe_div_bg">#ffffff</color>
+    <color name="woe_div_bg_clicked">#f2f3f5</color>
+    <color name="woe_div_sh">#f6f6f6</color>
+    <color name="woe_div_title">@color/woe_color_purple</color>
+    <color name="woe_div_text">#555555</color>
+    <color name="woe_btn_link_bd">#3e3f41</color>
+    <color name="woe_widget_div_title">@color/woe_color_purple</color>
+    <color name="woe_widget_div_text">#ffffff</color>
 
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>

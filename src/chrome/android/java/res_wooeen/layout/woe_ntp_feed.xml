@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:id="@+id/woe_ntp_feed_layout"
+    >
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/woe_tabs"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:tabBackground="@drawable/woe_tab_item_bg"
+        app:tabIndicatorColor="@color/woe_tab_item_selected_bg"
+        android:background="@color/woe_tab_bg">
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical"
+        android:paddingTop="20dp"
+        android:background="@color/woe_tab_item_selected_bg">
+
+      <LinearLayout
+          android:visibility="gone"
+          android:id="@+id/woe_filters_post"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_margin="10dp"
+          android:orientation="vertical">
+
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:padding="5dp"
+              android:layout_marginBottom="10dp"
+              android:orientation="horizontal"
+              android:background="@drawable/woe_search_btn_normal"
+              android:gravity="center">
+
+              <EditText
+                  android:id="@+id/woe_post_q"
+                  android:layout_width="0dp"
+                  android:layout_height="50dp"
+                  android:layout_weight="1"
+                  android:layout_marginEnd="10dp"
+                  android:padding="5dp"
+                  android:inputType="text"
+                  android:autofillHints="none"
+                  android:hint="@string/search_widget_default"
+                  android:background="@color/woe_transparent">
+              </EditText>
+
+              <ImageButton
+                  android:id="@+id/woe_post_btn"
+                  android:layout_width="wrap_content"
+                  android:layout_height="50dp"
+                  android:padding="20dp"
+                  android:background="@drawable/woe_btn_primary"
+                  android:src="@drawable/woe_search"
+                  android:contentDescription="@string/woe_feed_posts">
+
+              </ImageButton>
+
+          </LinearLayout>
+
+          <LinearLayout
+              android:id="@+id/woe_post_tags"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:showDividers="middle"
+              android:divider="@drawable/woe_tag_divider">
+          </LinearLayout>
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:id="@+id/woe_filters_offer"
+          android:visibility="gone"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_margin="10dp"
+          android:orientation="vertical">
+
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal">
+
+              <RelativeLayout
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="1"
+                  android:padding="5dp"
+                  android:layout_marginBottom="10dp"
+                  android:layout_marginEnd="10dp"
+                  android:orientation="horizontal"
+                  android:background="@drawable/woe_search_btn_normal"
+                  android:gravity="center">
+
+                  <EditText
+                      android:id="@+id/woe_offer_q"
+                      android:layout_width="match_parent"
+                      android:layout_height="50dp"
+                      android:layout_marginEnd="60dp"
+                      android:padding="5dp"
+                      android:background="@color/woe_transparent"
+                      android:inputType="text"
+                      android:hint="@string/search_widget_default"
+                      android:autofillHints="none">
+                  </EditText>
+
+                  <ImageButton
+                      android:id="@+id/woe_offer_btn"
+                      android:layout_width="50dp"
+                      android:layout_height="50dp"
+                      android:layout_alignParentEnd="true"
+                      android:padding="20dp"
+                      android:background="@drawable/woe_btn_primary"
+                      android:src="@drawable/woe_search"
+                      android:contentDescription="@string/woe_feed_offers">
+
+                  </ImageButton>
+
+              </RelativeLayout>
+
+              <ImageButton
+                  android:id="@+id/woe_offer_filter"
+                  android:layout_width="wrap_content"
+                  android:layout_height="50dp"
+                  android:layout_marginTop="5dp"
+                  android:padding="20dp"
+                  android:background="@drawable/woe_btn_secondary"
+                  android:src="@drawable/woe_filter"
+                  android:contentDescription="@string/woe_feed_posts">
+
+              </ImageButton>
+
+          </LinearLayout>
+
+          <LinearLayout
+              android:id="@+id/woe_offer_tags"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:showDividers="middle"
+              android:divider="@drawable/woe_tag_divider">
+          </LinearLayout>
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:id="@+id/woe_filters_coupon"
+          android:visibility="gone"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_margin="10dp"
+          android:orientation="vertical">
+
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal">
+
+              <RelativeLayout
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="1"
+                  android:padding="5dp"
+                  android:layout_marginBottom="10dp"
+                  android:layout_marginEnd="10dp"
+                  android:orientation="horizontal"
+                  android:background="@drawable/woe_search_btn_normal"
+                  android:gravity="center">
+
+                  <EditText
+                      android:id="@+id/woe_coupon_q"
+                      android:layout_width="match_parent"
+                      android:layout_height="50dp"
+                      android:layout_marginEnd="60dp"
+                      android:padding="5dp"
+                      android:inputType="text"
+                      android:autofillHints="none"
+                      android:hint="@string/search_widget_default"
+                      android:background="@color/woe_transparent">
+                  </EditText>
+
+                  <ImageButton
+                      android:id="@+id/woe_coupon_btn"
+                      android:layout_width="50dp"
+                      android:layout_height="50dp"
+                      android:layout_alignParentEnd="true"
+                      android:padding="20dp"
+                      android:background="@drawable/woe_btn_primary"
+                      android:src="@drawable/woe_search"
+                      android:contentDescription="@string/woe_feed_coupons">
+
+                  </ImageButton>
+
+              </RelativeLayout>
+
+              <ImageButton
+                  android:id="@+id/woe_coupon_filter"
+                  android:layout_width="wrap_content"
+                  android:layout_height="50dp"
+                  android:layout_marginTop="5dp"
+                  android:padding="20dp"
+                  android:background="@drawable/woe_btn_secondary"
+                  android:src="@drawable/woe_filter"
+                  android:contentDescription="@string/woe_feed_coupons">
+
+              </ImageButton>
+
+          </LinearLayout>
+
+          <LinearLayout
+              android:id="@+id/woe_coupon_tags"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:showDividers="middle"
+              android:divider="@drawable/woe_tag_divider">
+          </LinearLayout>
+
+      </LinearLayout>
+
+      <ProgressBar
+              android:id="@+id/woe_feed_progress"
+              android:layout_width="24dp"
+              android:layout_height="24dp"
+              android:layout_gravity="center"
+              android:visibility="gone" />
+
+      <LinearLayout
+          android:id="@+id/woe_feed"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+      </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

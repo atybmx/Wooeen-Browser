@@ -2,6 +2,7 @@ package com.wooeen.model.to;
 
 public class AdvertiserTO {
     private int id;
+    private int type;
     private String name;
     private String color;
     private String logo;
@@ -105,5 +106,13 @@ public class AdvertiserTO {
 
     public void setProduct(CheckoutTO product) {
         this.product = product;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

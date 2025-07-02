@@ -1,0 +1,14 @@
+Name: Kotlin Stdlib Common
+Short Name: kotlin-stdlib-common
+URL: https://kotlinlang.org/
+Version: 1.5.30
+License: 
+License File: NOT_SHIPPED
+CPEPrefix: unknown
+Security Critical: no
+
+Description:
+Kotlin Common Standard Library
+
+Local Modifications:
+No modifications.

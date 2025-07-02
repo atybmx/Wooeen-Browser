@@ -9,12 +9,12 @@
     android:paddingRight="20dp"
     android:background="@drawable/woe_post_item_bg"
     android:clickable="true"
+    android:focusable="true"
     >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:background="@drawable/woe_list_layout"
         android:layout_marginBottom="20dp"
         >
@@ -27,6 +27,7 @@
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:background="@drawable/woe_list_layout"
+            android:contentDescription="@string/woe_feed_tasks"
             ></ImageView>
 
     </RelativeLayout>
@@ -39,7 +40,7 @@
         >
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
@@ -50,12 +51,11 @@
                 android:id="@+id/task_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:gravity="center_vertical|start"
                 android:text=""
                 android:textColor="@color/woe_task_item_title"
                 android:fontFamily="@font/montserrat_bold"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 android:textFontWeight="700"
                 android:maxLines="2"
                 android:ellipsize="end"
@@ -70,7 +70,7 @@
                 android:text=""
                 android:textColor="@color/woe_task_item_description"
                 android:fontFamily="@font/montserrat_bold"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 android:textFontWeight="400"/>
 
         </LinearLayout>
@@ -81,6 +81,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/woe_btn_icon"
             android:src="@drawable/woe_share"
+            android:contentDescription="@string/woe_ntp_share_title"
             android:layout_marginStart="10dp"
             android:padding="10dp"></ImageButton>
 

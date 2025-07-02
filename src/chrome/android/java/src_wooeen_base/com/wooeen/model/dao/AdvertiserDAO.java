@@ -43,6 +43,7 @@ public class AdvertiserDAO {
 
         ContentValues item = new ContentValues();
         item.put(WoeDBContract.Advertiser._ID,     advertiser.getId());
+        item.put(WoeDBContract.Advertiser.TYPE,    advertiser.getType());
         item.put(WoeDBContract.Advertiser.NAME,    advertiser.getName());
         item.put(WoeDBContract.Advertiser.COLOR,   advertiser.getColor());
         item.put(WoeDBContract.Advertiser.URL,     advertiser.getUrl());
@@ -84,6 +85,7 @@ public class AdvertiserDAO {
 
             ContentValues item = new ContentValues();
             item.put(WoeDBContract.Advertiser._ID,     advertiser.getId());
+            item.put(WoeDBContract.Advertiser.TYPE,    advertiser.getType());
             item.put(WoeDBContract.Advertiser.NAME,    advertiser.getName());
             item.put(WoeDBContract.Advertiser.COLOR,   advertiser.getColor());
             item.put(WoeDBContract.Advertiser.URL,     advertiser.getUrl());
@@ -158,6 +160,7 @@ public class AdvertiserDAO {
         // A "projection" defines the columns that will be returned for each row
         String[] projections = {
                 WoeDBContract.Advertiser._ID,
+                WoeDBContract.Advertiser.TYPE,
                 WoeDBContract.Advertiser.NAME,
                 WoeDBContract.Advertiser.COLOR,
                 WoeDBContract.Advertiser.URL,
@@ -196,7 +199,7 @@ public class AdvertiserDAO {
             sqlWhere = sqlWhere.substring(0, sqlWhere.length() - 4);
         if("".equals(sqlWhere))
             sqlWhere = null;
-        
+
         String order = WoeDBContract.Advertiser.SORT_ORDER_DEFAULT;
         if(!TextUtils.isEmpty(search.getOrderBy()))
             order = search.getOrderBy();
@@ -214,6 +217,7 @@ public class AdvertiserDAO {
                 while (!cursor.isAfterLast()) {
                     AdvertiserTO item = new AdvertiserTO();
                     item.setId(cursor.getInt(cursor.getColumnIndex(WoeDBContract.Advertiser._ID)));
+                    item.setType(cursor.getInt(cursor.getColumnIndex(WoeDBContract.Advertiser.TYPE)));
                     item.setName(cursor.getString(cursor.getColumnIndex(WoeDBContract.Advertiser.NAME)));
                     item.setColor(cursor.getString(cursor.getColumnIndex(WoeDBContract.Advertiser.COLOR)));
                     item.setUrl(cursor.getString(cursor.getColumnIndex(WoeDBContract.Advertiser.URL)));

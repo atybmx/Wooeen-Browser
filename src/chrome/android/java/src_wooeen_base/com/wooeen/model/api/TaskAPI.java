@@ -21,10 +21,14 @@ public class TaskAPI {
     }
 
     public List<TaskTO> get(){
-        return get(0,0);
+        return get(0,0,0);
     }
 
-    public List<TaskTO> get(int pg,int qtdPerPage){
+    public List<TaskTO> get(int user){
+        return get(0,0,user);
+    }
+
+    public List<TaskTO> get(int pg,int qtdPerPage,int user){
         try {
             //configura a url e os parametros
             Uri.Builder builder = new Uri.Builder();
@@ -37,6 +41,9 @@ public class TaskAPI {
                     .appendQueryParameter("st","1")
                     .appendQueryParameter("pg",""+pg)
                     .appendQueryParameter("qpp",""+qtdPerPage);
+
+            if(user > 0)
+                builder.appendQueryParameter("us", ""+user);
 
             String[] resposta = new WebServiceClient()
                     .get(builder.build().toString(),

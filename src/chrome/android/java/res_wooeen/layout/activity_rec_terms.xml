@@ -51,7 +51,7 @@
                 android:background="@drawable/woe_rounded_bg"
                 android:textColor="@color/woe_white"
                 android:layout_marginEnd="15dp"
-                android:text="1" />
+                android:text="@string/woe_one" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -79,7 +79,7 @@
                 android:background="@drawable/woe_rounded_bg"
                 android:textColor="@color/woe_white"
                 android:layout_marginEnd="15dp"
-                android:text="2" />
+                android:text="@string/woe_two" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -107,7 +107,7 @@
                 android:background="@drawable/woe_rounded_bg"
                 android:textColor="@color/woe_white"
                 android:layout_marginEnd="15dp"
-                android:text="3" />
+                android:text="@string/woe_tree" />
 
             <TextView
                 android:layout_width="match_parent"

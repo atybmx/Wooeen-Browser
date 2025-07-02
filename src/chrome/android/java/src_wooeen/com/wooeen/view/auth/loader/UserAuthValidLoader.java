@@ -11,8 +11,11 @@ import androidx.loader.content.AsyncTaskLoader;
 import androidx.loader.content.Loader;
 
 import com.wooeen.model.api.UserAPI;
+import com.wooeen.model.sync.WoeSyncAdapter;
+import com.wooeen.model.to.UserTO;
 import com.wooeen.model.to.UserTokenTO;
 import com.wooeen.utils.TextUtils;
+import com.wooeen.utils.UserUtils;
 
 import org.chromium.chrome.R;
 
@@ -77,10 +80,12 @@ public class UserAuthValidLoader implements LoaderManager.LoaderCallbacks<UserTo
 
         private String mValidator;
         private List<Integer> mIds;
+        private Context context;
 
         public TaskAction(Context context,String mValidator, List<Integer> mIds) {
             super(context);
 
+            this.context = context;
             this.mValidator = mValidator;
             this.mIds = mIds;
         }
@@ -88,13 +93,23 @@ public class UserAuthValidLoader implements LoaderManager.LoaderCallbacks<UserTo
         @Override
         public UserTokenTO loadInBackground() {
             UserAPI apiDAO = new UserAPI();
-            UserTokenTO token = apiDAO.authValid(mValidator,mIds);
-            if(token != null &&
-                    token.getUser() != null &&
-                    !TextUtils.isEmpty(token.getUser().getId()) &&
-                    !TextUtils.isEmpty(token.getIdToken()) &&
-                    !TextUtils.isEmpty(token.getAccessToken())) {
-                return token;
+            UserAPI.LoginHolderAPI callback = apiDAO.authValid(mValidator,mIds);
+            if(callback != null &&
+                    callback.getToken() != null &&
+                    callback.getUser() != null &&
+                    !TextUtils.isEmpty(callback.getUser().getId()) &&
+                    !TextUtils.isEmpty(callback.getToken().getIdToken()) &&
+                    !TextUtils.isEmpty(callback.getToken().getAccessToken())) {
+                //init data
+                UserUtils.saveUserData(context, callback.getUser(), callback.getToken(), callback.getTokenCp());
+
+                if(callback.getUser().getCompany() != null && callback.getUser().getCompany().getId() > 0){
+                    UserUtils.saveCompanyData(context, callback.getUser().getCompany());
+                }
+
+                WoeSyncAdapter.syncCountry(context);
+
+                return callback.getToken();
             }
 
             return null;

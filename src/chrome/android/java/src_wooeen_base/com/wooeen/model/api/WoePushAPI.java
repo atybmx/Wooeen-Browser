@@ -10,7 +10,7 @@ public class WoePushAPI {
     private final static String AUTHORITY = "tracking.wooeen.com";
 
     public static boolean event(int type,int notification,int push,int user,int advertiser) {
-        if(type == 0 || user == 0 || notification == 0 || push == 0)
+        if(type == 0 || push == 0)
             return false;
 
         try {

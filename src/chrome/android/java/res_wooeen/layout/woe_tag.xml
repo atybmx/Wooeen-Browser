@@ -16,7 +16,7 @@
         android:textColor="@color/woe_tag_text"
         android:fontFamily="@font/montserrat_bold"
         android:textAllCaps="true"
-        android:textSize="12dp"
+        android:textSize="12sp"
         android:textFontWeight="600"
         ></TextView>
 
@@ -25,7 +25,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/woe_btn_icon"
-        android:src="@drawable/woe_close_gray">
+        android:src="@drawable/woe_close_gray"
+        android:contentDescription="@string/woe_close">
 
     </ImageButton>
 

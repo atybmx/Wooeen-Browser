@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="15dp"
+    android:layout_marginEnd="15dp"
+    android:layout_gravity="center"
+    android:id="@+id/woe_ntp_button_layout"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
+
+        <FrameLayout
+            android:id="@+id/btn_buttons_chat_cont"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="2dp"
+            android:layout_marginStart="2dp"
+            android:background="@drawable/woe_ntp_button_bg">
+
+            <LinearLayout
+                android:id="@+id/btn_buttons_chat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:padding="15dp"
+                android:clickable="true"
+                android:focusable="true">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="17dp"
+                        android:text="@string/woe_button_chat_title"
+                        android:textColor="@color/white"
+                        android:textAllCaps="true"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textSize="13sp"
+                        ></TextView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/woe_button_chat_text"
+                        android:textColor="@color/white"
+                        android:textAllCaps="true"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textSize="13sp"
+                        ></TextView>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/woe_whats_button"></ImageView>
+
+            </LinearLayout>
+
+        </FrameLayout><!--END button 2 -->
+
+    </LinearLayout><!-- END buttons -->
+
+</LinearLayout>

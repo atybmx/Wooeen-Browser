@@ -23,6 +23,7 @@ import androidx.loader.content.Loader;
 import com.wooeen.model.api.UserAPI;
 import com.wooeen.model.api.UtilsAPI;
 import com.wooeen.model.api.WoeTrkAPI;
+import com.wooeen.model.sync.WoeSyncAdapter;
 import com.wooeen.model.to.CountryTO;
 import com.wooeen.model.to.UserAuthTO;
 import com.wooeen.model.to.UserTO;
@@ -192,9 +193,12 @@ public class RegisterStepPassView extends Fragment implements LoaderManager.Load
 
         private UserTO mUser;
         private WoeTrkClickTO click;
+        private Context context;
 
         public RegisterUser(Context context,UserTO mUser) {
             super(context);
+
+            this.context = context;
 
             this.mUser = mUser;
 
@@ -204,36 +208,60 @@ public class RegisterStepPassView extends Fragment implements LoaderManager.Load
 
         @Override
         public Map<String,Object> loadInBackground() {
-            //try to get the country from ip
+            //attribute the click
+            if(click == null){
+                click = new WoeTrkClickTO();
+            }
+
+            //Getting a country
             if(mUser.getCountry() == null || TextUtils.isEmpty(mUser.getCountry().getId())){
-                UtilsAPI.IpInfo ipInfo = UtilsAPI.getIpInfo();
-                if(ipInfo != null)
-                    mUser.setCountry(new CountryTO(ipInfo.getCountrycode()));
+                //try to get from click
+                if(!TextUtils.isEmpty(click.getCountry())){
+                    mUser.setCountry(new CountryTO(TextUtils.getLimit(click.getCountry(),2).toUpperCase()));
+                }else {
+                    //try to get the country from ip
+                    UtilsAPI.IpInfo ipInfo = UtilsAPI.getIpInfo();
+                    if (ipInfo != null)
+                        mUser.setCountry(new CountryTO(ipInfo.getCountrycode()));
+                }
             }
 
             Map<String,Object> result = new HashMap<String,Object>();
 
             UserAPI apiDAO = new UserAPI();
-            UserTO user = apiDAO.newUser(mUser);
-            result.put("user",user);
+            UserAPI.RegisterHolderAPI callback = apiDAO.newUserV2(mUser, click.getSource(), click.getLink(), click.getDateClick());
+            if(callback != null &&
+                    callback.getToken() != null &&
+                    callback.getUser() != null &&
+                    !TextUtils.isEmpty(callback.getUser().getId()) &&
+                    !TextUtils.isEmpty(callback.getToken().getIdToken()) &&
+                    !TextUtils.isEmpty(callback.getToken().getAccessToken())) {
+                result.put("user", callback.getUser());
+                result.put("token", callback.getToken());
+                result.put("tokenCp", callback.getTokenCp());
 
-            if(user.getId() > 0){
-                UserTokenTO token = apiDAO.login(mUser.getEmail(), mUser.getPass());
-                result.put("token", token);
+                //init data
+                UserUtils.saveUserData(context, callback.getUser(), callback.getToken(), callback.getTokenCp());
+
+                if(callback.getUser().getCompany() != null && callback.getUser().getCompany().getId() > 0){
+                    UserUtils.saveCompanyData(context, callback.getUser().getCompany());
+                }
+
+                WoeSyncAdapter.syncCountry(context);
 
                 //woe trk api
-                if(click != null) {
+                if (click != null) {
                     //send user tracking
-                    if (click.getSource() > 0 &&
-                            click.getLink() > 0 &&
-                            !TextUtils.isEmpty(click.getDateClick())) {
-                        WoeTrkAPI.user(user.getId(), click.getSource(), click.getLink(),
-                                click.getDateClick());
-                    }
+//                    if (click.getSource() > 0 &&
+//                            click.getLink() > 0 &&
+//                            !TextUtils.isEmpty(click.getDateClick())) {
+//                        WoeTrkAPI.user(user.getId(), click.getSource(), click.getLink(),
+//                                click.getDateClick());
+//                    }
 
-                    //send click tracking
-                    WoeTrkAPI.event(2, user.getId(), click.getSource(), click.getLink(),
-                            click.getDateClick());
+//                    //send click tracking
+//                    WoeTrkAPI.event(2, user.getId(), click.getSource(), click.getLink(),
+//                            click.getDateClick());
                 }
             }
 
@@ -262,10 +290,10 @@ public class RegisterStepPassView extends Fragment implements LoaderManager.Load
             UserTO user = null;
             UserTokenTO token = null;
 
-            if(result != null && result.containsKey("user") || result.get("user") instanceof UserTO)
+            if(result != null && result.containsKey("user") && result.get("user") instanceof UserTO)
                 user = (UserTO) result.get("user");
 
-            if(result != null && result.containsKey("token") || result.get("token") instanceof UserTokenTO)
+            if(result != null && result.containsKey("token") && result.get("token") instanceof UserTokenTO)
                 token = (UserTokenTO) result.get("token");
 
             if(user == null || user.getId() <= 0 || token == null) {
@@ -277,9 +305,6 @@ public class RegisterStepPassView extends Fragment implements LoaderManager.Load
                 btnBack.setEnabled(true);
             }else{
                 mUser.setId(user.getId());
-
-                //saving the user
-                UserUtils.saveUserData(getContext(),mUser,token);
 
                 if(listener != null) listener.onStepPassNext(mUser);
             }

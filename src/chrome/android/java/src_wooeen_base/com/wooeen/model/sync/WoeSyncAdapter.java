@@ -14,6 +14,7 @@ import com.wooeen.model.api.CountryAPI;
 import com.wooeen.model.api.CouponAPI;
 import com.wooeen.model.api.OfferAPI;
 import com.wooeen.model.api.PostAPI;
+import com.wooeen.model.api.RetargetingAPI;
 import com.wooeen.model.api.TaskAPI;
 import com.wooeen.model.api.TrackingAPI;
 import com.wooeen.model.api.UserAPI;
@@ -28,12 +29,15 @@ import com.wooeen.model.dao.TrackingDAO;
 import com.wooeen.model.to.AdvertiserTO;
 import com.wooeen.model.to.CountryTO;
 import com.wooeen.model.to.CouponTO;
+import com.wooeen.model.to.NavigationTO;
 import com.wooeen.model.to.OfferTO;
 import com.wooeen.model.to.PostTO;
 import com.wooeen.model.to.TaskTO;
 import com.wooeen.model.to.TrackingTO;
 import com.wooeen.model.to.UserTO;
+import com.wooeen.model.to.UserTokenTO;
 import com.wooeen.model.to.VersionTO;
+import com.wooeen.utils.NavigationUtils;
 import com.wooeen.utils.TextUtils;
 import com.wooeen.utils.TrackingUtils;
 import com.wooeen.utils.UserUtils;
@@ -96,10 +100,11 @@ public class WoeSyncAdapter extends AbstractThreadedSyncAdapter {
         TrackingUtils.setSyncDataTimestamp(context);
 
         syncCr(provider);
-        syncUser(provider);
+        syncUser(context);
         syncVersion(context, provider);
-        syncCountry(context, provider);
+        syncCountry(context);
         syncAll(context, provider);
+        syncRetargeting(context);
 
         System.out.println("WOE SYNC END");
     }
@@ -114,7 +119,7 @@ public class WoeSyncAdapter extends AbstractThreadedSyncAdapter {
             UserUtils.saveVersionData(context, versionScript);
     }
 
-    private void syncCountry(Context context, ContentProviderClient provider) {
+    public static void syncCountry(Context context) {
         if(context == null)
             return;
 
@@ -150,24 +155,88 @@ public class WoeSyncAdapter extends AbstractThreadedSyncAdapter {
         syncAdvertiser(context, provider,0, 0);
         syncTracking(context, provider,0, 0);
         syncTask(context, provider,0, 0);
-        syncCoupon(context, provider);
-        syncOffer(context, provider);
+//        syncCoupon(context, provider);
+//        syncOffer(context, provider);
         syncPost(context, provider);
     }
 
-    private void syncUser(ContentProviderClient provider) {
+    public static boolean syncUser(Context context) {
         if(context == null)
-            return;
+            return false;
 
-        UserAPI userAPI = new UserAPI(UserUtils.getToken(context));
-        UserTO user = userAPI.get();
-        if(user != null && user.getId() > 0)
+        return syncUser(context, UserUtils.getUserToken(context));
+    }
+
+    public static boolean syncUser(Context context, UserTokenTO token) {
+        if(context == null)
+            return false;
+
+        UserAPI userAPI = new UserAPI(token);
+        UserTO user = userAPI.getWallet();
+        if(user != null && user.getId() > 0) {
             UserUtils.saveUserData(context, user);
+
+            if(user.getCompany() != null && user.getCompany().getId() > 0){
+                UserUtils.saveCompanyData(context, user.getCompany());
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public static boolean syncRetargeting(Context context) {
+        syncRetargetingUser(context);
+        syncRetargetingCompany(context);
+        return true;
+    }
+
+    public static boolean syncRetargetingUser(Context context) {
+        if(context == null)
+            return false;
+
+        return syncRetargetingUser(context, UserUtils.getUserToken(context));
+    }
+
+    public static boolean syncRetargetingUser(Context context, UserTokenTO token) {
+        if(context == null && token != null && !TextUtils.isEmpty(token.getIdToken()) && !TextUtils.isEmpty(token.getAccessToken()))
+            return false;
+
+        RetargetingAPI retargetingAPI = new RetargetingAPI(token);
+        List<NavigationTO> navs = retargetingAPI.get();
+        if(navs != null) {
+            NavigationUtils.saveCacheUser(context, navs);
+            return true;
+        }
+
+        return false;
+    }
+
+    public static boolean syncRetargetingCompany(Context context) {
+        if(context == null)
+            return false;
+
+        return syncRetargetingCompany(context, UserUtils.getCompanyToken(context));
+    }
+
+    public static boolean syncRetargetingCompany(Context context, UserTokenTO token) {
+        if(context == null && token != null && !TextUtils.isEmpty(token.getIdToken()) && !TextUtils.isEmpty(token.getAccessToken()))
+            return false;
+
+        RetargetingAPI retargetingAPI = new RetargetingAPI(token);
+        List<NavigationTO> navs = retargetingAPI.get();
+        if(navs != null) {
+            NavigationUtils.saveCacheCompany(context, navs);
+            return true;
+        }
+
+        return false;
     }
 
     public static void syncAdvertiser(Context context,ContentProviderClient provider,int page, int lastSynced) {
         System.out.println("WOE Getting advertisers "+page);
-        int qtdPerPage = 100;
+        int qtdPerPage = 40;
         AdvertiserAPI api = new AdvertiserAPI(UserUtils.getCrFinal(context));
         List<AdvertiserTO> items = api.get(page, qtdPerPage);
 
@@ -239,7 +308,7 @@ public class WoeSyncAdapter extends AbstractThreadedSyncAdapter {
 
     public static void syncTracking(Context context, ContentProviderClient provider,int page, int lastSynced) {
         System.out.println("WOE Getting trackings "+page);
-        int qtdPerPage = 100;
+        int qtdPerPage = 40;
         TrackingAPI api = new TrackingAPI(UserUtils.getCrFinal(context));
         List<TrackingTO> items = api.get(page, qtdPerPage);
 
@@ -311,7 +380,7 @@ public class WoeSyncAdapter extends AbstractThreadedSyncAdapter {
 
     public static void syncPost(Context context, ContentProviderClient provider) {
         CountryTO country = UserUtils.getCountry(context);
-        if(country == null || TextUtils.isEmpty(country.getId()) || !country.getLoadOffers()) {
+        if(country == null || TextUtils.isEmpty(country.getId()) || !country.getLoadPosts()) {
             PostDAO dao = new PostDAO(provider);
             dao.deleteFrom(0);
             return;
@@ -319,7 +388,7 @@ public class WoeSyncAdapter extends AbstractThreadedSyncAdapter {
 
         System.out.println("WOE Getting posts ");
         PostAPI api = new PostAPI();
-        List<PostTO> items = api.get();
+        List<PostTO> items = api.get(UserUtils.getCrFinal(context));
 
         if(items != null && !items.isEmpty()) {
             System.out.println("WOE Creating posts "+items.size());
@@ -330,9 +399,10 @@ public class WoeSyncAdapter extends AbstractThreadedSyncAdapter {
 
     public static void syncTask(Context context, ContentProviderClient provider,int page, int lastSynced) {
         System.out.println("WOE Getting tasks "+page);
-        int qtdPerPage = 100;
+        int user = UserUtils.getUserId(context);
+        int qtdPerPage = 40;
         TaskAPI api = new TaskAPI(UserUtils.getCrFinal(context));
-        List<TaskTO> items = api.get(page, qtdPerPage);
+        List<TaskTO> items = api.get(page, qtdPerPage, user);
 
         if(items != null && !items.isEmpty()) {
             System.out.println("WOE Creating tasks "+items.size());
@@ -372,7 +442,7 @@ public class WoeSyncAdapter extends AbstractThreadedSyncAdapter {
     public static void syncCoupon(Context context,ContentProviderClient provider) {
         System.out.println("WOE Getting coupons ");
         int page = 0;
-        int qtdPerPage = 150;
+        int qtdPerPage = 40;
         CouponAPI api = new CouponAPI(UserUtils.getCrFinal(context));
         List<CouponTO> items = api.get(page, qtdPerPage);
 
@@ -407,7 +477,7 @@ public class WoeSyncAdapter extends AbstractThreadedSyncAdapter {
     public static void syncOffer(Context context, ContentProviderClient provider) {
         System.out.println("WOE Getting offers ");
         int page = 0;
-        int qtdPerPage = 150;
+        int qtdPerPage = 40;
         OfferAPI api = new OfferAPI(UserUtils.getCrFinal(context));
         List<OfferTO> items = api.get(page, qtdPerPage);
 

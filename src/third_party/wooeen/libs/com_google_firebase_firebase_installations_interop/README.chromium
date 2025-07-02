@@ -1,0 +1,14 @@
+Name: firebase-installations-interop
+Short Name: firebase-installations-interop
+URL: https://firebase.google.com
+Version: 17.0.1
+License: 
+License File: NOT_SHIPPED
+CPEPrefix: unknown
+Security Critical: no
+
+Description:
+Interface library for Firebase Installations SDK.
+
+Local Modifications:
+No modifications.

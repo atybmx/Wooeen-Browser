@@ -27,8 +27,10 @@ import com.wooeen.model.api.UtilsAPI;
 import com.wooeen.model.to.CountryTO;
 import com.wooeen.model.to.UserAuthTO;
 import com.wooeen.model.to.UserTO;
+import com.wooeen.model.to.WoeTrkClickTO;
 import com.wooeen.utils.NumberUtils;
 import com.wooeen.utils.TextUtils;
+import com.wooeen.utils.WoeTrkUtils;
 import com.wooeen.view.ui.MaskEditUtil;
 
 import org.w3c.dom.Text;
@@ -192,26 +194,41 @@ public class RegisterStep6View extends Fragment implements LoaderManager.LoaderC
     public static class RegisterUser extends AsyncTaskLoader<Map<String,Object>> {
 
         private UserTO mUser;
+        private WoeTrkClickTO click;
 
         public RegisterUser(Context context,UserTO mUser) {
             super(context);
 
             this.mUser = mUser;
+
+            //get the click
+            click = WoeTrkUtils.getClick(context);
         }
 
         @Override
         public Map<String,Object> loadInBackground() {
-            //try to get the country from ip
+            //attribute the click
+            if(click == null){
+                click = new WoeTrkClickTO();
+            }
+
+            //Getting a country
             if(mUser.getCountry() == null || TextUtils.isEmpty(mUser.getCountry().getId())){
-                UtilsAPI.IpInfo ipInfo = UtilsAPI.getIpInfo();
-                if(ipInfo != null)
-                    mUser.setCountry(new CountryTO(ipInfo.getCountrycode()));
+                //try to get from click
+                if(!TextUtils.isEmpty(click.getCountry())){
+                    mUser.setCountry(new CountryTO(TextUtils.getLimit(click.getCountry(),2).toUpperCase()));
+                }else {
+                    //try to get the country from ip
+                    UtilsAPI.IpInfo ipInfo = UtilsAPI.getIpInfo();
+                    if (ipInfo != null)
+                        mUser.setCountry(new CountryTO(ipInfo.getCountrycode()));
+                }
             }
 
             Map<String,Object> result = new HashMap<String,Object>();
 
             UserAPI apiDAO = new UserAPI();
-            UserTO user = apiDAO.newUser(mUser);
+            UserTO user = apiDAO.newUser(mUser, click.getSource(), click.getLink(), click.getDateClick());
             result.put("user",user);
             result.put("auth", 0);
 

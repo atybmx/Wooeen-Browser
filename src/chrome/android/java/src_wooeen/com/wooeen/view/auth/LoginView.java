@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
@@ -14,6 +15,7 @@ import android.view.WindowManager;
 import com.wooeen.utils.TextUtils;
 import com.wooeen.utils.UserUtils;
 
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.R;
 
@@ -67,6 +69,17 @@ public class LoginView extends AppCompatActivity implements LoginStepEmailView.O
     }
 
     @Override
+    protected void onDestroy() {
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_content);
+        if(f != null && f.isResumed()){
+            FragmentManager fm = getSupportFragmentManager();
+            fm.beginTransaction().remove(f).commit();
+        }
+
+        super.onDestroy();
+    }
+
+    @Override
     public void onNextPass(String email) {
         //init the next fragment
         mCurFragment = LoginStepPassView.newInstance(email);
@@ -94,22 +107,29 @@ public class LoginView extends AppCompatActivity implements LoginStepEmailView.O
 
     @Override
     protected void onSaveInstanceState (Bundle outState) {
-        //Save the fragment's instance
-        getSupportFragmentManager().putFragment(outState, "LoginView.curFragment", mCurFragment);
+        super.onSaveInstanceState(outState);
 
-        super.onSaveInstanceState(outState);        
+        //Save the fragment's instance
+        if (mCurFragment.isAdded()) {
+            getSupportFragmentManager().putFragment(outState, "LoginView.curFragment",
+                    mCurFragment);
+        }
     }
 
     @Override
-    public void onRegister() {
+    public void onRegister(String email) {
+        BraveActivity.addEvent(this, "register_open");
+
         Intent i = new Intent(LoginView.this, RegisterView.class);
+        if(TextUtils.isEmailValid(email))
+            i.putExtra("email", email);
         startActivity(i);
     }
 
     @Override
     public void onEnter() {
         //notify browser current tab
-        TabUtils.refreshCashbackData();
+        TabUtils.refreshCashbackData(getBaseContext());
 
         finish();
     }
@@ -117,7 +137,10 @@ public class LoginView extends AppCompatActivity implements LoginStepEmailView.O
     @Override
     public void onValidated() {
         //notify browser current tab
-        TabUtils.refreshCashbackData();
+        TabUtils.refreshCashbackData(getBaseContext());
+
+//        Intent resultIntent = new Intent();
+//        setResult(Activity.RESULT_OK, resultIntent);
 
         finish();
     }

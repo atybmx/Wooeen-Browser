@@ -107,6 +107,10 @@ public class RegisterStep4View extends Fragment implements LoaderManager.LoaderC
             }
         });
 
+        //init email field
+        if(TextUtils.isEmpty(txtEmail.getText().toString()) && mUser != null && !TextUtils.isEmpty(mUser.getEmail()))
+            txtEmail.setText(mUser.getEmail());
+
         btnNext = view.findViewById(R.id.btn_next);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override

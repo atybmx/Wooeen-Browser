@@ -35,6 +35,6 @@ public class WoeButtonTransparent extends AppCompatButton {
 
     private void setDefault(Context context){
         setBackgroundColor(ContextCompat.getColor(context, R.color.woe_transparent));
-        setTypeface(ResourcesCompat.getFont(context, R.font.montserrat_bold));
+        setTypeface(ResourcesCompat.getFont(context, R.font.poppins_bold));
     }
 }

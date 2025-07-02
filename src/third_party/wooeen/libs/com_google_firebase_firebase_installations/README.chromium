@@ -1,0 +1,14 @@
+Name: firebase-installations
+Short Name: firebase-installations
+URL: https://firebase.google.com
+Version: 17.0.1
+License: 
+License File: NOT_SHIPPED
+CPEPrefix: unknown
+Security Critical: no
+
+Description:
+Firebase Installations SDK containing the client libraries to manage FIS.
+
+Local Modifications:
+No modifications.

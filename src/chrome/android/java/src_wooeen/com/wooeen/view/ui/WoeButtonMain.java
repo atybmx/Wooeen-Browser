@@ -53,14 +53,16 @@ public class WoeButtonMain extends AppCompatButton {
 
         if (mIcon != null) {
             float textWidth = getPaint().measureText((String)getText());
-//            int left = (int)((getWidth() / 2f) - (textWidth / 2f) - mIconSize - mIconPadding);
-//            int top = getHeight()/2 - mIconSize/2;
+//            int left = (int)((getWidth() / 2f) - (textWidth / 2f) - mIconSize - mIconPaddingLeft);
+            int top = getHeight()/2 - mIconSize/2;
 
             int left = mIconPaddingLeft;
-            int top = mIconPaddingTop;
+//            int top = mIconPaddingTop;
 
             Rect destRect = new Rect(left, top, left + mIconSize, top + mIconSize);
             canvas.drawBitmap(mIcon, mSrcRect, destRect, mPaint);
+
+            setPadding(left + mIconSize + mIconPaddingLeft, mIconPaddingTop, mIconPaddingLeft, mIconPaddingTop);
         }
 
         canvas.restore();
@@ -72,15 +74,15 @@ public class WoeButtonMain extends AppCompatButton {
         for (int i = 0; i < array.getIndexCount(); ++i) {
             int attr = array.getIndex(i);
             if(attr == R.styleable.WoeButtonMain_iconSrc)
-              mIcon = drawableToBitmap(array.getDrawable(attr));
+                mIcon = drawableToBitmap(array.getDrawable(attr));
             else if(attr == R.styleable.WoeButtonMain_iconPaddingTop)
-              mIconPaddingTop = array.getDimensionPixelSize(attr, 0);
+                mIconPaddingTop = array.getDimensionPixelSize(attr, 0);
             else if(attr == R.styleable.WoeButtonMain_iconPaddingLeft)
-              mIconPaddingLeft = array.getDimensionPixelSize(attr, 0);
+                mIconPaddingLeft = array.getDimensionPixelSize(attr, 0);
             else if(attr == R.styleable.WoeButtonMain_iconSize)
-              mIconSize = array.getDimensionPixelSize(attr, 0);
+                mIconSize = array.getDimensionPixelSize(attr, 0);
             else if(attr == R.styleable.WoeButtonMain_iconBackground)
-              mBackground = array.getDrawable(attr);
+                mBackground = array.getDrawable(attr);
         }
 
         array.recycle();
@@ -101,7 +103,7 @@ public class WoeButtonMain extends AppCompatButton {
         }
 
         setAllCaps(true);
-        setTypeface(ResourcesCompat.getFont(context, R.font.montserrat_bold));
+        setTypeface(ResourcesCompat.getFont(context, R.font.poppins_bold));
     }
 
     public static Bitmap drawableToBitmap (Drawable drawable) {

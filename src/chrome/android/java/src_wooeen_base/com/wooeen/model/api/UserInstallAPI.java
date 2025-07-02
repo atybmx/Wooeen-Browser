@@ -22,11 +22,22 @@ import java.util.Map;
 
 public class UserInstallAPI {
 
+    private UserTokenTO token;
+
     public UserInstallAPI(){
 
     }
 
-    public int newUserInstall(String fcmToken, WoeTrkClickTO click){
+    public UserInstallAPI(UserTokenTO token){
+        this.token = token;
+    }
+
+    public int newUserInstall(String fcmToken, String fcmTokenOld, WoeTrkClickTO click){
+        if(token == null ||
+              TextUtils.isEmpty(token.getIdToken()) ||
+              TextUtils.isEmpty(token.getAccessToken()))
+          return -1;
+
         try {
             //configura a url e os parametros
             Uri.Builder builder = new Uri.Builder();
@@ -39,17 +50,26 @@ public class UserInstallAPI {
 
             Map<String,Object> pars = new HashMap<String,Object>();
             pars.put("fcmToken", fcmToken);
-            pars.put("user", ""+click.getUser());
-            pars.put("source", ""+click.getSource());
-            pars.put("link", ""+click.getLink());
-            pars.put("dateClick", ""+click.getDateClick());
+            pars.put("fcmTokenOld", fcmTokenOld);
+            pars.put("type", "1");
+
+            // if(userId > 0){
+            //   pars.put("user", ""+userId);
+            // }else if(click != null){
+            //   pars.put("user", ""+click.getUser());
+            //   pars.put("source", ""+click.getSource());
+            //   pars.put("link", ""+click.getLink());
+            //   pars.put("dateClick", ""+click.getDateClick());
+            // }
 
             Gson gsonBuilder = WoeDAOUtils.getGson();
 
             String[] response = new WebServiceClient()
                     .post(
                             builder.build().toString(),
-                            gsonBuilder.toJson(pars));
+                            gsonBuilder.toJson(pars),
+                            new Header("uti",token.getIdToken()),
+                            new Header("uta",token.getAccessToken()));
 
             //trata o retorno
             if ("200".equals(response[0])) {

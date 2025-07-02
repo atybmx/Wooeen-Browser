@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="15dp"
+    android:layout_marginEnd="15dp"
+    android:layout_marginBottom="15dp"
+    android:layout_gravity="center"
+    android:id="@+id/woe_ntp_buttons_layout"
+    >
+
+    <RelativeLayout
+        android:id="@+id/btn_buttons_games"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="15dp"
+        >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_centerInParent="true"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/bg_games"
+            ></ImageView>
+
+        <View android:id="@+id/strut"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_centerHorizontal="true"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_alignRight="@id/strut"
+            android:id="@+id/woe_task_image_title"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical|start"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="18sp"
+            android:textFontWeight="700"
+            android:singleLine="false"
+            android:lineHeight="20dp"
+            android:maxLines="10"
+            android:ellipsize="end"
+            android:textColor="#ffffff"
+            android:textAllCaps="true"
+            android:text="Jogue grátis ganhe cashback"></TextView>
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="15dp">
+
+        <FrameLayout
+            android:id="@+id/btn_buttons_tasks_cont"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="4dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/woe_list_layout"
+                >
+
+                <ImageView
+                    android:id="@+id/btn_buttons_tasks_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/woe_list_layout"
+                    android:src="@drawable/bg_buttons_orange"
+                    android:clipToOutline="true" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_buttons_tasks"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="start|left|center_vertical"
+                android:padding="15dp"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:src="@drawable/woe_challenges_white"></ImageView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/woe_buttons_challenges_title"
+                    android:textColor="@color/white"
+                    android:textAllCaps="true"
+                    android:fontFamily="@font/poppins_bold"
+                    android:textSize="13sp"
+                    ></TextView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/woe_buttons_challenges_text"
+                    android:textColor="@color/white"
+                    android:textAllCaps="true"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textSize="13sp"
+                    ></TextView>
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/woe_cha_progress"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="top"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:visibility="invisible"/>
+
+        </FrameLayout><!--END BUTTON 1 -->
+
+        <FrameLayout
+            android:id="@+id/btn_buttons_chat_cont"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="2dp"
+            android:layout_marginStart="2dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/woe_list_layout"
+                >
+
+                <ImageView
+                    android:id="@+id/btn_buttons_chat_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/woe_list_layout"
+                    android:src="@drawable/bg_buttons_green"
+                    android:clipToOutline="true" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_buttons_chat"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="start|left|center_vertical"
+                android:padding="15dp"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:src="@drawable/woe_whats"></ImageView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/woe_buttons_chat_title"
+                    android:textColor="@color/white"
+                    android:textAllCaps="true"
+                    android:fontFamily="@font/poppins_bold"
+                    android:textSize="13sp"
+                    ></TextView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/woe_buttons_chat_text"
+                    android:textColor="@color/white"
+                    android:textAllCaps="true"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textSize="13sp"
+                    ></TextView>
+
+            </LinearLayout>
+
+        </FrameLayout><!--END button 2 -->
+
+        <FrameLayout
+            android:id="@+id/btn_buttons_share_cont"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/woe_list_layout"
+                >
+
+                <ImageView
+                    android:id="@+id/btn_buttons_share_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/woe_list_layout"
+                    android:src="@drawable/bg_buttons_blue"
+                    android:clipToOutline="true" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_buttons_share"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="start|left|center_vertical"
+                android:padding="15dp"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:src="@drawable/woe_share_main"></ImageView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/woe_buttons_recommendations_title"
+                    android:textColor="@color/white"
+                    android:textAllCaps="true"
+                    android:fontFamily="@font/poppins_bold"
+                    android:textSize="13sp"
+                    ></TextView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/woe_buttons_recommendations_text"
+                    android:textColor="@color/white"
+                    android:textAllCaps="true"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textSize="13sp"
+                    ></TextView>
+
+            </LinearLayout>
+        </FrameLayout><!--END button 3 -->
+
+    </LinearLayout><!-- END buttons -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
+
+        <LinearLayout
+            android:id="@+id/btn_buttons_advertisers"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginEnd="3dp"
+            android:orientation="horizontal"
+            android:background="@drawable/woe_btn_main_div"
+            android:elevation="1dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="15dp"
+            android:gravity="center_vertical"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:src="@drawable/woe_advertisers"></ImageView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/woe_advertisers_cta_title"
+                    android:textColor="@color/woe_div_title"
+                    android:fontFamily="@font/poppins_bold"
+                    android:textSize="15sp"
+                    ></TextView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/woe_advertisers_cta_text"
+                    android:textColor="@color/woe_div_text"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textSize="13sp"
+                    ></TextView>
+
+            </LinearLayout>
+
+        </LinearLayout><!-- END advertisers-->
+
+        <LinearLayout
+            android:id="@+id/btn_buttons_company"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginStart="3dp"
+            android:orientation="horizontal"
+            android:background="@drawable/woe_btn_main_div"
+            android:elevation="1dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="15dp"
+            android:gravity="center_vertical"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:src="@drawable/woe_ic_head_company"></ImageView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/woe_company_cta_title"
+                    android:textColor="@color/woe_div_title"
+                    android:fontFamily="@font/poppins_bold"
+                    android:textSize="15sp"
+                    ></TextView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/woe_company_cta_text"
+                    android:textColor="@color/woe_div_text"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textSize="13sp"
+                    ></TextView>
+
+            </LinearLayout>
+
+        </LinearLayout><!-- END company-->
+
+    </LinearLayout><!-- END buttons line 2 -->
+
+</LinearLayout>

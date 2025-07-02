@@ -42,6 +42,6 @@ public class WoeButtonSecondary extends AppCompatButton {
         }
 
         setAllCaps(true);
-        setTypeface(ResourcesCompat.getFont(context, R.font.montserrat_bold));
+        setTypeface(ResourcesCompat.getFont(context, R.font.poppins_bold));
     }
 }

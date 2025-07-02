@@ -1,4 +1,4 @@
-// Copyright 2014 The Chromium Authors. All rights reserved.
+// Copyright 2014 The Chromium Authors
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -15,8 +15,8 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.tracing.settings.DeveloperSettings;
-import org.chromium.chrome.browser.version.ChromeVersionInfo;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.version_info.VersionInfo;
 import org.chromium.ui.widget.Toast;
 
 import java.util.Calendar;
@@ -47,7 +47,7 @@ public class AboutChromeSettings
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
-        getActivity().setTitle(R.string.prefs_about_wooeen);
+        getActivity().setTitle(R.string.prefs_about_chrome);
         SettingsUtils.addPreferencesFromResource(this, R.xml.about_chrome_preferences);
 
         Preference p = findPreference(PREF_APPLICATION_VERSION);
@@ -66,10 +66,7 @@ public class AboutChromeSettings
      * versions are more useful.
      */
     public static String getApplicationVersion(Context context, String version) {
-        // version = version.replaceAll("Wooeen", "Chromium");
-        // version = "Wooeen 1.0.1, " + version;
-
-        if (ChromeVersionInfo.isOfficialBuild()) {
+        if (VersionInfo.isOfficialBuild()) {
             return version;
         }
 

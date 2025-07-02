@@ -1,11 +1,14 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -24,19 +27,18 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.components.browser_ui.widget.RoundedIconGenerator;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
-import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.components.favicon.IconType;
 import org.chromium.components.favicon.LargeIconBridge;
 import org.chromium.url.GURL;
@@ -45,12 +47,12 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
-    private static final String PREF_BRAVE_REWARDS_APP_OPEN_COUNT = "brave_rewards_app_open_count";
+public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
     private static final String PREF_SHOW_BRAVE_REWARDS_ONBOARDING_MODAL =
             "show_brave_rewards_onboarding_modal";
     private static final String PREF_SHOW_BRAVE_REWARDS_ONBOARDING_ONCE =
             "show_brave_rewards_onboarding_once";
+    private static final String PREF_SHOW_DECLARE_GEO_MODAL = "show_declare_geo_modal";
     private static final String PREF_SHOW_ONBOARDING_MINI_MODAL = "show_onboarding_mini_modal";
     private static final String PREF_NEXT_REWARDS_ONBOARDING_MODAL_DATE =
             "next_rewards_onboarding_modal_date";
@@ -63,21 +65,23 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
     private static LargeIconBridge mLargeIconBridge;
 
     public static final String BAT_TEXT = "BAT";
-    public static final String ONE_BAT_TEXT = "1.000 BAT";
-    public static final String FIVE_BAT_TEXT = "5.000 BAT";
-    public static final String TEN_BAT_TEXT = "10.000 BAT";
+    public static final String USD_TEXT = "USD";
+    public static final String ONE_BAT_TEXT = "1 BAT";
+    public static final String FIVE_BAT_TEXT = "5 BAT";
+    public static final String TEN_BAT_TEXT = "10 BAT";
 
     private String mFaviconUrl;
     private LargeIconReadyCallback mCallback;
     private final Handler mHandler = new Handler();
     private int mFetchCount;
-    private final int MAX_FAVICON_FETCH_COUNT = 30;
+    private final int MAX_FAVICON_FETCH_COUNT = 8;
     public static final int CROSS_FADE_DURATION = 1000; //ms
     public static final int THANKYOU_FADE_OUT_DURATION = 1500; //ms
     public static final int THANKYOU_FADE_IN_DURATION = 1500; //ms
     public static final int THANKYOU_STAY_DURATION = 2000; //ms
     private static final float DP_PER_INCH_MDPI = 160f;
     private Tab mTab;
+    private Profile mProfile;
 
     public static void setRewardsEnvChange(boolean isEnabled) {
         SharedPreferences.Editor sharedPreferencesEditor =
@@ -116,12 +120,13 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
     }
 
     public static boolean shouldShowRewardsOnboardingModalOnDay4() {
-      return false;
+        return false;
+        // BraveRewardsNativeWorker braveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
         // if (!hasRewardsOnboardingModalShown()
         //         && (getNextRewardsOnboardingModalDate() > 0
         //                 && System.currentTimeMillis() > getNextRewardsOnboardingModalDate())
-        //         && shouldShowBraveRewardsOnboardingModal()
-        //         && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
+        //         && shouldShowBraveRewardsOnboardingModal() && braveRewardsNativeWorker != null
+        //         && braveRewardsNativeWorker.IsSupported()) {
         //     if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
         //         setRewardsOnboardingModalShown(true);
         //         return false;
@@ -132,20 +137,8 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
         // return false;
     }
 
-    public static int getBraveRewardsAppOpenCount() {
-        return ContextUtils.getAppSharedPreferences().getInt(PREF_BRAVE_REWARDS_APP_OPEN_COUNT, 0);
-    }
-
-    public static void updateBraveRewardsAppOpenCount() {
-        SharedPreferences.Editor sharedPreferencesEditor = ContextUtils.getAppSharedPreferences().edit();
-        sharedPreferencesEditor.putInt(PREF_BRAVE_REWARDS_APP_OPEN_COUNT,
-                SharedPreferencesManager.getInstance().readInt(
-                        BravePreferenceKeys.BRAVE_APP_OPEN_COUNT));
-        sharedPreferencesEditor.apply();
-    }
-
     public static boolean shouldShowMiniOnboardingModal() {
-      return false;
+        return false;
         // return ContextUtils.getAppSharedPreferences().getBoolean(
         //         PREF_SHOW_ONBOARDING_MINI_MODAL, true);
     }
@@ -158,7 +151,7 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
     }
 
     public static boolean shouldShowBraveRewardsOnboardingModal() {
-      return false;
+        return false;
         // return ContextUtils.getAppSharedPreferences().getBoolean(
         //         PREF_SHOW_BRAVE_REWARDS_ONBOARDING_MODAL, true);
     }
@@ -171,7 +164,7 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
     }
 
     public static boolean shouldShowBraveRewardsOnboardingOnce() {
-      return false;
+        return false;
         // return ContextUtils.getAppSharedPreferences().getBoolean(
         //         PREF_SHOW_BRAVE_REWARDS_ONBOARDING_ONCE, false);
     }
@@ -183,6 +176,18 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
         sharedPreferencesEditor.apply();
     }
 
+    public static boolean shouldShowDeclareGeoModal() {
+        return ContextUtils.getAppSharedPreferences().getBoolean(
+                PREF_SHOW_DECLARE_GEO_MODAL, false);
+    }
+
+    public static void setShowDeclareGeoModal(boolean enabled) {
+        SharedPreferences.Editor sharedPreferencesEditor =
+                ContextUtils.getAppSharedPreferences().edit();
+        sharedPreferencesEditor.putBoolean(PREF_SHOW_DECLARE_GEO_MODAL, enabled);
+        sharedPreferencesEditor.apply();
+    }
+
     public interface LargeIconReadyCallback {
         void onLargeIconReady(Bitmap icon);
     }
@@ -190,8 +195,9 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
     public BraveRewardsHelper(Tab tab) {
         mTab = tab;
         assert mTab != null;
-        if (mLargeIconBridge == null && mTab != null) {
-            mLargeIconBridge = new LargeIconBridge(Profile.fromWebContents(mTab.getWebContents()));
+        mProfile = Profile.getLastUsedRegularProfile();
+        if (mLargeIconBridge == null && mTab != null && mProfile != null) {
+            mLargeIconBridge = new LargeIconBridge(mProfile);
         }
     }
 
@@ -206,7 +212,6 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
         mCallback =  null;
     }
 
-
     public void detach() {
         mCallback =  null;
     }
@@ -217,10 +222,11 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
         retrieveLargeIconInternal();
     }
 
+    @SuppressLint("VisibleForTests")
     private void retrieveLargeIconInternal() {
-        mFetchCount ++;
+        mFetchCount++;
 
-        //favIconURL (or content URL) is still not available, try to read it again
+        // FavIconURL (or content URL) is still not available, try to read it again.
         if (mFaviconUrl == null || mFaviconUrl.isEmpty() || mFaviconUrl.equals("clear")) {
             if (mTab != null) {
                 mFaviconUrl = mTab.getUrl().getSpec();
@@ -236,9 +242,10 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
             return;
         }
 
-        //get the icon
-        if (mLargeIconBridge!= null && mCallback != null && !mFaviconUrl.isEmpty()) {
-            mLargeIconBridge.getLargeIconForUrl(new GURL(mFaviconUrl),FAVICON_DESIRED_SIZE, this);
+        // Get the icon.
+        if (mLargeIconBridge != null && mCallback != null && !mFaviconUrl.isEmpty()
+                && mProfile.isNativeInitialized()) {
+            mLargeIconBridge.getLargeIconForUrl(new GURL(mFaviconUrl), FAVICON_DESIRED_SIZE, this);
         }
     }
 
@@ -254,15 +261,15 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
             return;
         }
 
-        if (  mFetchCount == MAX_FAVICON_FETCH_COUNT  || (icon == null && false == isFallbackColorDefault) ) {
+        if (mFetchCount == MAX_FAVICON_FETCH_COUNT
+                || (icon == null && false == isFallbackColorDefault)) {
             RoundedIconGenerator mIconGenerator = new RoundedIconGenerator(Resources.getSystem(),
                     FAVICON_CIRCLE_MEASUREMENTS, FAVICON_CIRCLE_MEASUREMENTS,
                     FAVICON_CIRCLE_MEASUREMENTS, fallbackColor, FAVICON_TEXT_SIZE);
 
             mIconGenerator.setBackgroundColor(fallbackColor);
             icon = mIconGenerator.generateIconForUrl(mFaviconUrl);
-        }
-        else if (icon == null && true == isFallbackColorDefault) {
+        } else if (icon == null && true == isFallbackColorDefault) {
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -315,7 +322,7 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
       return BraveActivity.getChromeTabbedActivity();
     }
 
-    static public BraveActivity getBraveActivity() {
+    static public BraveActivity getBraveActivity() throws ActivityNotFoundException {
       return BraveActivity.getBraveActivity();
     }
 
@@ -431,8 +438,7 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
     }
   }
 
-
-  static double probiToDouble(String probi) {
+  public static double probiToDouble(String probi) {
       final String PROBI_POWER = "1000000000000000000";
       double val = Double.NaN;
       try {
@@ -445,7 +451,6 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
       }
       return val;
   }
-
 
     /**
      * Expands touchable area of a small view

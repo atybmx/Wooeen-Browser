@@ -5,12 +5,16 @@
 
 package org.chromium.chrome.browser.toolbar.top;
 
+import static org.chromium.ui.base.ViewUtils.dpToPx;
+
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -45,8 +49,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
-
-import com.flurry.android.FlurryAgent;
+import androidx.core.widget.ImageViewCompat;
 
 import com.wooeen.utils.UserUtils;
 import com.wooeen.utils.TextUtils;
@@ -54,29 +57,36 @@ import com.wooeen.utils.TrackingUtils;
 import com.wooeen.model.to.AdvertiserTO;
 import com.wooeen.model.to.TaskTO;
 import com.wooeen.model.to.TrackingTO;
+import com.wooeen.model.to.UserTokenTO;
 import com.wooeen.model.to.VersionTO;
 import com.wooeen.view.tracking.TrackingHandler;
 import com.wooeen.view.utils.DepsUtils;
+import com.wooeen.view.WooeenAreaHandler;
 
 import org.chromium.base.ApiCompatibilityUtils;
+import org.chromium.base.BraveFeatureList;
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.MathUtils;
 import org.chromium.base.ThreadUtils;
-import org.chromium.base.supplier.BooleanSupplier;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.task.AsyncTask;
+import org.chromium.base.task.PostTask;
+import org.chromium.brave_shields.mojom.CookieListOptInPageAndroidHandler;
+import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
+import org.chromium.brave_shields.mojom.FilterListConstants;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
-import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
-import org.chromium.chrome.browser.BraveRewardsPanelPopup;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
+import org.chromium.chrome.browser.crypto_wallet.controller.DAppsWalletController;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltip;
 import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltipUtils;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
@@ -87,23 +97,33 @@ import org.chromium.chrome.browser.lifecycle.ConfigurationChangedObserver;
 import org.chromium.chrome.browser.local_database.BraveStatsTable;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
+import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
+import org.chromium.chrome.browser.notifications.BravePermissionUtils;
+import org.chromium.chrome.browser.notifications.RewardsYouAreNotEarningDialog;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
-import org.chromium.chrome.browser.ntp.BraveNewTabPageLayout;
 import org.chromium.chrome.browser.ntp.NewTabPage;
+import org.chromium.chrome.browser.omnibox.LocationBarCoordinator;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.SearchActivity;
+import org.chromium.chrome.browser.onboarding.v2.HighlightItem;
+import org.chromium.chrome.browser.onboarding.v2.HighlightView;
+import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.rewards.BraveRewardsPanel;
 import org.chromium.chrome.browser.settings.AppearancePreferences;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.shields.BraveShieldsHandler;
 import org.chromium.chrome.browser.shields.BraveShieldsMenuObserver;
 import org.chromium.chrome.browser.shields.BraveShieldsUtils;
-import org.chromium.chrome.browser.shields.ShieldsTooltipEnum;
+import org.chromium.chrome.browser.shields.CookieListOptInServiceFactory;
+import org.chromium.chrome.browser.shields.FilterListServiceFactory;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tab.TabHidingType;
 import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.tab.TabSelectionType;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -120,57 +140,84 @@ import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
 import org.chromium.chrome.browser.toolbar.top.ToolbarTablet.OfflineDownloader;
+import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.PackageUtils;
+import org.chromium.chrome.browser.util.TabUtils;
+import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.promo.SearchWidgetPromoPanel;
 import org.chromium.components.browser_ui.styles.ChromeColors;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.url_formatter.UrlFormatter;
 import org.chromium.components.user_prefs.UserPrefs;
+import org.chromium.content_public.browser.JavaScriptCallback;
 import org.chromium.content_public.browser.LoadUrlParams;
 import org.chromium.content_public.browser.NavigationHandle;
+import org.chromium.content_public.browser.UiThreadTaskTraits;
+import org.chromium.mojo.bindings.ConnectionErrorHandler;
+import org.chromium.mojo.system.MojoException;
+import org.chromium.playlist.mojom.Playlist;
+import org.chromium.playlist.mojom.PlaylistItem;
+import org.chromium.playlist.mojom.PlaylistService;
 import org.chromium.ui.UiUtils;
+import org.chromium.ui.base.ViewUtils;
 import org.chromium.ui.interpolators.BakedBezierInterpolator;
+import org.chromium.ui.util.ColorUtils;
 import org.chromium.ui.widget.Toast;
 import org.chromium.url.GURL;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-
-import org.chromium.content_public.browser.JavaScriptCallback;
+import java.util.Set;
+import java.util.function.BooleanSupplier;
 
 public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         implements BraveToolbarLayout, OnClickListener, View.OnLongClickListener,
-                   BraveRewardsObserver, BraveRewardsNativeWorker.PublisherObserver {
-    public static final String PREF_HIDE_BRAVE_REWARDS_ICON = "hide_brave_rewards_icon";
-    private static final String JAPAN_COUNTRY_CODE = "JP";
+                   BraveRewardsObserver, BraveRewardsNativeWorker.PublisherObserver,
+                   ConnectionErrorHandler {
+    private static final String TAG = "BraveToolbar";
+
+    private static final String YOUTUBE_DOMAIN = "youtube.com";
+    private static final List<String> mBraveSearchEngineDefaultRegions =
+            Arrays.asList("CA", "DE", "FR", "GB", "US", "AT", "ES", "MX", "BR", "AR", "IN");
     private static final long MB_10 = 10000000;
     private static final long MINUTES_10 = 10 * 60 * 1000;
     private static final int URL_FOCUS_TOOLBAR_BUTTONS_TRANSLATION_X_DP = 10;
 
     private DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
 
+    private ImageButton mBraveWalletButton;
     private ImageButton mBraveShieldsButton;
     private ImageButton mBraveRewardsButton;
     private ImageButton mWoeCashbackButton;
     private HomeButton mHomeButton;
-    private FrameLayout mCashbackLayout;
+    private FrameLayout mWalletLayout;
     private FrameLayout mShieldsLayout;
     private FrameLayout mRewardsLayout;
+    private FrameLayout mCashbackLayout;
     private BraveShieldsHandler mBraveShieldsHandler;
+    private WooeenAreaHandler mWooeenAreaHandler;
     private TrackingHandler mWooeenTrackingHandler;
+    private boolean mTrkApp;
+    private boolean mLoginWeb;
     private TabModelSelectorTabObserver mTabModelSelectorTabObserver;
     private TabModelSelectorTabModelObserver mTabModelSelectorTabModelObserver;
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
-    private BraveRewardsPanelPopup mRewardsPopup;
+    private BraveRewardsPanel mRewardsPopup;
+    private DAppsWalletController mDAppsWalletController;
     private BraveShieldsContentSettings mBraveShieldsContentSettings;
     private BraveShieldsContentSettingsObserver mBraveShieldsContentSettingsObserver;
     private TextView mBraveRewardsNotificationsCount;
     private ImageView mBraveRewardsOnboardingIcon;
-    private boolean mShieldsLayoutIsColorBackground;
+    private View mBraveWalletBadge;
+    private ImageView mWalletIcon;
     private int mCurrentToolbarColor;
 
     private boolean mIsPublisherVerified;
@@ -178,28 +225,51 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private boolean mIsInitialNotificationPosted; // initial red circle notification
 
     private PopupWindowTooltip mShieldsPopupWindowTooltip;
+    private PopupWindowTooltip mCookieConsentTooltip;
 
     private boolean mIsBottomToolbarVisible;
 
-    private static final String WOOEEN_SEARCH = "https://search.wooeen.com";
-    private static final String WOOEEN_LOGOUT = "https://app.wooeen.com/u/logout";
+    private ColorStateList mDarkModeTint;
+    private ColorStateList mLightModeTint;
+
+    private SearchWidgetPromoPanel mSearchWidgetPromoPanel;
+
+    private final Set<Integer> mTabsWithWalletIcon =
+            Collections.synchronizedSet(new HashSet<Integer>());
+
+    private CookieListOptInPageAndroidHandler mCookieListOptInPageAndroidHandler;
+    private FilterListAndroidHandler mFilterListAndroidHandler;
+    private PlaylistService mPlaylistService;
+
+    private static final String WOOEEN_SEARCH = "https://claro.wwwd.com.br";
+    private static final String WOOEEN_APP = "https://claro.wwwd.com.br/u/";
+    private static final String WOOEEN_LOGOUT = "https://claro.wwwd.com.br/u/logout";
     private static final String WOOEEN_CHECKOUT = "https://api.wooeen.com/checkout.js";
     private static final String WOOEEN_PRODUCT = "https://api.wooeen.com/product.js";
     private static final String WOOEEN_QUERY = "https://api.wooeen.com/query.js";
 
-    // private static final String WOOEEN_PRODUCT = "https://woe.onboardtools.com.br/product2.js";
+    private enum BIGTECH_COMPANY { Google, Facebook, Amazon }
 
     public BraveToolbarLayoutImpl(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
     @Override
-    void destroy() {
+    public void destroy() {
         if (mBraveShieldsContentSettings != null) {
             mBraveShieldsContentSettings.removeObserver(mBraveShieldsContentSettingsObserver);
         }
+        if (mCookieListOptInPageAndroidHandler != null) {
+            mCookieListOptInPageAndroidHandler.close();
+        }
+        if (mFilterListAndroidHandler != null) {
+            mFilterListAndroidHandler.close();
+        }
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
+                && mPlaylistService != null) {
+            mPlaylistService.close();
+        }
         super.destroy();
-
         if (mBraveRewardsNativeWorker != null) {
             mBraveRewardsNativeWorker.RemoveObserver(this);
             mBraveRewardsNativeWorker.RemovePublisherObserver(this);
@@ -219,16 +289,26 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             }
         }
 
-        mCashbackLayout = (FrameLayout) findViewById(R.id.wooeen_cashback_button_layout);
+        mWalletLayout = (FrameLayout) findViewById(R.id.brave_wallet_button_layout);
         mShieldsLayout = (FrameLayout) findViewById(R.id.brave_shields_button_layout);
         mRewardsLayout = (FrameLayout) findViewById(R.id.brave_rewards_button_layout);
+        mCashbackLayout = (FrameLayout) findViewById(R.id.wooeen_cashback_button_layout);
         mBraveRewardsNotificationsCount = (TextView) findViewById(R.id.br_notifications_count);
         mBraveRewardsOnboardingIcon = findViewById(R.id.br_rewards_onboarding_icon);
+        mBraveWalletButton = (ImageButton) findViewById(R.id.brave_wallet_button);
         mBraveShieldsButton = (ImageButton) findViewById(R.id.brave_shields_button);
         mBraveRewardsButton = (ImageButton) findViewById(R.id.brave_rewards_button);
         mWoeCashbackButton = (ImageButton) findViewById(R.id.woe_cashback_button);
         mHomeButton = (HomeButton) findViewById(R.id.home_button);
+        mBraveWalletBadge = findViewById(R.id.wallet_notfication_badge);
+        if (mWalletLayout != null) {
+            mWalletIcon = mWalletLayout.findViewById(R.id.brave_wallet_button);
+        }
 
+        mDarkModeTint = ThemeUtils.getThemedToolbarIconTint(getContext(), false);
+        mLightModeTint =
+                ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.brave_white));
+        mSearchWidgetPromoPanel = new SearchWidgetPromoPanel(getContext());
         if (mHomeButton != null) {
             //WOE SET ICON HOME
             //mHomeButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_home_black_24dp));
@@ -247,51 +327,91 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             mBraveRewardsButton.setOnLongClickListener(this);
         }
 
-        mBraveShieldsHandler = new BraveShieldsHandler(getContext());
-        mBraveShieldsHandler.addObserver(new BraveShieldsMenuObserver() {
-            @Override
-            public void onMenuTopShieldsChanged(boolean isOn, boolean isTopShield) {
-                Tab currentTab = getToolbarDataProvider().getTab();
-                if (currentTab == null) {
-                    return;
-                }
-                if (isTopShield) {
-                    updateBraveShieldsButtonState(currentTab);
-                }
-                if (currentTab.isLoading()) {
-                    currentTab.stopLoading();
-                }
-                currentTab.reloadIgnoringCache();
-                if (null != mBraveShieldsHandler) {
-                    // Clean the Bravery Panel
-                    mBraveShieldsHandler.updateValues(0, 0, 0, 0);
-                }
-            }
-        });
-        mBraveShieldsContentSettingsObserver = new BraveShieldsContentSettingsObserver() {
-            @Override
-            public void blockEvent(int tabId, String block_type, String subresource) {
-                mBraveShieldsHandler.addStat(tabId, block_type, subresource);
-                Tab currentTab = getToolbarDataProvider().getTab();
-                if (currentTab == null || currentTab.getId() != tabId) {
-                    return;
-                }
-                mBraveShieldsHandler.updateValues(tabId);
-                if (!isIncognito() && OnboardingPrefManager.getInstance().isBraveStatsEnabled()
-                        && (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS)
-                                || block_type.equals(BraveShieldsContentSettings
-                                                             .RESOURCE_IDENTIFIER_TRACKERS))) {
-                    addStatsToDb(block_type, subresource, currentTab.getUrl().getSpec());
-                }
-            }
+        if (mBraveWalletButton != null) {
+            mBraveWalletButton.setClickable(true);
+            mBraveWalletButton.setOnClickListener(this);
+            mBraveWalletButton.setOnLongClickListener(this);
+        }
 
-            @Override
-            public void savedBandwidth(long savings) {
-                if (!isIncognito() && OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
-                    addSavedBandwidthToDb(savings);
-                }
-            }
-        };
+        if(mWoeCashbackButton != null){
+            mWoeCashbackButton.setClickable(true);
+            mWoeCashbackButton.setOnClickListener(this);
+            mWoeCashbackButton.setOnLongClickListener(this);
+        }
+
+        mWooeenAreaHandler = new WooeenAreaHandler(getContext(),
+          new WooeenAreaHandler.OnClickListener(){
+              public void onShare(String content){
+                  Tab currentTab = getToolbarDataProvider().getTab();
+                  if (currentTab == null) {
+                      return;
+                  }
+
+                  if(content != null && !"".equals(content)){
+                    currentTab.getWebContents().evaluateJavaScriptForTests(
+                      content
+                      ,
+                      new JavaScriptCallback(){
+                        @Override
+                        public void handleJavaScriptResult(String jsonResult){
+                              System.out.println("WOE pub result "+jsonResult);
+                        }
+                      }
+                    );
+                  }
+              }
+          });
+
+        // mBraveShieldsHandler = new BraveShieldsHandler(getContext());
+        // if (!mBraveShieldsHandler.isDisconnectEntityLoaded
+        //         && !BraveShieldsUtils.hasShieldsTooltipShown(
+        //                 BraveShieldsUtils.PREF_SHIELDS_TOOLTIP)) {
+        //     mBraveShieldsHandler.loadDisconnectEntityList(getContext());
+        // }
+        // mBraveShieldsHandler.addObserver(new BraveShieldsMenuObserver() {
+        //     @Override
+        //     public void onMenuTopShieldsChanged(boolean isOn, boolean isTopShield) {
+        //         Tab currentTab = getToolbarDataProvider().getTab();
+        //         if (currentTab == null) {
+        //             return;
+        //         }
+        //         if (isTopShield) {
+        //             updateBraveShieldsButtonState(currentTab);
+        //         }
+        //         if (currentTab.isLoading()) {
+        //             currentTab.stopLoading();
+        //         }
+        //         currentTab.reloadIgnoringCache();
+        //         if (null != mBraveShieldsHandler) {
+        //             // Clean the Bravery Panel
+        //             mBraveShieldsHandler.updateValues(0, 0, 0, 0);
+        //         }
+        //     }
+        // });
+        // mBraveShieldsContentSettingsObserver = new BraveShieldsContentSettingsObserver() {
+        //     @Override
+        //     public void blockEvent(int tabId, String block_type, String subresource) {
+        //         mBraveShieldsHandler.addStat(tabId, block_type, subresource);
+        //         Tab currentTab = getToolbarDataProvider().getTab();
+        //         if (currentTab == null || currentTab.getId() != tabId) {
+        //             return;
+        //         }
+        //         mBraveShieldsHandler.updateValues(tabId);
+        //         if (!isIncognito() && OnboardingPrefManager.getInstance().isBraveStatsEnabled()
+        //                 && (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS)
+        //                         || block_type.equals(BraveShieldsContentSettings
+        //                                                      .RESOURCE_IDENTIFIER_TRACKERS))) {
+        //             addStatsToDb(block_type, subresource, currentTab.getUrl().getSpec());
+        //         }
+        //     }
+        //
+        //     @Override
+        //     public void savedBandwidth(long savings) {
+        //         if (!isIncognito() && OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+        //             addSavedBandwidthToDb(savings);
+        //         }
+        //     }
+        // };
         // Initially show shields off image. Shields button state will be updated when tab is
         // shown and loading state is changed.
         updateBraveShieldsButtonState(null);
@@ -306,47 +426,94 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         //initialize show cashback off image
         updateCashbackButtonState(null);
 
-        if (BraveReflectionUtil.EqualTypes(this.getClass(), CustomTabToolbar.class)) {
-            LinearLayout customActionButtons = findViewById(R.id.action_buttons);
-            assert customActionButtons != null : "Something has changed in the upstream!";
-            if (customActionButtons != null && mBraveShieldsButton != null) {
-                ViewGroup.MarginLayoutParams braveShieldsButtonLayout =
-                        (ViewGroup.MarginLayoutParams) mBraveShieldsButton.getLayoutParams();
-                ViewGroup.MarginLayoutParams actionButtonsLayout =
-                        (ViewGroup.MarginLayoutParams) customActionButtons.getLayoutParams();
-                actionButtonsLayout.setMarginEnd(actionButtonsLayout.getMarginEnd()
-                        + braveShieldsButtonLayout.getMarginEnd());
-                customActionButtons.setLayoutParams(actionButtonsLayout);
-            }
+        // if (BraveReflectionUtil.EqualTypes(this.getClass(), CustomTabToolbar.class)) {
+        //     LinearLayout customActionButtons = findViewById(R.id.action_buttons);
+        //     assert customActionButtons != null : "Something has changed in the upstream!";
+        //     if (customActionButtons != null && mBraveShieldsButton != null) {
+        //         ViewGroup.MarginLayoutParams braveShieldsButtonLayout =
+        //                 (ViewGroup.MarginLayoutParams) mBraveShieldsButton.getLayoutParams();
+        //         ViewGroup.MarginLayoutParams actionButtonsLayout =
+        //                 (ViewGroup.MarginLayoutParams) customActionButtons.getLayoutParams();
+        //         actionButtonsLayout.setMarginEnd(actionButtonsLayout.getMarginEnd()
+        //                 + braveShieldsButtonLayout.getMarginEnd());
+        //         customActionButtons.setLayoutParams(actionButtonsLayout);
+        //     }
+        // }
+        // updateShieldsLayoutBackground(isIncognito()
+        //         || !ContextUtils.getAppSharedPreferences().getBoolean(
+        //                 AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, true));
+    }
+
+    @Override
+    public void onConnectionError(MojoException e) {
+        mCookieListOptInPageAndroidHandler = null;
+        mFilterListAndroidHandler = null;
+        initCookieListOptInPageAndroidHandler();
+        initFilterListAndroidHandler();
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
+            mPlaylistService = null;
+            initPlaylistService();
         }
+    }
+
+    private void initFilterListAndroidHandler() {
+        if (mFilterListAndroidHandler != null) {
+            return;
+        }
+
+        mFilterListAndroidHandler =
+                FilterListServiceFactory.getInstance().getFilterListAndroidHandler(this);
+    }
+
+    private void initCookieListOptInPageAndroidHandler() {
+        if (mCookieListOptInPageAndroidHandler != null) {
+            return;
+        }
+
+        mCookieListOptInPageAndroidHandler =
+                CookieListOptInServiceFactory.getInstance().getCookieListOptInPageAndroidHandler(
+                        this);
+    }
+
+    private void initPlaylistService() {
+        if (mPlaylistService != null) {
+            return;
+        }
+
+        mPlaylistService = PlaylistServiceFactoryAndroid.getInstance().getPlaylistService(this);
     }
 
     @Override
     protected void onNativeLibraryReady() {
         super.onNativeLibraryReady();
-        mBraveShieldsContentSettings = BraveShieldsContentSettings.getInstance();
-        mBraveShieldsContentSettings.addObserver(mBraveShieldsContentSettingsObserver);
+        initCookieListOptInPageAndroidHandler();
+        initFilterListAndroidHandler();
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
+            initPlaylistService();
+        }
+        // mBraveShieldsContentSettings = BraveShieldsContentSettings.getInstance();
+        // mBraveShieldsContentSettings.addObserver(mBraveShieldsContentSettingsObserver);
 
-        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
-                && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
-                && !sharedPreferences.getBoolean(
-                        AppearancePreferences.PREF_HIDE_BRAVE_REWARDS_ICON, false)
-                && mRewardsLayout != null) {
-            //mRewardsLayout.setVisibility(View.VISIBLE);
-        }
-        if (mShieldsLayout != null) {
-            updateShieldsLayoutBackground(
-                    !(mRewardsLayout != null && mRewardsLayout.getVisibility() == View.VISIBLE));
-            //mShieldsLayout.setVisibility(View.VISIBLE);
-        }
-        mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
-        if (mBraveRewardsNativeWorker != null) {
-            mBraveRewardsNativeWorker.AddObserver(this);
-            mBraveRewardsNativeWorker.AddPublisherObserver(this);
-            mBraveRewardsNativeWorker.TriggerOnNotifyFrontTabUrlChanged();
-            mBraveRewardsNativeWorker.GetAllNotifications();
-        }
+        // SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+        // mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
+        // if (mBraveRewardsNativeWorker != null && mBraveRewardsNativeWorker.IsSupported()
+        //         && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
+        //         && sharedPreferences.getBoolean(
+        //                 AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, true)
+        //         && mRewardsLayout != null) {
+        //     // mRewardsLayout.setVisibility(View.VISIBLE);
+        // }
+        // if (mShieldsLayout != null) {
+        //     updateShieldsLayoutBackground(
+        //             !(mRewardsLayout != null && mRewardsLayout.getVisibility() == View.VISIBLE));
+        //     // mShieldsLayout.setVisibility(View.VISIBLE);
+        // }
+        // if (mBraveRewardsNativeWorker != null) {
+        //     mBraveRewardsNativeWorker.AddObserver(this);
+        //     mBraveRewardsNativeWorker.AddPublisherObserver(this);
+        //     mBraveRewardsNativeWorker.TriggerOnNotifyFrontTabUrlChanged();
+        //     mBraveRewardsNativeWorker.GetAllNotifications();
+        // }
     }
 
     @Override
@@ -355,88 +522,158 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         // to proactively update the shields button state here, otherwise shields
         // might sometimes show as disabled while it is actually enabled.
         updateBraveShieldsButtonState(getToolbarDataProvider().getTab());
+        showWalletIcon(false);
         mTabModelSelectorTabObserver = new TabModelSelectorTabObserver(selector) {
+            @Override
+            protected void onTabRegistered(Tab tab) {
+                super.onTabRegistered(tab);
+                // if (tab.isIncognito()) {
+                //     showWalletIcon(false);
+                // }
+            }
+
             @Override
             public void onShown(Tab tab, @TabSelectionType int type) {
                 // Update shields button state when visible tab is changed.
-                updateBraveShieldsButtonState(tab);
+                // updateBraveShieldsButtonState(tab);
                 updateCashbackButtonState(tab);
+                // case when window.open is triggered from dapps site and new tab is in focus
+                // if (type != TabSelectionType.FROM_USER) {
+                //     dismissWalletPanelOrDialog();
+                // }
+            }
+
+            @Override
+            public void onHidden(Tab tab, @TabHidingType int reason) {
+                // dismissCookieConsent();
             }
 
             @Override
             public void onPageLoadStarted(Tab tab, GURL url) {
+                // showWalletIcon(false, tab);
                 if (getToolbarDataProvider().getTab() == tab) {
-                    updateBraveShieldsButtonState(tab);
+                    //add pre tracking already tracked with social
+                    String mUrlNavig = url != null ? url.getSpec() : tab != null ? tab.getUrl().getSpec() : null;
+                    int userId = UserUtils.getLoggedId(getContext());
+                    if(mWooeenTrackingHandler != null &&
+                        mUrlNavig != null &&
+                        userId > 0 &&
+                        mUrlNavig.contains("="+userId+"_")){
+                        mWooeenTrackingHandler.addPreTracking(tab.getId());
+                    }
+
+                    //add url logged in control
+                    if(userId > 0 && mUrlNavig.startsWith(WOOEEN_APP) && !UserUtils.mLoginWeb){
+                      mWooeenTrackingHandler.addUrlLogged(tab.getId(), mUrlNavig);
+                    }
+
+                    // updateBraveShieldsButtonState(tab);
                     updateCashbackButtonState(tab);
                 }
-                mBraveShieldsHandler.clearBraveShieldsCount(tab.getId());
-                dismissShieldsTooltip();
-
-                //woe logout via page
-                String mUrlNavig = url == null ? null : url.getSpec();
-                if(mUrlNavig != null && WOOEEN_LOGOUT.equals(mUrlNavig))
-                  UserUtils.logout(getContext());
+                // mBraveShieldsHandler.clearBraveShieldsCount(tab.getId());
+                // dismissShieldsTooltip();
             }
 
             @Override
             public void onPageLoadFinished(final Tab tab, GURL url) {
-              String mUrlNavig = tab == null ? null : tab.getUrl().getSpec();
-
                 if (getToolbarDataProvider().getTab() == tab) {
-                    mBraveShieldsHandler.updateHost(url.getSpec());
-                    updateBraveShieldsButtonState(tab);
+                    // mBraveShieldsHandler.updateHost(url.getSpec());
+                    // updateBraveShieldsButtonState(tab);
+                    mWooeenAreaHandler.updateHost(url.getSpec());
                     updateCashbackButtonState(tab);
 
-                    Profile mProfile = Profile.getLastUsedRegularProfile();
-                    long trackersBlockedCount =
-                            BravePrefServiceBridge.getInstance().getTrackersBlockedCount(mProfile);
-                    long adsBlockedCount =
-                            BravePrefServiceBridge.getInstance().getAdsBlockedCount(mProfile);
-                    long dataSaved = BravePrefServiceBridge.getInstance().getDataSaved(mProfile);
-                    long estimatedMillisecondsSaved = (trackersBlockedCount + adsBlockedCount)
-                            * BraveStatsUtil.MILLISECONDS_PER_ITEM;
+                    // if (mWoeCashbackButton != null && !url.getSpec().startsWith(UrlConstants.CHROME_SCHEME)) {
+                    //     //WOE OPEN GOOGLE ADSENSE
+                    //     org.chromium.chrome.browser.customtabs.CustomTabActivity.showInfoPage(getContext(), "https://google.com");
+                    // }
 
-                    if (!OnboardingPrefManager.getInstance().isAdsTrackersNotificationStarted()
-                            && (trackersBlockedCount + adsBlockedCount) > 250
-                            && PackageUtils.isFirstInstall(getContext())) {
-                        RetentionNotificationUtil.scheduleNotification(
-                                getContext(), RetentionNotificationUtil.BRAVE_STATS_ADS_TRACKERS);
-                        OnboardingPrefManager.getInstance().setAdsTrackersNotificationStarted(true);
-                    }
+                    // if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()
+                    //         && mBraveShieldsHandler != null && !mBraveShieldsHandler.isShowing()) {
+                    //     // checkForTooltip(tab);
+                    // }
+                    // if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()
+                    //         && mBraveShieldsHandler != null && !mBraveShieldsHandler.isShowing()
+                    //         && !url.getSpec().startsWith(UrlConstants.CHROME_SCHEME)
+                    //         && !UrlUtilities.isNTPUrl(url.getSpec())) {
+                    //     SharedPreferencesManager.getInstance().writeInt(
+                    //             BravePreferenceKeys.LOADED_SITE_COUNT,
+                    //             SharedPreferencesManager.getInstance().readInt(
+                    //                     BravePreferenceKeys.LOADED_SITE_COUNT, 0)
+                    //                     + 1);
+                    //     // maybeShowCookieConsentTooltip();
+                    // }
+                }
 
-                    if (!OnboardingPrefManager.getInstance().isDataSavedNotificationStarted()
-                            && dataSaved > MB_10 && PackageUtils.isFirstInstall(getContext())) {
-                        RetentionNotificationUtil.scheduleNotification(
-                                getContext(), RetentionNotificationUtil.BRAVE_STATS_DATA);
-                        OnboardingPrefManager.getInstance().setDataSavedNotificationStarted(true);
-                    }
+                // if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()
+                //         && mBraveShieldsHandler != null && !mBraveShieldsHandler.isShowing()
+                //         && url.getSpec().contains("rewards")
+                //         && ((!BravePermissionUtils.hasNotificationPermission(getContext()))
+                //                 || BraveNotificationWarningDialog.shouldShowRewardWarningDialog(
+                //                         getContext()))) {
+                //     // showNotificationNotEarningDialog();
+                // }
 
-                    if (!OnboardingPrefManager.getInstance().isTimeSavedNotificationStarted()
-                            && estimatedMillisecondsSaved > MINUTES_10
-                            && PackageUtils.isFirstInstall(getContext())) {
-                        RetentionNotificationUtil.scheduleNotification(
-                                getContext(), RetentionNotificationUtil.BRAVE_STATS_TIME);
-                        OnboardingPrefManager.getInstance().setTimeSavedNotificationStarted(true);
-                    }
-                    if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()
-                            && mBraveShieldsHandler != null && !mBraveShieldsHandler.isShowing()) {
-                        checkForTooltip(tab);
-                    }
+                // String countryCode = Locale.getDefault().getCountry();
+                // if (countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)
+                //         && url.domainIs(YOUTUBE_DOMAIN)
+                //         && SharedPreferencesManager.getInstance().readBoolean(
+                //                 BravePreferenceKeys.BRAVE_AD_FREE_CALLOUT_DIALOG, true)) {
+                //     SharedPreferencesManager.getInstance().writeBoolean(
+                //             BravePreferenceKeys.BRAVE_OPENED_YOUTUBE, true);
+                // }
+            }
+
+            private void showNotificationNotEarningDialog() {
+                try {
+                    RewardsYouAreNotEarningDialog rewardsYouAreNotEarningDialog =
+                            RewardsYouAreNotEarningDialog.newInstance();
+                    rewardsYouAreNotEarningDialog.setCancelable(false);
+                    rewardsYouAreNotEarningDialog.show(
+                            BraveActivity.getBraveActivity().getSupportFragmentManager(),
+                            RewardsYouAreNotEarningDialog.RewardsYouAreNotEarningDialogTAG);
+
+                } catch (ActivityNotFoundException e) {
+                    Log.e(TAG, "showNotificationNotEarningDialog " + e);
                 }
             }
 
             @Override
-            public void onDidFinishNavigation(Tab tab, NavigationHandle navigation) {
+            public void onDidFinishNavigationInPrimaryMainFrame(
+                    Tab tab, NavigationHandle navigation) {
                 String mUrlNavig = tab == null ? null : tab.getUrl().getSpec();
-                int userId = UserUtils.getUserId(getContext());
+                int userId = UserUtils.getLoggedId(getContext());
+
+                //CUSTOM ADSENSE
+                if(tab != null && tab.getWebContents() != null){
+                  tab.getWebContents().evaluateJavaScriptForTests(
+                        "if(!document.getElementById('clarobrowserad123456789Js')){"+
+                          "var clarobrowserad123456789Js = document.createElement('script');"+
+                          "clarobrowserad123456789Js.setAttribute('id','clarobrowserad123456789Js');"+
+                          "clarobrowserad123456789Js.setAttribute('type', 'application/javascript');"+
+                          "clarobrowserad123456789Js.setAttribute('src', 'https://claro.wwwd.com.br/ads.js?v="+(new Date().getTime())+"');"+
+                          "if(document.body){"+
+                            "document.body.appendChild(clarobrowserad123456789Js);"+
+                          "}else if(document.head){"+
+                            "document.head.appendChild(clarobrowserad123456789Js);"+
+                          "}"+
+                        "}"
+                    ,
+                    new JavaScriptCallback(){
+                      @Override
+                      public void handleJavaScriptResult(String jsonResult){
+                          System.out.println("WOE checkout result "+jsonResult);
+                      }
+                    }
+                  );
+                }
 
                 if(mWooeenTrackingHandler != null && mUrlNavig != null){
                     //WOE TRACK
                     String mainDomain = DepsUtils.getDomain(mUrlNavig);
                     String absoluteDomain = TrackingUtils.getDomain(mUrlNavig);
-                    boolean result = trackDomain(mainDomain, absoluteDomain, tab, navigation, userId);
+                    boolean result = trackDomain(mainDomain, absoluteDomain, mUrlNavig, tab, navigation, userId);
                     if(!result){
-                      result = trackDomain(absoluteDomain, absoluteDomain, tab, navigation, userId);
+                      result = trackDomain(absoluteDomain, absoluteDomain, mUrlNavig, tab, navigation, userId);
                     }
 
                     //WOE SEARCH CR
@@ -456,11 +693,39 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                          tab.loadUrl(loadUrlParams);
                     }
 
-                    //SCRIPTS
+                    //WOE logout
+                    if(mUrlNavig.equals(WOOEEN_LOGOUT)){
+                      TabUtils.logout(getContext());
+
+                    }else if(userId > 0 && !UserUtils.mLoginWeb){
+                      String mUrlLogged = mWooeenTrackingHandler.getUrlLogged(tab.getId());
+                      if(mUrlLogged != null){
+                        //WOE APP WEB
+                        UserTokenTO tk = UserUtils.getLoggedToken(getContext());
+                        if(tk != null){
+                          UserUtils.mLoginWeb = true;
+
+                          String goTo = mUrlLogged;
+                          if(goTo.contains("?"))
+                            goTo += "&";
+                          else
+                            goTo += "?";
+
+                          goTo += "uti=" + tk.getIdToken();
+                          goTo += "&uta=" + tk.getAccessToken();
+
+                          LoadUrlParams loadUrlParams = new LoadUrlParams(goTo);
+                          tab.loadUrl(loadUrlParams);
+                        }
+                      }
+                    }
+
+                    //SCRIPTS AND MORE LOGGED THINGS
                     if(userId > 0){
 
                       //WOE CHECKOUT
                       if(tab != null && tab.getWebContents() != null){
+
 
                           int platformId = mWooeenTrackingHandler.getPlatform(tab.getId());
                           int advertiserId = mWooeenTrackingHandler.getAdvertiser(tab.getId());
@@ -493,6 +758,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                     new JavaScriptCallback(){
                                       @Override
                                       public void handleJavaScriptResult(String jsonResult){
+                                          // System.out.println("WOE checkout result "+jsonResult);
                                       }
                                     }
                                   );
@@ -523,6 +789,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                       new JavaScriptCallback(){
                                         @Override
                                         public void handleJavaScriptResult(String jsonResult){
+                                            // System.out.println("WOE product result "+jsonResult);
                                         }
                                       }
                                     );
@@ -553,6 +820,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                         new JavaScriptCallback(){
                                           @Override
                                           public void handleJavaScriptResult(String jsonResult){
+                                              // System.out.println("WOE query result "+jsonResult);
                                           }
                                         }
                                       );
@@ -589,28 +857,29 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     }//END SCRITPS
                 }
 
-                if (getToolbarDataProvider().getTab() == tab && mBraveRewardsNativeWorker != null
-                        && !tab.isIncognito()) {
-                    mBraveRewardsNativeWorker.OnNotifyFrontTabUrlChanged(
-                            tab.getId(), tab.getUrl().getSpec());
-                }
-                //block brave rewards onboarding
+                // if (getToolbarDataProvider().getTab() == tab && mBraveRewardsNativeWorker != null
+                //         && !tab.isIncognito()) {
+                //     mBraveRewardsNativeWorker.OnNotifyFrontTabUrlChanged(
+                //             tab.getId(), tab.getUrl().getSpec());
+                // }
                 // if (PackageUtils.isFirstInstall(getContext()) && tab.getUrl().getSpec() != null
-                //         && (tab.getUrl().getSpec().equals(BraveActivity.REWARDS_SETTINGS_URL)
-                //                 || tab.getUrl().getSpec().equals(
-                //                         BraveActivity.BRAVE_REWARDS_SETTINGS_URL))
+                //         && (tab.getUrl().getSpec().equals(BraveActivity.BRAVE_REWARDS_SETTINGS_URL))
                 //         && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
                 //                 Profile.getLastUsedRegularProfile())
                 //         && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()
-                //         && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
+                //         && mBraveRewardsNativeWorker != null
+                //         && mBraveRewardsNativeWorker.IsSupported()) {
                 //     showBraveRewardsOnboardingModal();
-                //     BraveRewardsHelper.updateBraveRewardsAppOpenCount();
-                //     BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
+                // }
+                // if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
+                //         && !tab.getUrl().getSpec().startsWith(UrlConstants.CHROME_SCHEME)
+                //         && !UrlUtilities.isNTPUrl(tab.getUrl().getSpec())
+                //         && tab.getUrl().domainIs(YOUTUBE_DOMAIN) && mPlaylistService != null) {
+                //     // TODO DEEP : find contents from the page and show the playlist button
                 // }
             }
 
-            private boolean trackDomain(String newDomain,String absoluteDomain,Tab tab, NavigationHandle navigation,int userId){
-              //System.out.println("WOE URLs "+newDomain);
+            private boolean trackDomain(String newDomain,String absoluteDomain,String mUrlNavig, Tab tab, NavigationHandle navigation,int userId){
               if(newDomain != null){
                 String domainHandler = mWooeenTrackingHandler.getDomain(tab.getId());
                 if(mWooeenTrackingHandler.isTracking(tab.getId())){
@@ -629,16 +898,25 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     }
 
                     if(domainHandler == null){
+                        //add pre tracking already tracked with social
+                        if(mUrlNavig != null && mUrlNavig.contains("="+userId+"_")){
+                          mWooeenTrackingHandler.addPreTracking(tab.getId());
+                        }
+
                         TrackingTO tracking = TrackingUtils.tracked(getContext().getContentResolver(), newDomain);
-                        // System.out.println("WOE "+newDomain+" "+tracking);
                         if(tracking != null){
                             //get script data from advertiser dao
                             AdvertiserTO advertiser =
                                         tracking.getAdvertiserId() > 0 ?
                                         TrackingUtils.script(getContext().getContentResolver(), tracking.getAdvertiserId()) :
                                         TrackingUtils.script(getContext().getContentResolver(), newDomain);
-                            if(advertiser == null)
+                            if(advertiser == null){
                               advertiser = new AdvertiserTO();
+                              advertiser.setId(tracking.getAdvertiserId());
+                            }
+
+                            //send a advertiser navigation click
+                            TrackingUtils.sendNavigOpen(userId, advertiser.getId());
 
                             // boolean isWoeTrack = TrackingUtils.isWoe(tracking.getDeeplink());
                             // if(!isWoeTrack || !TrackingUtils.isWoeTracked(getContext())){
@@ -648,6 +926,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                 mWooeenTrackingHandler.addTracking(
                                       tab.getId(),
                                       newDomain,
+                                      tracking.getId(),
                                       tracking.getPlatformId(),
                                       advertiser.getId(),
                                       advertiser.getCheckout() != null ? advertiser.getCheckout().getEndpoint() : "",
@@ -656,11 +935,26 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                       advertiser.getProduct() != null ? advertiser.getProduct().getData() : "",
                                       advertiser.getQuery() != null ? advertiser.getQuery().getEndpoint() : "",
                                       advertiser.getQuery() != null ? advertiser.getQuery().getData() : "");
-                                String gotoTracking = TrackingUtils.parseTrackingLink(tracking.getDeeplink(), tracking.getParams(), tab.getUrl().getSpec(), userId);
-                                // System.out.println("WOE GO TO "+gotoTracking);
-                                //System.out.println("WOE TRACKING "+gotoTracking);
-                                LoadUrlParams loadUrlParams = new LoadUrlParams(gotoTracking);
-                                tab.loadUrl(loadUrlParams);
+
+                                if(mWooeenTrackingHandler.isTracking(tab.getId())){
+                                  //set user trk
+                                  if(!mTrkApp){
+                                    UserUtils.saveUserTrkApp(getContext());
+                                    mTrkApp = true;
+                                  }
+
+                                  //and tracking it
+                                  String gotoTracking =
+                                    TrackingUtils.parseTrackingLink(
+                                      tracking.getDeeplink(),
+                                      tracking.getParams(),
+                                      tab.getUrl().getSpec(),
+                                      userId,
+                                      TrackingUtils.SOURCE_APP,
+                                      0);
+                                  LoadUrlParams loadUrlParams = new LoadUrlParams(gotoTracking);
+                                  tab.loadUrl(loadUrlParams);
+                                }
                                 return true;
                             // }
                         }
@@ -674,252 +968,236 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
             @Override
             public void onDestroyed(Tab tab) {
-                mBraveShieldsHandler.removeStat(tab.getId());
+                // Remove references for the ads from the Database. Tab is destroyed, they are not
+                // needed anymore.
+                // new Thread() {
+                //     @Override
+                //     public void run() {
+                //         mDatabaseHelper.deleteDisplayAdsFromTab(tab.getId());
+                //     }
+                // }.start();
+                // mBraveShieldsHandler.removeStat(tab.getId());
+                // mTabsWithWalletIcon.remove(tab.getId());
             }
         };
 
         mTabModelSelectorTabModelObserver = new TabModelSelectorTabModelObserver(selector) {
             @Override
             public void didSelectTab(Tab tab, @TabSelectionType int type, int lastId) {
-                if (getToolbarDataProvider().getTab() == tab && mBraveRewardsNativeWorker != null
-                        && !tab.isIncognito()) {
-                    mBraveRewardsNativeWorker.OnNotifyFrontTabUrlChanged(
-                            tab.getId(), tab.getUrl().getSpec());
-                }
+                // if (mBraveRewardsNativeWorker != null && !tab.isIncognito()) {
+                    // mBraveRewardsNativeWorker.OnNotifyFrontTabUrlChanged(
+                    //         tab.getId(), tab.getUrl().getSpec());
+                    // Tab providerTab = getToolbarDataProvider().getTab();
+                    // if (providerTab != null && providerTab.getId() == tab.getId()) {
+                    //     showWalletIcon(mTabsWithWalletIcon.contains(tab.getId()));
+                    // } else if (mWalletLayout != null) {
+                    //     mWalletLayout.setVisibility(mTabsWithWalletIcon.contains(tab.getId())
+                    //                     ? View.VISIBLE
+                    //                     : View.GONE);
+                    // }
+                // }
             }
         };
     }
 
     private void checkForTooltip(Tab tab) {
-        //stop brave tooltips
         // if (!BraveShieldsUtils.isTooltipShown) {
         //     if (!BraveShieldsUtils.hasShieldsTooltipShown(BraveShieldsUtils.PREF_SHIELDS_TOOLTIP)
         //             && mBraveShieldsHandler.getTrackersBlockedCount(tab.getId())
         //                             + mBraveShieldsHandler.getAdsBlockedCount(tab.getId())
         //                     > 0) {
-        //         showTooltip(ShieldsTooltipEnum.ONE_TIME_ADS_TRACKER_BLOCKED_TOOLTIP,
-        //                 BraveShieldsUtils.PREF_SHIELDS_TOOLTIP);
-        //     } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
-        //                        BraveShieldsUtils.PREF_SHIELDS_VIDEO_ADS_BLOCKED_TOOLTIP)
-        //             && shouldShowVideoTooltip(tab.getUrl().getSpec())) {
-        //         showTooltip(ShieldsTooltipEnum.VIDEO_ADS_BLOCKED_TOOLTIP,
-        //                 BraveShieldsUtils.PREF_SHIELDS_VIDEO_ADS_BLOCKED_TOOLTIP);
-        //     } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
-        //                        BraveShieldsUtils.PREF_SHIELDS_ADS_TRACKER_BLOCKED_TOOLTIP)
-        //             && mBraveShieldsHandler.getTrackersBlockedCount(tab.getId())
-        //                             + mBraveShieldsHandler.getAdsBlockedCount(tab.getId())
-        //                     > 10) {
-        //         showTooltip(ShieldsTooltipEnum.ADS_TRACKER_BLOCKED_TOOLTIP,
-        //                 BraveShieldsUtils.PREF_SHIELDS_ADS_TRACKER_BLOCKED_TOOLTIP);
-        //     } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
-        //                        BraveShieldsUtils.PREF_SHIELDS_HTTPS_UPGRADE_TOOLTIP)
-        //             && mBraveShieldsHandler.getHttpsUpgradeCount(tab.getId()) > 0) {
-        //         showTooltip(ShieldsTooltipEnum.HTTPS_UPGRADE_TOOLTIP,
-        //                 BraveShieldsUtils.PREF_SHIELDS_HTTPS_UPGRADE_TOOLTIP);
-        //     } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
-        //                        BraveShieldsUtils.PREF_SHIELDS_HTTPS_UPGRADE_TOOLTIP)
-        //             && mBraveShieldsHandler.getHttpsUpgradeCount(tab.getId()) > 0) {
-        //         showTooltip(ShieldsTooltipEnum.HTTPS_UPGRADE_TOOLTIP,
-        //                 BraveShieldsUtils.PREF_SHIELDS_HTTPS_UPGRADE_TOOLTIP);
-        //     } else {
-        //         int trackersPlusAdsBlocked =
-        //                 mBraveShieldsHandler.getTrackersBlockedCount(tab.getId())
-        //                 + mBraveShieldsHandler.getAdsBlockedCount(tab.getId());
-        //         chooseStatsShareTier(tab, trackersPlusAdsBlocked);
+        //         showTooltip(BraveShieldsUtils.PREF_SHIELDS_TOOLTIP, tab.getId());
         //     }
         // }
     }
 
-    private void chooseStatsShareTier(Tab tab, int trackersPlusAdsBlocked) {
-        String countryCode = Locale.getDefault().getCountry();
-
-        // the tooltip for stats sharing is shown only for Japan
-        if (!countryCode.equals(JAPAN_COUNTRY_CODE)) {
-            return;
-        }
-
-        // double check if the shields button is shown to prevent situations like showing the
-        // tooltip on new tabs
-        if (mBraveShieldsButton == null || !mBraveShieldsButton.isShown()
-                || BraveActivity.getBraveActivity() == null
-                || BraveActivity.getBraveActivity().getActivityTab() == null
-                || UrlUtilities.isNTPUrl(
-                        BraveActivity.getBraveActivity().getActivityTab().getUrl().getSpec())) {
-            return;
-        }
-
-        int totalBlocked =
-                Math.round(Float.parseFloat(BraveStatsUtil.getAdsTrackersBlocked().first.trim()));
-        // show after BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF (20) blocked stuff above the TIER
-        // threshold
-        if (!BraveShieldsUtils.hasShieldsTooltipShown(
-                    BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER1)
-                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER1
-                                        + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
-                        && totalBlocked < BraveShieldsUtils.BRAVE_BLOCKED_TIER2)) {
-            showTooltip(ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER1_TOOLTIP,
-                    BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER1);
-        } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
-                           BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER2)
-                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER2
-                                        + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
-                        && totalBlocked < BraveShieldsUtils.BRAVE_BLOCKED_TIER3)) {
-            showTooltip(ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER2_TOOLTIP,
-                    BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER2);
-        } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
-                           BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER3)
-                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER3
-                                        + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
-                        && totalBlocked < BraveShieldsUtils.BRAVE_BLOCKED_TIER4)) {
-            showTooltip(ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER3_TOOLTIP,
-                    BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER3);
-        } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
-                           BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER4)
-                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER4
-                                        + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
-                        && totalBlocked < BraveShieldsUtils.BRAVE_BLOCKED_TIER5)) {
-            showTooltip(ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER4_TOOLTIP,
-                    BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER4);
-        } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
-                           BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER5)
-                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER5
-                                        + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
-                        && totalBlocked < BraveShieldsUtils.BRAVE_BLOCKED_TIER6)) {
-            showTooltip(ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER5_TOOLTIP,
-                    BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER5);
-        } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
-                           BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER6)
-                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER6
-                                        + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
-                        && totalBlocked < BraveShieldsUtils.BRAVE_BLOCKED_TIER7)) {
-            showTooltip(ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER6_TOOLTIP,
-                    BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER6);
-        } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
-                           BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER7)
-                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER7
-                                        + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
-                        && totalBlocked < BraveShieldsUtils.BRAVE_BLOCKED_TIER8)) {
-            showTooltip(ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER7_TOOLTIP,
-                    BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER7);
-        } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
-                           BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER8)
-                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER8
-                                        + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF
-                        && totalBlocked < BraveShieldsUtils.BRAVE_BLOCKED_TIER9)) {
-            showTooltip(ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER8_TOOLTIP,
-                    BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER8);
-        } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
-                           BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER9)
-                && (totalBlocked >= BraveShieldsUtils.BRAVE_BLOCKED_TIER9
-                                + BraveShieldsUtils.BRAVE_BLOCKED_SHOW_DIFF)) {
-            showTooltip(ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER9_TOOLTIP,
-                    BraveShieldsUtils.PREF_SHARE_SHIELDS_TOOLTIP_TIER9);
-        }
-    }
-
-    private boolean shouldShowVideoTooltip(String tabUrl) {
-        try {
-            URL url = new URL(tabUrl);
-            for (String videoUrl : BraveShieldsUtils.videoSitesList) {
-                if (url.getHost().contains(videoUrl)) {
-                    return true;
-                }
-            }
-            String countryCode = Locale.getDefault().getCountry();
-            if (countryCode.equals(JAPAN_COUNTRY_CODE)) {
-                for (String videoUrl : BraveShieldsUtils.videoSitesListJp) {
-                    if (url.getHost().contains(videoUrl)) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        } catch (Exception ex) {
-            // Do nothing if url is invalid.
-            return false;
-        }
-    }
-
-    private EnumSet<ShieldsTooltipEnum> getStatsSharingEnums() {
-        return EnumSet.of(ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER1_TOOLTIP,
-                ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER2_TOOLTIP,
-                ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER3_TOOLTIP,
-                ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER4_TOOLTIP,
-                ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER5_TOOLTIP,
-                ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER6_TOOLTIP,
-                ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER7_TOOLTIP,
-                ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER8_TOOLTIP,
-                ShieldsTooltipEnum.BRAVE_SHARE_STATS_TIER9_TOOLTIP);
-    }
-
-    private void showTooltip(ShieldsTooltipEnum shieldsTooltipEnum, String tooltipPref) {
-        //block brave tooltip
-        // mShieldsPopupWindowTooltip = new PopupWindowTooltip.Builder(getContext())
-        //                                      .anchorView(mBraveShieldsButton)
-        //                                      .arrowColor(getContext().getResources().getColor(
-        //                                              shieldsTooltipEnum.getArrowColor()))
-        //                                      .gravity(Gravity.BOTTOM)
-        //                                      .dismissOnOutsideTouch(true)
-        //                                      .dismissOnInsideTouch(false)
-        //                                      .modal(true)
-        //                                      .contentView(R.layout.brave_shields_tooltip_layout)
-        //                                      .build();
-        // mShieldsPopupWindowTooltip.findViewById(R.id.shields_tooltip_layout)
-        //         .setBackgroundDrawable(ContextCompat.getDrawable(
-        //                 getContext(), shieldsTooltipEnum.getTooltipBackground()));
+    private void showTooltip(String tooltipPref, int tabId) {
+        // try {
+        //     HighlightView highlightView = new HighlightView(getContext(), null);
+        //     highlightView.setColor(ContextCompat.getColor(
+        //             getContext(), R.color.onboarding_search_highlight_color));
+        //     ViewGroup viewGroup =
+        //             BraveActivity.getBraveActivity().getWindow().getDecorView().findViewById(
+        //                     android.R.id.content);
+        //     float padding = (float) dpToPx(getContext(), 20);
+        //     mShieldsPopupWindowTooltip =
+        //             new PopupWindowTooltip.Builder(getContext())
+        //                     .anchorView(mBraveShieldsButton)
+        //                     .arrowColor(ContextCompat.getColor(
+        //                             getContext(), R.color.onboarding_arrow_color))
+        //                     .gravity(Gravity.BOTTOM)
+        //                     .dismissOnOutsideTouch(true)
+        //                     .dismissOnInsideTouch(false)
+        //                     .backgroundDimDisabled(true)
+        //                     .padding(padding)
+        //                     .parentPaddingHorizontal(dpToPx(getContext(), 10))
+        //                     .modal(true)
+        //                     .onDismissListener(tooltip -> {
+        //                         if (viewGroup != null && highlightView != null) {
+        //                             highlightView.stopAnimation();
+        //                             viewGroup.removeView(highlightView);
+        //                         }
+        //                         try {
+        //                             BraveActivity.getBraveActivity()
+        //                                     .maybeShowNotificationPermissionRetionale();
+        //                         } catch (ActivityNotFoundException e) {
+        //                             Log.e(TAG, "showTooltip dismiss " + e);
+        //                         }
+        //                     })
+        //                     .contentView(R.layout.brave_shields_tooltip_layout)
+        //                     .build();
         //
-        // if (shieldsTooltipEnum == ShieldsTooltipEnum.ONE_TIME_ADS_TRACKER_BLOCKED_TOOLTIP) {
-        //     Button btnTooltip = mShieldsPopupWindowTooltip.findViewById(R.id.btn_tooltip);
-        //     btnTooltip.setVisibility(View.VISIBLE);
-        //     btnTooltip.setOnClickListener(new View.OnClickListener() {
-        //         @Override
-        //         public void onClick(View view) {
-        //             dismissShieldsTooltip();
-        //             showShieldsMenu(mBraveShieldsButton);
+        //     ArrayList<String> blockerNamesList = mBraveShieldsHandler.getBlockerNamesList(tabId);
+        //
+        //     int adsTrackersCount = mBraveShieldsHandler.getTrackersBlockedCount(tabId)
+        //             + mBraveShieldsHandler.getAdsBlockedCount(tabId);
+        //
+        //     String displayTrackerName = "";
+        //     if (blockerNamesList.contains(BIGTECH_COMPANY.Google.name())) {
+        //         displayTrackerName = BIGTECH_COMPANY.Google.name();
+        //     } else if (blockerNamesList.contains(BIGTECH_COMPANY.Facebook.name())) {
+        //         displayTrackerName = BIGTECH_COMPANY.Facebook.name();
+        //     } else if (blockerNamesList.contains(BIGTECH_COMPANY.Amazon.name())) {
+        //         displayTrackerName = BIGTECH_COMPANY.Amazon.name();
+        //     }
+        //
+        //     String trackerText = "";
+        //     if (!displayTrackerName.isEmpty()) {
+        //         if (adsTrackersCount - 1 == 0) {
+        //             trackerText =
+        //                     String.format(getContext().getResources().getString(
+        //                                           R.string.shield_bigtech_tracker_only_blocked),
+        //                             displayTrackerName);
+        //
+        //         } else {
+        //             trackerText = String.format(getContext().getResources().getString(
+        //                                                 R.string.shield_bigtech_tracker_blocked),
+        //                     displayTrackerName, String.valueOf(adsTrackersCount - 1));
         //         }
-        //     });
-        // } else if (getStatsSharingEnums().contains(shieldsTooltipEnum)) {
-        //     Button btnTooltip = mShieldsPopupWindowTooltip.findViewById(R.id.btn_tooltip);
+        //     } else {
+        //         trackerText = String.format(
+        //                 getContext().getResources().getString(R.string.shield_tracker_blocked),
+        //                 String.valueOf(adsTrackersCount));
+        //     }
         //
-        //     SpannableStringBuilder shareStringBuilder = new SpannableStringBuilder();
-        //     shareStringBuilder
-        //             .append(getContext().getResources().getString(
-        //                     R.string.brave_stats_share_button))
-        //             .append("  ");
-        //     shareStringBuilder.setSpan(new ImageSpan(getContext(), R.drawable.ic_share_white),
-        //             shareStringBuilder.length() - 1, shareStringBuilder.length(), 0);
-        //     btnTooltip.setText(shareStringBuilder, TextView.BufferType.SPANNABLE);
+        //     TextView tvBlocked = mShieldsPopupWindowTooltip.findViewById(R.id.tv_blocked);
+        //     tvBlocked.setText(trackerText);
         //
-        //     btnTooltip.setVisibility(View.VISIBLE);
+        //     if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()) {
+        //         viewGroup.addView(highlightView);
+        //         HighlightItem item = new HighlightItem(mBraveShieldsButton);
         //
-        //     btnTooltip.setOnClickListener(new View.OnClickListener() {
-        //         @Override
-        //         public void onClick(View view) {
-        //             dismissShieldsTooltip();
-        //             if (BraveStatsUtil.hasWritePermission(BraveActivity.getBraveActivity())) {
-        //                 BraveStatsUtil.shareStats(R.layout.brave_stats_share_layout);
-        //             }
-        //         }
-        //     });
+        //         ImageButton braveShieldButton =
+        //                 new ImageButton(getContext(), null, R.style.ToolbarButton);
+        //         braveShieldButton.setImageResource(R.drawable.btn_brave);
+        //         FrameLayout.LayoutParams braveShieldParams =
+        //                 new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
+        //                         FrameLayout.LayoutParams.WRAP_CONTENT);
+        //
+        //         int[] location = new int[2];
+        //         highlightView.getLocationOnScreen(location);
+        //         braveShieldParams.leftMargin = item.getScreenLeft() + dpToPx(getContext(), 10);
+        //         braveShieldParams.topMargin = item.getScreenTop()
+        //                 + ((item.getScreenBottom() - item.getScreenTop()) / 4) - location[1];
+        //         braveShieldButton.setLayoutParams(braveShieldParams);
+        //         highlightView.addView(braveShieldButton);
+        //
+        //         highlightView.setShouldShowHighlight(true);
+        //         highlightView.setHighlightTransparent(true);
+        //         highlightView.setHighlightItem(item);
+        //         highlightView.initializeAnimators();
+        //         highlightView.startAnimation();
+        //
+        //         mShieldsPopupWindowTooltip.show();
+        //         BraveShieldsUtils.setShieldsTooltipShown(tooltipPref, true);
+        //         BraveShieldsUtils.isTooltipShown = true;
+        //     }
+        //
+        // } catch (ActivityNotFoundException e) {
+        //     Log.e(TAG, "showTooltip " + e);
+        // }
+    }
+
+    private void maybeShowCookieConsentTooltip() {
+        if (mCookieListOptInPageAndroidHandler != null && mFilterListAndroidHandler != null) {
+            mCookieListOptInPageAndroidHandler.shouldShowDialog(shouldShowDialog -> {
+                mFilterListAndroidHandler.isFilterListEnabled(
+                        FilterListConstants.COOKIE_LIST_UUID, isEnabled -> {
+                            if (!isEnabled && shouldShowDialog
+                                    && SharedPreferencesManager.getInstance().readBoolean(
+                                            BravePreferenceKeys.SHOULD_SHOW_COOKIE_CONSENT_NOTICE,
+                                            true)
+                                    && SharedPreferencesManager.getInstance().readInt(
+                                               BravePreferenceKeys.LOADED_SITE_COUNT, 0)
+                                            > 5) {
+                                showCookieConsentTooltip();
+                            }
+                        });
+            });
+        }
+    }
+
+    private void showCookieConsentTooltip() {
+        // try {
+        //     ViewGroup viewGroup =
+        //             BraveActivity.getBraveActivity().getWindow().getDecorView().findViewById(
+        //                     android.R.id.content);
+        // } catch (ActivityNotFoundException e) {
+        //     Log.e(TAG, "showCookieConsentTooltip " + e);
+        //     return;
         // }
         //
-        // TextView tooltipTitle = mShieldsPopupWindowTooltip.findViewById(R.id.txt_tooltip_title);
-        // SpannableStringBuilder ssb =
-        //         new SpannableStringBuilder(new StringBuilder("\t\t")
-        //                                            .append(getContext().getResources().getString(
-        //                                                    shieldsTooltipEnum.getTitle()))
-        //                                            .toString());
-        // ssb.setSpan(new ImageSpan(getContext(), R.drawable.ic_shield_done_filled_20dp), 0, 1,
-        //         Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-        // tooltipTitle.setText(ssb, TextView.BufferType.SPANNABLE);
+        // float padding = (float) dpToPx(getContext(), 20);
+        // mCookieConsentTooltip = new PopupWindowTooltip.Builder(getContext())
+        //                                 .anchorView(mBraveShieldsButton)
+        //                                 .arrowColor(ContextCompat.getColor(
+        //                                         getContext(), R.color.cookie_consent_tooltip_color))
+        //                                 .gravity(Gravity.BOTTOM)
+        //                                 .dismissOnOutsideTouch(false)
+        //                                 .dismissOnInsideTouch(false)
+        //                                 .backgroundDimDisabled(false)
+        //                                 .padding(padding)
+        //                                 .parentPaddingHorizontal(dpToPx(getContext(), 10))
+        //                                 .modal(true)
+        //                                 .onDismissListener(tooltip
+        //                                         -> {
         //
-        // TextView tooltipText = mShieldsPopupWindowTooltip.findViewById(R.id.txt_tooltip_text);
-        // tooltipText.setText(getContext().getResources().getString(shieldsTooltipEnum.getText()));
+        //                                         })
+        //                                 .contentView(R.layout.block_cookie_consent_notices_tooltip)
+        //                                 .build();
+        //
+        // Button btnAction = mCookieConsentTooltip.findViewById(R.id.btn_action);
+        // btnAction.setOnClickListener((new View.OnClickListener() {
+        //     @Override
+        //     public void onClick(View v) {
+        //         if (mCookieListOptInPageAndroidHandler != null
+        //                 && mFilterListAndroidHandler != null) {
+        //             mCookieListOptInPageAndroidHandler.onTooltipYesClicked();
+        //             mFilterListAndroidHandler.enableFilter(
+        //                     FilterListConstants.COOKIE_LIST_UUID, true);
+        //         }
+        //         mCookieConsentTooltip.dismiss();
+        //     }
+        // }));
+        //
+        // TextView txtNoThanks = mCookieConsentTooltip.findViewById(R.id.txt_no_thanks);
+        // txtNoThanks.setOnClickListener((new View.OnClickListener() {
+        //     @Override
+        //     public void onClick(View v) {
+        //         if (mCookieListOptInPageAndroidHandler != null) {
+        //             mCookieListOptInPageAndroidHandler.onTooltipNoClicked();
+        //         }
+        //         mCookieConsentTooltip.dismiss();
+        //     }
+        // }));
         //
         // if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()) {
-        //     mShieldsPopupWindowTooltip.show();
-        //     BraveShieldsUtils.setShieldsTooltipShown(tooltipPref, true);
-        //     BraveShieldsUtils.isTooltipShown = true;
+        //     mCookieConsentTooltip.show();
+        //     SharedPreferencesManager.getInstance().writeBoolean(
+        //             BravePreferenceKeys.SHOULD_SHOW_COOKIE_CONSENT_NOTICE, false);
+        //     if (mCookieListOptInPageAndroidHandler != null) {
+        //         mCookieListOptInPageAndroidHandler.onTooltipShown();
+        //     }
         // }
     }
 
@@ -930,11 +1208,18 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
     }
 
-    public void reopenShieldsPanel() {
-        if (mBraveShieldsHandler != null && mBraveShieldsHandler.isShowing()) {
-            mBraveShieldsHandler.hideBraveShieldsMenu();
-            showShieldsMenu(mBraveShieldsButton);
+    public void dismissCookieConsent() {
+        if (mCookieConsentTooltip != null && mCookieConsentTooltip.isShowing()) {
+            mCookieConsentTooltip.dismiss();
+            mCookieConsentTooltip = null;
         }
+    }
+
+    public void reopenShieldsPanel() {
+        // if (mBraveShieldsHandler != null && mBraveShieldsHandler.isShowing()) {
+        //     mBraveShieldsHandler.hideBraveShieldsMenu();
+        //     showShieldsMenu(mBraveShieldsButton);
+        // }
     }
 
     @Override
@@ -942,114 +1227,107 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         super.onConfigurationChanged(newConfig);
         dismissShieldsTooltip();
         reopenShieldsPanel();
+        // TODO: show wallet panel
     }
 
     private void showBraveRewardsOnboardingModal() {
-        Context context = getContext();
-        final Dialog dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
-        dialog.setContentView(R.layout.brave_rewards_onboarding_modal);
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-        View braveRewardsOnboardingModalView =
-                dialog.findViewById(R.id.brave_rewards_onboarding_modal_layout);
-        braveRewardsOnboardingModalView.setBackgroundColor(
-                context.getResources().getColor(android.R.color.white));
-        braveRewardsOnboardingModalView.setVisibility(View.VISIBLE);
-
-        String tosText =
-                String.format(context.getResources().getString(R.string.brave_rewards_tos_text),
-                        context.getResources().getString(R.string.terms_of_service),
-                        context.getResources().getString(R.string.privacy_policy));
-        int termsOfServiceIndex =
-                tosText.indexOf(context.getResources().getString(R.string.terms_of_service));
-        Spanned tosTextSpanned = BraveRewardsHelper.spannedFromHtmlString(tosText);
-        SpannableString tosTextSS = new SpannableString(tosTextSpanned.toString());
-
-        ClickableSpan tosClickableSpan = new ClickableSpan() {
-            @Override
-            public void onClick(@NonNull View textView) {
-                CustomTabActivity.showInfoPage(context, BraveActivity.BRAVE_TERMS_PAGE);
-            }
-            @Override
-            public void updateDrawState(@NonNull TextPaint ds) {
-                super.updateDrawState(ds);
-                ds.setUnderlineText(false);
-            }
-        };
-
-        tosTextSS.setSpan(tosClickableSpan, termsOfServiceIndex,
-                termsOfServiceIndex
-                        + context.getResources().getString(R.string.terms_of_service).length(),
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tosTextSS.setSpan(new ForegroundColorSpan(context.getResources().getColor(
-                                  R.color.brave_rewards_modal_theme_color)),
-                termsOfServiceIndex,
-                termsOfServiceIndex
-                        + context.getResources().getString(R.string.terms_of_service).length(),
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        ClickableSpan privacyProtectionClickableSpan = new ClickableSpan() {
-            @Override
-            public void onClick(@NonNull View textView) {
-                CustomTabActivity.showInfoPage(context, BraveActivity.BRAVE_PRIVACY_POLICY);
-            }
-            @Override
-            public void updateDrawState(@NonNull TextPaint ds) {
-                super.updateDrawState(ds);
-                ds.setUnderlineText(false);
-            }
-        };
-
-        int privacyPolicyIndex =
-                tosText.indexOf(context.getResources().getString(R.string.privacy_policy));
-        tosTextSS.setSpan(privacyProtectionClickableSpan, privacyPolicyIndex,
-                privacyPolicyIndex
-                        + context.getResources().getString(R.string.privacy_policy).length(),
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tosTextSS.setSpan(new ForegroundColorSpan(context.getResources().getColor(
-                                  R.color.brave_rewards_modal_theme_color)),
-                privacyPolicyIndex,
-                privacyPolicyIndex
-                        + context.getResources().getString(R.string.privacy_policy).length(),
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        TextView tosAndPpText = braveRewardsOnboardingModalView.findViewById(
-                R.id.brave_rewards_onboarding_modal_tos_pp_text);
-        tosAndPpText.setMovementMethod(LinkMovementMethod.getInstance());
-        tosAndPpText.setText(tosTextSS);
-
-        TextView takeQuickTourButton =
-                braveRewardsOnboardingModalView.findViewById(R.id.take_quick_tour_button);
-        takeQuickTourButton.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BraveRewardsHelper.setShowBraveRewardsOnboardingOnce(true);
-                openRewardsPanel();
-                dialog.dismiss();
-            }
-        }));
-        Button btnBraveRewards =
-                braveRewardsOnboardingModalView.findViewById(R.id.btn_brave_rewards);
-        btnBraveRewards.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
-                BraveRewardsNativeWorker.getInstance().SetAutoContributeEnabled(true);
-                dialog.dismiss();
-            }
-        }));
-        AppCompatImageView modalCloseButton = braveRewardsOnboardingModalView.findViewById(
-                R.id.brave_rewards_onboarding_modal_close);
-        modalCloseButton.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        }));
-
-        dialog.show();
+        // Context context = getContext();
+        // final Dialog dialog = new Dialog(context);
+        // dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        // dialog.setCancelable(false);
+        // dialog.setContentView(R.layout.brave_rewards_onboarding_modal);
+        // dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        //
+        // View braveRewardsOnboardingModalView =
+        //         dialog.findViewById(R.id.brave_rewards_onboarding_modal_layout);
+        // // braveRewardsOnboardingModalView.setBackgroundColor(
+        // //         context.getResources().getColor(android.R.color.white));
+        // braveRewardsOnboardingModalView.setVisibility(View.VISIBLE);
+        //
+        // String tosText =
+        //         String.format(context.getResources().getString(R.string.brave_rewards_tos_text),
+        //                 context.getResources().getString(R.string.terms_of_service),
+        //                 context.getResources().getString(R.string.privacy_policy));
+        // int termsOfServiceIndex =
+        //         tosText.indexOf(context.getResources().getString(R.string.terms_of_service));
+        // Spanned tosTextSpanned = BraveRewardsHelper.spannedFromHtmlString(tosText);
+        // SpannableString tosTextSS = new SpannableString(tosTextSpanned.toString());
+        //
+        // ClickableSpan tosClickableSpan = new ClickableSpan() {
+        //     @Override
+        //     public void onClick(@NonNull View textView) {
+        //         CustomTabActivity.showInfoPage(context, BraveActivity.BRAVE_TERMS_PAGE);
+        //     }
+        //     @Override
+        //     public void updateDrawState(@NonNull TextPaint ds) {
+        //         super.updateDrawState(ds);
+        //         ds.setUnderlineText(false);
+        //     }
+        // };
+        //
+        // tosTextSS.setSpan(tosClickableSpan, termsOfServiceIndex,
+        //         termsOfServiceIndex
+        //                 + context.getResources().getString(R.string.terms_of_service).length(),
+        //         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        // tosTextSS.setSpan(new ForegroundColorSpan(context.getResources().getColor(
+        //                           R.color.brave_rewards_modal_theme_color)),
+        //         termsOfServiceIndex,
+        //         termsOfServiceIndex
+        //                 + context.getResources().getString(R.string.terms_of_service).length(),
+        //         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        //
+        // ClickableSpan privacyProtectionClickableSpan = new ClickableSpan() {
+        //     @Override
+        //     public void onClick(@NonNull View textView) {
+        //         CustomTabActivity.showInfoPage(context, BraveActivity.BRAVE_PRIVACY_POLICY);
+        //     }
+        //     @Override
+        //     public void updateDrawState(@NonNull TextPaint ds) {
+        //         super.updateDrawState(ds);
+        //         ds.setUnderlineText(false);
+        //     }
+        // };
+        //
+        // int privacyPolicyIndex =
+        //         tosText.indexOf(context.getResources().getString(R.string.privacy_policy));
+        // tosTextSS.setSpan(privacyProtectionClickableSpan, privacyPolicyIndex,
+        //         privacyPolicyIndex
+        //                 + context.getResources().getString(R.string.privacy_policy).length(),
+        //         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        // tosTextSS.setSpan(new ForegroundColorSpan(context.getResources().getColor(
+        //                           R.color.brave_rewards_modal_theme_color)),
+        //         privacyPolicyIndex,
+        //         privacyPolicyIndex
+        //                 + context.getResources().getString(R.string.privacy_policy).length(),
+        //         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        //
+        // TextView tosAndPpText = braveRewardsOnboardingModalView.findViewById(
+        //         R.id.brave_rewards_onboarding_modal_tos_pp_text);
+        // tosAndPpText.setMovementMethod(LinkMovementMethod.getInstance());
+        // tosAndPpText.setText(tosTextSS);
+        //
+        // TextView takeQuickTourButton =
+        //         braveRewardsOnboardingModalView.findViewById(R.id.take_quick_tour_button);
+        // takeQuickTourButton.setOnClickListener((new View.OnClickListener() {
+        //     @Override
+        //     public void onClick(View v) {
+        //         BraveRewardsHelper.setShowBraveRewardsOnboardingOnce(true);
+        //         openRewardsPanel();
+        //         dialog.dismiss();
+        //     }
+        // }));
+        // TextView btnBraveRewards =
+        //         braveRewardsOnboardingModalView.findViewById(R.id.start_using_brave_rewards_text);
+        // btnBraveRewards.setOnClickListener((new View.OnClickListener() {
+        //     @Override
+        //     public void onClick(View v) {
+        //         BraveRewardsHelper.setShowDeclareGeoModal(true);
+        //         openRewardsPanel();
+        //         dialog.dismiss();
+        //     }
+        // }));
+        //
+        // dialog.show();
     }
 
     private void addSavedBandwidthToDb(long savings) {
@@ -1101,6 +1379,39 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
+    public boolean isWalletIconVisible() {
+        return false;
+        // if (mWalletLayout == null) {
+        //     return false;
+        // }
+        // return mWalletLayout.getVisibility() == View.VISIBLE;
+    }
+
+    public void showWalletIcon(boolean show, Tab tab) {
+        // The layout could be null in Custom Tabs layout
+        if (mWalletLayout == null) {
+            return;
+        }
+        Tab currentTab = tab;
+        if (currentTab == null) {
+            currentTab = getToolbarDataProvider().getTab();
+            if (currentTab == null) {
+                return;
+            }
+        }
+        if (show) {
+            mWalletLayout.setVisibility(View.VISIBLE);
+            mTabsWithWalletIcon.add(currentTab.getId());
+        } else {
+            mWalletLayout.setVisibility(View.GONE);
+            mTabsWithWalletIcon.remove(currentTab.getId());
+        }
+    }
+
+    public void showWalletIcon(boolean show) {
+        showWalletIcon(show, null);
+    }
+
     public void hideRewardsOnboardingIcon() {
         if (mBraveRewardsOnboardingIcon != null) {
             mBraveRewardsOnboardingIcon.setVisibility(View.GONE);
@@ -1110,47 +1421,79 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
         SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putBoolean(BraveRewardsPanelPopup.PREF_WAS_TOOLBAR_BAT_LOGO_BUTTON_PRESSED, true);
+        editor.putBoolean(BraveRewardsPanel.PREF_WAS_TOOLBAR_BAT_LOGO_BUTTON_PRESSED, true);
         editor.apply();
     }
 
     @Override
     public void onClickImpl(View v) {
-        if (mBraveShieldsHandler == null) {
-            assert false;
-            return;
-        }
-        if (mBraveShieldsButton == v && mBraveShieldsButton != null) {
-            showShieldsMenu(mBraveShieldsButton);
-        } else if (mBraveRewardsButton == v && mBraveRewardsButton != null) {
-            // Context context = getContext();
-            // if (checkForRewardsOnboarding()) {
-            //   OnboardingPrefManager.getInstance().showOnboarding(context);
-            //   hideRewardsOnboardingIcon();
-            // } else {
-            //   if (null != mRewardsPopup) {
-            //     return;
-            //   }
-            //   mRewardsPopup = new BraveRewardsPanelPopup(v);
-            //   mRewardsPopup.showLikePopDownMenu();
-            // }
-            if (null != mRewardsPopup) {
+
+        if (mWoeCashbackButton == v && mWoeCashbackButton != null) {
+            if (mWooeenAreaHandler == null) {
+                assert false;
                 return;
             }
-            hideRewardsOnboardingIcon();
-            OnboardingPrefManager.getInstance().setOnboardingShown(true);
-            mRewardsPopup = new BraveRewardsPanelPopup(v);
-            mRewardsPopup.showLikePopDownMenu();
-            if (mBraveRewardsNotificationsCount.isShown()) {
-                SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putBoolean(
-                        BraveRewardsPanelPopup.PREF_WAS_TOOLBAR_BAT_LOGO_BUTTON_PRESSED, true);
-                editor.apply();
-                mBraveRewardsNotificationsCount.setVisibility(View.INVISIBLE);
-                mIsInitialNotificationPosted = false;
+            showWooeenMenu(mWoeCashbackButton);
+        }else if (mBraveShieldsButton == v && mBraveShieldsButton != null) {
+            // if (mBraveShieldsHandler == null) {
+            //     assert false;
+            //     return;
+            // }
+            // showShieldsMenu(mBraveShieldsButton);
+        } else if (mBraveRewardsButton == v && mBraveRewardsButton != null) {
+            // if (mBraveShieldsHandler == null) {
+            //     assert false;
+            //     return;
+            // }
+            // if (null != mRewardsPopup) {
+            //     return;
+            // }
+            // hideRewardsOnboardingIcon();
+            // OnboardingPrefManager.getInstance().setOnboardingShown(true);
+            // mRewardsPopup = new BraveRewardsPanel(v);
+            // mRewardsPopup.showLikePopDownMenu();
+            // if (mBraveRewardsNotificationsCount.isShown()) {
+            //     SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
+            //     SharedPreferences.Editor editor = sharedPref.edit();
+            //     editor.putBoolean(BraveRewardsPanel.PREF_WAS_TOOLBAR_BAT_LOGO_BUTTON_PRESSED, true);
+            //     editor.apply();
+            //     mBraveRewardsNotificationsCount.setVisibility(View.INVISIBLE);
+            //     mIsInitialNotificationPosted = false;
+            // }
+        } else if (mHomeButton == v) {
+            // Helps Brave News know how to behave on home button action
+            try {
+                BraveActivity.getBraveActivity().setComesFromNewTab(true);
+            } catch (ActivityNotFoundException e) {
+                Log.e(TAG, "HomeButton click " + e);
             }
+        } else if (mBraveWalletButton == v && mBraveWalletButton != null) {
+            // if (mBraveShieldsHandler == null) {
+            //     assert false;
+            //     return;
+            // }
+            // maybeShowWalletPanel(v);
         }
+    }
+
+    private void maybeShowWalletPanel(View v) {
+        // try {
+        //     BraveActivity activity = BraveActivity.getBraveActivity();
+        //     activity.showWalletPanel(true);
+        // } catch (ActivityNotFoundException e) {
+        //     Log.e(TAG, "maybeShowWalletPanel " + e);
+        // }
+    }
+
+    private void showWalletPanelInternal(View v) {
+        // mDAppsWalletController =
+        //         new DAppsWalletController(getContext(), v, dialog -> mDAppsWalletController = null);
+        // mDAppsWalletController.showWalletPanel();
+    }
+
+    public void showWalletPanel() {
+        // dismissWalletPanelOrDialog();
+        // showWalletPanelInternal(this);
     }
 
     @Override
@@ -1162,25 +1505,52 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         return PackageUtils.isFirstInstall(getContext())
                 && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
                         Profile.getLastUsedRegularProfile())
-                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
+                && mBraveRewardsNativeWorker != null && mBraveRewardsNativeWorker.IsSupported()
                 && !OnboardingPrefManager.getInstance().isOnboardingShown();
     }
 
     private void showShieldsMenu(View mBraveShieldsButton) {
+        // Tab currentTab = getToolbarDataProvider().getTab();
+        // if (currentTab == null) {
+        //     return;
+        // }
+        // try {
+        //     URL url = new URL(currentTab.getUrl().getSpec());
+        //     // Don't show shields popup if protocol is not valid for shields.
+        //     if (!isValidProtocolForShields(url.getProtocol())) {
+        //         return;
+        //     }
+        //     mBraveShieldsHandler.show(mBraveShieldsButton, currentTab);
+        // } catch (Exception e) {
+        //     // Do nothing if url is invalid.
+        //     // Just return w/o showing shields popup.
+        //     return;
+        // }
+    }
+
+    private void showWooeenMenu(View mWoeCashbackButton) {
         Tab currentTab = getToolbarDataProvider().getTab();
         if (currentTab == null) {
             return;
         }
         try {
             URL url = new URL(currentTab.getUrl().getSpec());
-            // Don't show shields popup if protocol is not valid for shields.
-            if (!isValidProtocolForShields(url.getProtocol())) {
+            if (!isValidProtocolForWooeen(url.getProtocol())) {
                 return;
             }
-            mBraveShieldsHandler.show(mBraveShieldsButton, currentTab);
+            int advertiserId = mWooeenTrackingHandler.getAdvertiser(currentTab.getId());
+            int trackingId = mWooeenTrackingHandler.getTracking(currentTab.getId());
+
+            if(advertiserId > 0 && trackingId > 0){
+              String productEndpoint = mWooeenTrackingHandler.getProductEndpoint(currentTab.getId());
+              String productData = mWooeenTrackingHandler.getProductData(currentTab.getId());
+
+              mWooeenAreaHandler.show(mWoeCashbackButton, currentTab, advertiserId, trackingId, productEndpoint, productData);
+            }
+
         } catch (Exception e) {
             // Do nothing if url is invalid.
-            // Just return w/o showing shields popup.
+            // Just return w/o showing wooeen popup.
             return;
         }
     }
@@ -1199,6 +1569,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             description = resources.getString(R.string.accessibility_toolbar_btn_brave_rewards);
         } else if (v == mHomeButton) {
             description = resources.getString(R.string.accessibility_toolbar_btn_home);
+        } else if (v == mBraveWalletButton) {
+            description = resources.getString(R.string.accessibility_toolbar_btn_brave_wallet);
         }
 
         return Toast.showAnchoredToast(context, v, description);
@@ -1211,19 +1583,32 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     @Override
     public void onUrlFocusChange(boolean hasFocus) {
-        Context context = getContext();
-        // if (hasFocus && PackageUtils.isFirstInstall(context)
-        //         && BraveActivity.getBraveActivity() != null
-        //         && BraveActivity.getBraveActivity().getActivityTab() != null
-        //         && UrlUtilities.isNTPUrl(
-        //                 BraveActivity.getBraveActivity().getActivityTab().getUrl().getSpec())
-        //         && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()) {
-        //     Intent searchActivityIntent = new Intent(context, SearchActivity.class);
-        //     context.startActivity(searchActivityIntent);
+        // Context context = getContext();
+        // String countryCode = Locale.getDefault().getCountry();
+        // try {
+        //     if (hasFocus && PackageUtils.isFirstInstall(context)
+        //             && BraveActivity.getBraveActivity().getActivityTab() != null
+        //             && UrlUtilities.isNTPUrl(
+        //                     BraveActivity.getBraveActivity().getActivityTab().getUrl().getSpec())
+        //             && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()
+        //             && OnboardingPrefManager.getInstance().getUrlFocusCount() == 1
+        //             && !mBraveSearchEngineDefaultRegions.contains(countryCode)) {
+        //         Intent searchActivityIntent = new Intent(context, SearchActivity.class);
+        //         context.startActivity(searchActivityIntent);
+        //     }
+        //
+        // } catch (ActivityNotFoundException e) {
+        //     Log.e(TAG, "onUrlFocusChange " + e);
         // }
 
-        FlurryAgent.logEvent("Omnibox_Search");
+        // Delay showing the panel. Otherwise there are ANRs on holding onUrlFocusChange
+        PostTask.postTask(UiThreadTaskTraits.DEFAULT, () -> {
+            if (hasFocus) mSearchWidgetPromoPanel.showIfNeeded(this);
+        });
 
+        if (OnboardingPrefManager.getInstance().getUrlFocusCount() == 0) {
+            OnboardingPrefManager.getInstance().updateUrlFocusCount();
+        }
         super.onUrlFocusChange(hasFocus);
     }
 
@@ -1267,16 +1652,15 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     @Override
     public void updateModernLocationBarColorImpl(int color) {
-        if (mShieldsLayout != null && mShieldsLayoutIsColorBackground) {
-            mShieldsLayout.setBackgroundColor(
-                    ChromeColors.getDefaultThemeColor(getContext().getResources(), isIncognito()));
-        }
         mCurrentToolbarColor = color;
         if (mShieldsLayout != null) {
             mShieldsLayout.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
         }
         if (mRewardsLayout != null) {
             mRewardsLayout.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        }
+        if (mWalletLayout != null) {
+            mWalletLayout.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
         }
         if (mCashbackLayout != null) {
             mCashbackLayout.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
@@ -1323,21 +1707,22 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (isIncognito()) {
             mRewardsLayout.setVisibility(View.GONE);
             updateShieldsLayoutBackground(true);
-        } else if (isNativeLibraryReady()
-                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
+        } else if (isNativeLibraryReady() && mBraveRewardsNativeWorker != null
+                && mBraveRewardsNativeWorker.IsSupported()
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
-                && !sharedPreferences.getBoolean(
-                        AppearancePreferences.PREF_HIDE_BRAVE_REWARDS_ICON, false)) {
-            //mRewardsLayout.setVisibility(View.VISIBLE);
+                && sharedPreferences.getBoolean(
+                        AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, true)) {
+            // mRewardsLayout.setVisibility(View.VISIBLE);
             updateShieldsLayoutBackground(false);
         }
     }
 
     private boolean isShieldsOnForTab(Tab tab) {
-        if (tab == null) {
-            assert false;
+        if (!isNativeLibraryReady() || tab == null
+                || Profile.fromWebContents(((TabImpl) tab).getWebContents()) == null) {
             return false;
         }
+
         return BraveShieldsContentSettings.getShields(
                 Profile.fromWebContents(((TabImpl) tab).getWebContents()), tab.getUrl().getSpec(),
                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS);
@@ -1350,7 +1735,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
      */
     private void updateCashbackButtonState(Tab tab) {
         if (mWoeCashbackButton == null) {
-            assert false;
+            // assert false;
             return;
         }
 
@@ -1359,20 +1744,30 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             return;
         }
         mWoeCashbackButton.setImageResource(
-                isCashbackOnForTab(tab) ? R.drawable.btn_wooeen : R.drawable.btn_wooeen_off);
+                isCashbackOnForTab(tab) == 2 ? R.drawable.btn_wooeen_donation :
+                isCashbackOnForTab(tab) == 1 ? R.drawable.btn_wooeen : R.drawable.btn_wooeen_off);
     }
 
-    private boolean isCashbackOnForTab(Tab tab) {
+    private int isCashbackOnForTab(Tab tab) {
         if (tab == null) {
-            assert false;
-            return false;
+            return 0;
         }
-        return
-          TrackingUtils.tracked(getContext().getContentResolver(), TrackingUtils.getDomain(tab.getUrl().getSpec())) != null ||
-          TrackingUtils.tracked(getContext().getContentResolver(), DepsUtils.getDomain(tab.getUrl().getSpec())) != null;
+        TrackingTO trk = TrackingUtils.tracked(getContext().getContentResolver(), TrackingUtils.getDomain(tab.getUrl().getSpec()));
+        if(trk == null)
+          trk = TrackingUtils.tracked(getContext().getContentResolver(), DepsUtils.getDomain(tab.getUrl().getSpec()));
+
+        return trk != null ? trk.getAdvertiserType() : 0;
     }
 
     private boolean isValidProtocolForShields(String protocol) {
+        if (protocol.equals("http") || protocol.equals("https")) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean isValidProtocolForWooeen(String protocol) {
         if (protocol.equals("http") || protocol.equals("https")) {
             return true;
         }
@@ -1384,6 +1779,13 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (mRewardsPopup != null) {
             mRewardsPopup.dismiss();
             mRewardsPopup = null;
+        }
+    }
+
+    public void dismissWalletPanelOrDialog() {
+        if (mDAppsWalletController != null) {
+            mDAppsWalletController.dismiss();
+            mDAppsWalletController = null;
         }
     }
 
@@ -1408,32 +1810,30 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             return;
         }
 
-        if (type == BraveRewardsNativeWorker.REWARDS_NOTIFICATION_BACKUP_WALLET) {
-            mBraveRewardsNativeWorker.DeleteNotification(id);
-        } else if (type == BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT) {
+        if (type == BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT) {
             // Set flag
             SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
             SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
             sharedPreferencesEditor.putBoolean(
-                    BraveRewardsPanelPopup.PREF_GRANTS_NOTIFICATION_RECEIVED, true);
+                    BraveRewardsPanel.PREF_GRANTS_NOTIFICATION_RECEIVED, true);
             sharedPreferencesEditor.apply();
         }
         mBraveRewardsNativeWorker.GetAllNotifications();
     }
 
     private boolean mayShowBraveAdsOnboardingDialog() {
-        Context context = getContext();
-
-        if (BraveAdsSignupDialog.shouldShowNewUserDialog(context)) {
-            BraveAdsSignupDialog.showNewUserDialog(getContext());
-            return true;
-        } else if (BraveAdsSignupDialog.shouldShowNewUserDialogIfRewardsIsSwitchedOff(context)) {
-            BraveAdsSignupDialog.showNewUserDialog(getContext());
-            return true;
-        } else if (BraveAdsSignupDialog.shouldShowExistingUserDialog(context)) {
-            BraveAdsSignupDialog.showExistingUserDialog(getContext());
-            return true;
-        }
+        // Context context = getContext();
+        //
+        // if (BraveAdsSignupDialog.shouldShowNewUserDialog(context)) {
+        //     BraveAdsSignupDialog.showNewUserDialog(getContext());
+        //     return true;
+        // } else if (BraveAdsSignupDialog.shouldShowNewUserDialogIfRewardsIsSwitchedOff(context)) {
+        //     BraveAdsSignupDialog.showNewUserDialog(getContext());
+        //     return true;
+        // } else if (BraveAdsSignupDialog.shouldShowExistingUserDialog(context)) {
+        //     BraveAdsSignupDialog.showExistingUserDialog(getContext());
+        //     return true;
+        // }
 
         return false;
     }
@@ -1484,7 +1884,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private void updateNotificationBadgeForNewInstall() {
         SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
         boolean shownBefore = sharedPref.getBoolean(
-                BraveRewardsPanelPopup.PREF_WAS_TOOLBAR_BAT_LOGO_BUTTON_PRESSED, false);
+                BraveRewardsPanel.PREF_WAS_TOOLBAR_BAT_LOGO_BUTTON_PRESSED, false);
         boolean shouldShow = mBraveRewardsNotificationsCount != null && !shownBefore;
         mIsInitialNotificationPosted = shouldShow; // initial notification
 
@@ -1498,8 +1898,14 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     @Override
     public void onThemeColorChanged(int color, boolean shouldAnimate) {
+        // if (mWalletIcon != null) {
+        //     ImageViewCompat.setImageTintList(mWalletIcon,
+        //             !ColorUtils.shouldUseLightForegroundOnBackground(color) ? mDarkModeTint
+        //                                                                     : mLightModeTint);
+        // }
+
         final int textBoxColor = ThemeUtils.getTextBoxColorForToolbarBackgroundInNonNativePage(
-                getContext().getResources(), color, isIncognito());
+                getContext(), color, isIncognito());
         updateModernLocationBarColorImpl(textBoxColor);
     }
 
@@ -1546,21 +1952,15 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void updateShieldsLayoutBackground(boolean rounded) {
-        if (!BraveReflectionUtil.EqualTypes(this.getClass(), ToolbarTablet.class)
-                || (mShieldsLayout == null)) {
+        if (mShieldsLayout == null) {
             return;
         }
 
-        if (rounded) {
-            mShieldsLayout.setBackgroundDrawable(
-                    ApiCompatibilityUtils.getDrawable(getContext().getResources(),
-                            R.drawable.modern_toolbar_background_grey_end_segment));
-            mShieldsLayoutIsColorBackground = false;
-        } else {
-            mShieldsLayout.setBackgroundColor(
-                    ChromeColors.getDefaultThemeColor(getContext().getResources(), isIncognito()));
-            mShieldsLayoutIsColorBackground = true;
-        }
+        mShieldsLayout.setBackgroundDrawable(
+                ApiCompatibilityUtils.getDrawable(getContext().getResources(),
+                        rounded ? R.drawable.modern_toolbar_background_grey_end_segment
+                                : R.drawable.modern_toolbar_background_grey_middle_segment));
+
         updateModernLocationBarColorImpl(mCurrentToolbarColor);
     }
 
@@ -1573,15 +1973,19 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     @Override
-    protected void initialize(ToolbarDataProvider toolbarDataProvider,
+    public void initialize(ToolbarDataProvider toolbarDataProvider,
             ToolbarTabController tabController, MenuButtonCoordinator menuButtonCoordinator,
-            ObservableSupplier<Boolean> isProgressBarVisibleSupplier,
             HistoryDelegate historyDelegate, BooleanSupplier partnerHomepageEnabledSupplier,
             OfflineDownloader offlineDownloader) {
-        super.initialize(toolbarDataProvider, tabController, menuButtonCoordinator,
-                isProgressBarVisibleSupplier, historyDelegate, partnerHomepageEnabledSupplier,
-                offlineDownloader);
+        super.initialize(toolbarDataProvider, tabController, menuButtonCoordinator, historyDelegate,
+                partnerHomepageEnabledSupplier, offlineDownloader);
+
         BraveMenuButtonCoordinator.setMenuFromBottom(isMenuButtonOnBottom());
+    }
+
+    public void updateWalletBadgeVisibility(boolean visible) {
+        assert mBraveWalletBadge != null;
+        mBraveWalletBadge.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     public void updateMenuButtonState() {
@@ -1600,5 +2004,40 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             }
         }
         super.onDraw(canvas);
+    }
+
+    @Override
+    public boolean isLocationBarValid(LocationBarCoordinator locationBar) {
+        return locationBar != null && locationBar.getPhoneCoordinator() != null
+                && locationBar.getPhoneCoordinator().getViewForDrawing() != null;
+    }
+
+    @Override
+    public void drawAnimationOverlay(ViewGroup toolbarButtonsContainer, Canvas canvas) {
+        if (mWalletLayout != null && mWalletLayout.getVisibility() != View.GONE) {
+            canvas.save();
+            ViewUtils.translateCanvasToView(toolbarButtonsContainer, mWalletLayout, canvas);
+            mWalletLayout.draw(canvas);
+            canvas.restore();
+        }
+        if (mShieldsLayout != null && mShieldsLayout.getVisibility() != View.GONE) {
+            canvas.save();
+            ViewUtils.translateCanvasToView(toolbarButtonsContainer, mShieldsLayout, canvas);
+            mShieldsLayout.draw(canvas);
+            canvas.restore();
+        }
+        if (mRewardsLayout != null && mRewardsLayout.getVisibility() != View.GONE) {
+            canvas.save();
+            ViewUtils.translateCanvasToView(toolbarButtonsContainer, mRewardsLayout, canvas);
+            mRewardsLayout.draw(canvas);
+            canvas.restore();
+        }
+
+        if (mCashbackLayout != null && mCashbackLayout.getVisibility() != View.GONE) {
+            canvas.save();
+            ViewUtils.translateCanvasToView(toolbarButtonsContainer, mCashbackLayout, canvas);
+            mCashbackLayout.draw(canvas);
+            canvas.restore();
+        }
     }
 }

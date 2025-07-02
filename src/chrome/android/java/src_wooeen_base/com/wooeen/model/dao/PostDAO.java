@@ -45,8 +45,12 @@ public class PostDAO {
         ContentValues item = new ContentValues();
         item.put(WoeDBContract.Post._ID,     post.getId());
         item.put(WoeDBContract.Post.TITLE,    post.getTitle());
+        item.put(WoeDBContract.Post.EXCERPT,    post.getExcerpt());
         item.put(WoeDBContract.Post.IMAGE,   post.getImage());
         item.put(WoeDBContract.Post.LINK,     post.getLink());
+        item.put(WoeDBContract.Post.AUTHOR_ID,    post.getAuthorId());
+        item.put(WoeDBContract.Post.AUTHOR_NAME,    post.getAuthorName());
+        item.put(WoeDBContract.Post.AUTHOR_PHOTO,    post.getAuthorPhoto());
         item.put(WoeDBContract.Post.DATE, DatetimeUtils.dateToString(post.getDate(),"yyyy-MM-dd HH:mm:ss"));
 
         try {
@@ -77,8 +81,12 @@ public class PostDAO {
             ContentValues item = new ContentValues();
             item.put(WoeDBContract.Post._ID,     post.getId());
             item.put(WoeDBContract.Post.TITLE,    post.getTitle());
+            item.put(WoeDBContract.Post.EXCERPT,    post.getExcerpt());
             item.put(WoeDBContract.Post.IMAGE,   post.getImage());
             item.put(WoeDBContract.Post.LINK,     post.getLink());
+            item.put(WoeDBContract.Post.AUTHOR_ID,    post.getAuthorId());
+            item.put(WoeDBContract.Post.AUTHOR_NAME,    post.getAuthorName());
+            item.put(WoeDBContract.Post.AUTHOR_PHOTO,    post.getAuthorPhoto());
             item.put(WoeDBContract.Post.DATE, DatetimeUtils.dateToString(post.getDate(),"yyyy-MM-dd HH:mm:ss"));
             items.add(item);
         }
@@ -141,8 +149,12 @@ public class PostDAO {
         String[] projections = {
                 WoeDBContract.Post._ID,
                 WoeDBContract.Post.TITLE,
+                WoeDBContract.Post.EXCERPT,
                 WoeDBContract.Post.IMAGE,
                 WoeDBContract.Post.LINK,
+                WoeDBContract.Post.AUTHOR_ID,
+                WoeDBContract.Post.AUTHOR_NAME,
+                WoeDBContract.Post.AUTHOR_PHOTO,
                 WoeDBContract.Post.DATE,
         };
 
@@ -178,8 +190,12 @@ public class PostDAO {
                     PostTO item = new PostTO();
                     item.setId(cursor.getInt(cursor.getColumnIndex(WoeDBContract.Post._ID)));
                     item.setTitle(cursor.getString(cursor.getColumnIndex(WoeDBContract.Post.TITLE)));
+                    item.setExcerpt(cursor.getString(cursor.getColumnIndex(WoeDBContract.Post.EXCERPT)));
                     item.setImage(cursor.getString(cursor.getColumnIndex(WoeDBContract.Post.IMAGE)));
                     item.setLink(cursor.getString(cursor.getColumnIndex(WoeDBContract.Post.LINK)));
+                    item.setAuthorId(cursor.getString(cursor.getColumnIndex(WoeDBContract.Post.AUTHOR_ID)));
+                    item.setAuthorName(cursor.getString(cursor.getColumnIndex(WoeDBContract.Post.AUTHOR_NAME)));
+                    item.setAuthorPhoto(cursor.getString(cursor.getColumnIndex(WoeDBContract.Post.AUTHOR_PHOTO)));
                     item.setDate(DatetimeUtils.stringToTime(cursor.getString(cursor.getColumnIndex(WoeDBContract.Post.DATE)),"yyyy-MM-dd HH:mm:ss"));
 
                     items.add(item);

@@ -1,0 +1,14 @@
+Name: Apache HttpClient
+Short Name: httpclient
+URL: http://hc.apache.org/httpcomponents-client-ga
+Version: 4.5.14
+License: 
+License File: NOT_SHIPPED
+CPEPrefix: unknown
+Security Critical: no
+
+Description:
+Apache HttpComponents Client
+
+Local Modifications:
+No modifications.

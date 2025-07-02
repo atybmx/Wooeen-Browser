@@ -5,14 +5,15 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/woe_offer_item_bg"
-    android:clickable="true">
+    android:clickable="true"
+    android:focusable="true"
+    android:baselineAligned="false">
 
     <RelativeLayout
         android:id="@+id/coupon_image_box"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.3"
-        android:layout_centerInParent="true"
         android:background="@drawable/woe_list_layout_coupon"
         android:padding="10dp"
         android:elevation="10dp"
@@ -29,6 +30,7 @@
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:background="@drawable/woe_list_layout_transparent"
+            android:contentDescription="@string/woe_feed_coupons"
             ></ImageView>
 
     </RelativeLayout>
@@ -68,13 +70,12 @@
             android:id="@+id/coupon_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginBottom="10dp"
             android:gravity="center_vertical|start"
             android:text=""
             android:textColor="@color/woe_coupon_item_title"
             android:fontFamily="@font/montserrat_bold"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textFontWeight="500"
             android:singleLine="false"/>
 
@@ -99,7 +100,7 @@
                 android:textColor="@color/woe_coupon_item_voucher"
                 android:fontFamily="@font/montserrat_bold"
                 android:padding="10dp"
-                android:textSize="13dp"
+                android:textSize="13sp"
                 android:textFontWeight="700"
                 android:textAllCaps="true"/>
 
@@ -115,6 +116,7 @@
                 android:src="@drawable/woe_arrow_right_long_white"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
+                android:contentDescription="@string/woe_feed_coupons"
                 />
 
         </LinearLayout>
@@ -132,6 +134,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
                 android:src="@drawable/woe_stopwatch_blue"
+                android:contentDescription="@string/woe_coupon_expiration_in"
                 />
 
             <TextView
@@ -139,11 +142,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_vertical|start"
-                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
                 android:text="@string/woe_coupon_expiration_in"
                 android:textColor="@color/woe_coupon_item_expire"
                 android:fontFamily="@font/montserrat_bold"
-                android:textSize="11dp"
+                android:textSize="11sp"
                 android:textFontWeight="700"
                 android:textAllCaps="true"/>
 
@@ -158,7 +161,7 @@
                 android:textColor="@color/woe_coupon_item_expire_stopwatch"
                 android:fontFamily="@font/montserrat_bold"
                 android:padding="5dp"
-                android:textSize="11dp"
+                android:textSize="11sp"
                 android:textFontWeight="700"
                 android:textAllCaps="true"/>
 

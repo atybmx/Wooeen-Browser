@@ -8,21 +8,21 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class WebServiceClient {
-	
+
 	public final String[] get(String link,Header...headers) {
 		return get(link,15000,headers);
 	}
 
 	public final String[] get(String link,int connectTimeout,Header...headers) {
 		String[] result = new String[2];
-		
+
 		URL url;
-	    HttpURLConnection conn = null;
+	  HttpURLConnection conn = null;
 		InputStream in = null;
 		try {
 			url = new URL(link);
 
-	        conn = (HttpURLConnection) url.openConnection();
+	    conn = (HttpURLConnection) url.openConnection();
 
 			conn.setReadTimeout(10000);
 			conn.setConnectTimeout(connectTimeout);
@@ -35,13 +35,13 @@ public class WebServiceClient {
 					conn.setRequestProperty(header.getKey(),header.getValue());
 				}
 			}
-	        
-	        in = conn.getInputStream();
-	        result[0] = String.valueOf(conn.getResponseCode());
-	        result[1] = toString(in);
 
-//			result[0] = ""+response.code();
-//			result[1] = response.body().string();
+	    in = conn.getInputStream();
+	    result[0] = String.valueOf(conn.getResponseCode());
+	    result[1] = toString(in);
+
+//		result[0] = ""+response.code();
+//		result[1] = response.body().string();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}finally {
@@ -54,27 +54,27 @@ public class WebServiceClient {
 			}
 		}
 
-		  
-		  return result;
+
+		return result;
 	}
-	
+
 	public final String[] post(String link, String body,Header...headers) {
 		String[] result = new String[2];
-		
+
 		URL url;
-	    HttpURLConnection conn = null;
+	  HttpURLConnection conn = null;
 		OutputStreamWriter wr = null;
 		try {
 			url = new URL(link);
 
-	        conn = (HttpURLConnection) url.openConnection();
-	        conn.setReadTimeout(10000);
-	        conn.setConnectTimeout(15000);
-	        conn.setRequestMethod("POST");
-	        conn.setDoInput(true);
-	        conn.setDoOutput(true);
-	        conn.setRequestProperty("Content-Type","application/json");
-	        conn.setRequestProperty("Accept", "application/json");
+      conn = (HttpURLConnection) url.openConnection();
+      conn.setReadTimeout(10000);
+      conn.setConnectTimeout(15000);
+      conn.setRequestMethod("POST");
+      conn.setDoInput(true);
+      conn.setDoOutput(true);
+      conn.setRequestProperty("Content-Type","application/json");
+      conn.setRequestProperty("Accept", "application/json");
 
 			if(headers != null && headers.length > 0) {
 				for(Header header:headers) {
@@ -83,15 +83,15 @@ public class WebServiceClient {
 			}
 
 			conn.connect();
-	        
-	        wr = new OutputStreamWriter(conn.getOutputStream());
-	        wr.write(body);
-	        wr.flush ();
-	        
-	        result[0] = String.valueOf(conn.getResponseCode());
-	        result[1] = toString(conn.getInputStream());
-//			result[0] = ""+response.code();
-//			result[1] = response.body().string();
+
+      wr = new OutputStreamWriter(conn.getOutputStream());
+      wr.write(body);
+      wr.flush ();
+
+      result[0] = String.valueOf(conn.getResponseCode());
+      result[1] = toString(conn.getInputStream());
+//		result[0] = ""+response.code();
+//		result[1] = response.body().string();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}finally {
@@ -103,8 +103,8 @@ public class WebServiceClient {
 				}
 			}
 		}
-		  
-		  return result;
+
+		return result;
 	}
 
 	public static class Header{
@@ -139,7 +139,7 @@ public class WebServiceClient {
     	while ((lidos = is.read(bytes)) > 0) {
     		baos.write(bytes, 0, lidos);
     	}
-    	
+
     	return new String(baos.toByteArray());
     }
 }

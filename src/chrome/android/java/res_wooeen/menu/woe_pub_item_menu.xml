@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/woe_exclude_pub"
+        android:title="@string/woe_not_interested_in_this" />
+
+    <item
+        android:id="@+id/woe_exclude_tag"
+        android:title="@string/woe_not_interested_in_x" />
+
+    <item
+        android:id="@+id/woe_exclude_advertiser"
+        android:title="@string/woe_not_show_x" />
+
+    <item
+        android:id="@+id/woe_remove"
+        android:title="@string/woe_remove" />
+</menu>

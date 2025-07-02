@@ -1,0 +1,14 @@
+Name: Apache HttpCore
+Short Name: httpcore
+URL: http://hc.apache.org/httpcomponents-core-ga
+Version: 4.4.16
+License: 
+License File: NOT_SHIPPED
+CPEPrefix: unknown
+Security Critical: no
+
+Description:
+Apache HttpComponents Core (blocking I/O)
+
+Local Modifications:
+No modifications.

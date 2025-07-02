@@ -1,0 +1,14 @@
+Name: firebase-annotations
+Short Name: firebase-annotations
+URL: https://firebase.google.com
+Version: 16.1.0
+License: 
+License File: NOT_SHIPPED
+CPEPrefix: unknown
+Security Critical: no
+
+Description:
+Common annotations for Firebase SKDs.
+
+Local Modifications:
+No modifications.

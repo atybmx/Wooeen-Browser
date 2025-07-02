@@ -21,15 +21,15 @@ public class PostAPI {
     private static final String AUTHORITY = "www.wooeen.com";
     private static final String PATH = "blog/wp-json/wp/v2/";
 
-    public List<PostTO> get(){
-        return get(1,50);
+    public List<PostTO> get(String cr){
+        return get(cr,1,50);
     }
 
-    public List<PostTO> get(int pg,int qtdPerPage){
-        return get(pg, qtdPerPage, null);
+    public List<PostTO> get(String cr,int pg,int qtdPerPage){
+        return get(cr,pg, qtdPerPage, null);
     }
 
-    public List<PostTO> get(int pg,int qtdPerPage, String q){
+    public List<PostTO> get(String cr,int pg,int qtdPerPage, String q){
         try {
             //configura a url e os parametros
             Uri.Builder builder = new Uri.Builder();
@@ -37,9 +37,12 @@ public class PostAPI {
                     .encodedAuthority(AUTHORITY)
                     .path(PATH)
                     .appendPath("posts")
-                    .appendQueryParameter("_fields","id,featured_media,fimg_url,title,link,date")
+                    .appendQueryParameter("_fields","id,featured_media,fimg_url,title,link,date,excerpt,author")
                     .appendQueryParameter("page",""+pg)
                     .appendQueryParameter("per_page",""+qtdPerPage);
+
+            if(!TextUtils.isEmpty(cr))
+                builder.appendQueryParameter("language",getCountryId(cr));
 
             if(!TextUtils.isEmpty(q))
                 builder.appendQueryParameter("search",q);
@@ -62,10 +65,19 @@ public class PostAPI {
                 for(PostAPIHolder holder:result){
                     PostTO item = new PostTO();
                     item.setId(holder.getId());
-                    item.setTitle(holder.getTitle().getRendered());
+                    if(holder.getTitle() != null)
+                        item.setTitle(holder.getTitle().getRendered());
+                    if(holder.getExcerpt() != null)
+                        item.setExcerpt(holder.getExcerpt().getRendered());
                     item.setImage(holder.getFimg_url());
                     item.setLink(holder.getLink());
                     item.setDate(DatetimeUtils.stringToDate(holder.getDate(),"yyyy-MM-dd'T'HH:mm:ss"));
+                    if(holder.getAuthor() != null) {
+                        item.setAuthorId(holder.getAuthor().getId());
+                        item.setAuthorName(holder.getAuthor().getName());
+                        item.setAuthorPhoto(holder.getAuthor().getPhoto());
+                    }
+
                     items.add(item);
                 }
                 return items;
@@ -78,12 +90,23 @@ public class PostAPI {
         return null;
     }
 
+    private String getCountryId(String cr) {
+        if("BR".equalsIgnoreCase(cr)) return "205";
+        else if("ES".equalsIgnoreCase(cr)) return "212";
+        else if("DE".equalsIgnoreCase(cr)) return "216";
+        else if("UK".equalsIgnoreCase(cr)) return "208";
+        else if("FR".equalsIgnoreCase(cr)) return "508";
+        else return "205";
+    }
+
     public static class PostAPIHolder{
         private int id;
         private String date;
         private String link;
         private String fimg_url;
         private PostApiTitleHolder title;
+        private PostApiExcerptHolder excerpt;
+        private PostApiAuthorHolder author;
 
         public int getId() {
             return id;
@@ -124,6 +147,22 @@ public class PostAPI {
         public void setTitle(PostApiTitleHolder title) {
             this.title = title;
         }
+
+        public PostApiExcerptHolder getExcerpt() {
+            return excerpt;
+        }
+
+        public void setExcerpt(PostApiExcerptHolder excerpt) {
+            this.excerpt = excerpt;
+        }
+
+        public PostApiAuthorHolder getAuthor() {
+            return author;
+        }
+
+        public void setAuthor(PostApiAuthorHolder author) {
+            this.author = author;
+        }
     }
 
     public static class PostApiTitleHolder{
@@ -136,6 +175,43 @@ public class PostAPI {
         public void setRendered(String rendered) {
             this.rendered = rendered;
         }
+    }
+
+    public static class PostApiExcerptHolder{
+        private String rendered;
+
+        public String getRendered() {
+            return rendered;
+        }
+
+        public void setRendered(String rendered) {
+            this.rendered = rendered;
+        }
+    }
+
+    public static class PostApiAuthorHolder{
+        private String id;
+        private String name;
+        private String photo;
+        public String getId() {
+            return id;
+        }
+        public void setId(String id) {
+            this.id = id;
+        }
+        public String getName() {
+            return name;
+        }
+        public void setName(String name) {
+            this.name = name;
+        }
+        public String getPhoto() {
+            return photo;
+        }
+        public void setPhoto(String photo) {
+            this.photo = photo;
+        }
+
     }
 
 }

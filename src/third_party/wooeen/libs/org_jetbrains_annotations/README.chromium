@@ -1,0 +1,14 @@
+Name: IntelliJ IDEA Annotations
+Short Name: annotations
+URL: http://www.jetbrains.org
+Version: 13.0
+License: 
+License File: NOT_SHIPPED
+CPEPrefix: unknown
+Security Critical: no
+
+Description:
+A set of annotations used for code inspection support and code documentation.
+
+Local Modifications:
+No modifications.

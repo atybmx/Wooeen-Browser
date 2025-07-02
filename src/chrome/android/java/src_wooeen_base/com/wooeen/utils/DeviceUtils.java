@@ -14,6 +14,7 @@ import java.net.SocketException;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Locale;
 
 public class DeviceUtils {
 
@@ -27,7 +28,7 @@ public class DeviceUtils {
         for(int idx=0; idx < bytes.length; idx++) {
             int intVal = bytes[idx] & 0xff;
             if (intVal < 0x10) sbuf.append("0");
-            sbuf.append(Integer.toHexString(intVal).toUpperCase());
+            sbuf.append(Integer.toHexString(intVal).toUpperCase(Locale.getDefault()));
         }
         return sbuf.toString();
     }
@@ -122,7 +123,7 @@ public class DeviceUtils {
                         } else {
                             if (!isIPv4) {
                                 int delim = sAddr.indexOf('%'); // drop ip6 zone suffix
-                                return delim<0 ? sAddr.toUpperCase() : sAddr.substring(0, delim).toUpperCase();
+                                return delim<0 ? sAddr.toUpperCase(Locale.getDefault()) : sAddr.substring(0, delim).toUpperCase(Locale.getDefault());
                             }
                         }
                     }

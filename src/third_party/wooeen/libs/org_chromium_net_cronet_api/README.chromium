@@ -1,0 +1,14 @@
+Name: Cronet
+Short Name: cronet-api
+URL: 
+Version: 108.5359.79
+License: 
+License File: NOT_SHIPPED
+CPEPrefix: unknown
+Security Critical: no
+
+Description:
+Cronet API. Does not contain implementation.
+
+Local Modifications:
+No modifications.
